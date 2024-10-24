@@ -4,7 +4,7 @@ public class FloorSpawner : MonoBehaviour {
     public GameObject floor; // Floor prefab
     private Transform last; // Last floor spawned
     private const int floorLength = 25;
-    public float playerSpeed = 5f;
+    [SerializeField] private float playerSpeed = 5f;
     private const float Y = -0.5f;
     private const float edgePadding = 2.5f;
     private float cameraLeftEdge;
@@ -38,4 +38,8 @@ public class FloorSpawner : MonoBehaviour {
         if (last.position.x + floorLength / 2 < cameraRightEdge)
             SpawnFloor(last.position.x + floorLength);
     }
+
+    // add collision detection with player and make sure player can jump on the floor
+    
+    
 }
