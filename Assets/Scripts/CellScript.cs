@@ -3,11 +3,19 @@ using UnityEngine;
 public class CellScript : MonoBehaviour {
     public Sprite active;
     public Material glowMaterial;
+    private GameScript gameScript;
     private void OnCollisionEnter2D(UnityEngine.Collision2D collision) {
         if (collision.gameObject.CompareTag("Player")) {
-            GetComponent<SpriteRenderer>().sprite = active;
+            SpriteRenderer cellSprite = GetComponent<SpriteRenderer>();
 
-            GetComponent<SpriteRenderer>().material = glowMaterial;
+            cellSprite.sprite = active;
+            cellSprite.material = glowMaterial; // need to fix shader
+
+            gameScript.UpdateScore();
         }
+    }
+
+    void Start() {
+        gameScript = FindObjectOfType<GameScript>();
     }
 }

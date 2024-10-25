@@ -11,6 +11,18 @@ public class PlayerScript : MonoBehaviour
     private bool isOnGround = false;
     private bool isJumping = false;
     private float jumpTimer = 0f;
+    private GameScript gameScript;
+
+    private void OnCollisionEnter2D(UnityEngine.Collision2D collision) {
+        if (collision.gameObject.CompareTag("Spike")) {
+            gameScript.GameOver();
+            Destroy(gameObject);
+        }
+    }
+
+    void Start() {
+        gameScript = FindObjectOfType<GameScript>();
+    }
 
     // Update is called once per frame
     void Update()

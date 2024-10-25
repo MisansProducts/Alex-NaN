@@ -46,4 +46,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floor: {fileID: 6501179408334643079, guid: d8480225d82d6114993db0dec509bb2e, type: 3}
   cell: {fileID: 8486997264168092890, guid: 1360bb64a8c6c254da91e1e2c8ee327b, type: 3}
+  spike: {fileID: 4835118057667436133, guid: f84eaf5487678c54c9dbac6f38f45e61, type: 3}
   playerSpeed: 5
+  spikeChance: 0.2
