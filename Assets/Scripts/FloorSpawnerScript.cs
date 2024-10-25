@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class FloorSpawner : MonoBehaviour {
+public class FloorSpawnerScript : MonoBehaviour {
     public GameObject floor; // Floor prefab
-    public GameObject square; // 1x1 Square prefab
+    public GameObject cell; // 1x1 cell prefab
     private Transform last; // Last floor spawned
     private const int floorLength = 25;
     private const int floorHeight = 1;
@@ -16,12 +16,12 @@ public class FloorSpawner : MonoBehaviour {
     void SpawnFloor(float X = 0) {
         last = Instantiate(floor, new Vector3(X, Y, 0), Quaternion.identity, transform).transform;
 
-        // Fills floor with square prefabs
+        // Fills floor with cell prefabs
         for (int x = 0; x < floorLength; x++) {
             for (int y = 0; y < floorHeight; y++) {
-                Vector3 squarePosition = new Vector3(x - floorLength / 2, y, 0);
-                GameObject squarePrefab = Instantiate(square, squarePosition, Quaternion.identity, last);
-                squarePrefab.transform.localPosition = squarePosition; // Local to last
+                Vector3 cellPosition = new Vector3(x - floorLength / 2, y, 0);
+                GameObject cellPrefab = Instantiate(cell, cellPosition, Quaternion.identity, last);
+                cellPrefab.transform.localPosition = cellPosition; // Local to last
             }
         }
     }

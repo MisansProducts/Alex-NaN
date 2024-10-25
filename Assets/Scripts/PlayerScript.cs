@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerScript : MonoBehaviour
 {   
     [SerializeField] private float jumpForce = 10f;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private LayerMask floorLayer;
     [SerializeField] private Transform landingPos;
-    [SerializeField] private float groundDistance = 0.4f;
-    [SerializeField] private float jumpTime = 0.5f;
+    [SerializeField] private float groundDistance = 0.2f;
+    [SerializeField] private float jumpTime = 0.2f;
     private bool isOnGround = false;
     private bool isJumping = false;
     private float jumpTimer = 0f;
@@ -15,10 +15,8 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isOnGround = Physics2D.OverlapCircle(landingPos.position, groundDistance, floorLayer);
-
         // get input for jumping while player is on the ground 
-        if(isOnGround && Input.GetButtonDown("Jump")){
+        if(isOnGround && Input.GetButton("Jump")){
             isJumping = true;
             rb.velocity = Vector2.up * jumpForce;
         }
@@ -32,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
             else { // drop his ass
                 isJumping = false;
             }
+            
         }
 
         if(Input.GetButtonUp("Jump")){
@@ -39,4 +38,12 @@ public class PlayerMovement : MonoBehaviour
             jumpTimer = 0;
         }
     }
+
+    void FixedUpdate() {
+        isOnGround = Physics2D.OverlapCircle(landingPos.position, groundDistance, floorLayer);
+
+        // Reset jump timer when landing
+        if (isOnGround) jumpTimer = 0;
+    }
+
 }
