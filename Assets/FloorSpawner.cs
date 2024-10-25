@@ -22,10 +22,8 @@ public class FloorSpawner : MonoBehaviour {
                 Vector3 squarePosition = new Vector3(x - floorLength / 2, y, 0);
                 GameObject squarePrefab = Instantiate(square, squarePosition, Quaternion.identity, last);
                 squarePrefab.transform.localPosition = squarePosition; // Local to last
-                squarePrefab.GetComponent<Renderer>().material.color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f); // random color for testing
             }
         }
-        // last.GetComponent<Renderer>().material.color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f); // random color for testing
     }
 
     // Start is called before the first frame update
