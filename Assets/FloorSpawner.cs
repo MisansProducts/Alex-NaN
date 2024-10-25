@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class FloorSpawner : MonoBehaviour {
     public GameObject floor; // Floor prefab
+    public GameObject square; // 1x1 Square prefab
     private Transform last; // Last floor spawned
     private const int floorLength = 25;
+    private const int floorHeight = 1;
     [SerializeField] private float playerSpeed = 5f;
     private const float Y = -0.5f;
     private const float edgePadding = 2.5f;
@@ -13,7 +15,17 @@ public class FloorSpawner : MonoBehaviour {
     // Function to spawn floors
     void SpawnFloor(float X = 0) {
         last = Instantiate(floor, new Vector3(X, Y, 0), Quaternion.identity, transform).transform;
-        last.GetComponent<Renderer>().material.color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f); // random color for testing
+
+        // Fills floor with square prefabs
+        for (int x = 0; x < floorLength; x++) {
+            for (int y = 0; y < floorHeight; y++) {
+                Vector3 squarePosition = new Vector3(x - floorLength / 2, y, 0);
+                GameObject squarePrefab = Instantiate(square, squarePosition, Quaternion.identity, last);
+                squarePrefab.transform.localPosition = squarePosition; // Local to last
+                squarePrefab.GetComponent<Renderer>().material.color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f); // random color for testing
+            }
+        }
+        // last.GetComponent<Renderer>().material.color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f); // random color for testing
     }
 
     // Start is called before the first frame update
@@ -38,8 +50,4 @@ public class FloorSpawner : MonoBehaviour {
         if (last.position.x + floorLength / 2 < cameraRightEdge)
             SpawnFloor(last.position.x + floorLength);
     }
-
-    // add collision detection with player and make sure player can jump on the floor
-    
-    
 }
