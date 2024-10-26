@@ -211,3 +211,4 @@ MonoBehaviour:
   landingPos: {fileID: 8501256384327283502}
   groundDistance: 0.2
   jumpTime: 0.2
+  maxJumps: 1

@@ -59,16 +59,17 @@ public class FloorSpawnerScript : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         // Moves floors to the left
-        foreach (Transform child in transform) {
+        if (GameScript.Instance.isInGame){
+            foreach (Transform child in transform) {
             child.Translate(Vector3.left * gameScript.gameSpeed * Time.deltaTime);
 
             // Deletes floors outside of the playable area
             if (child.position.x + floorLength / 2 < cameraLeftEdge)
                 Destroy(child.gameObject);
-        }
-        
-        // Spawns a new floor
-        if (last.position.x + floorLength / 2 < cameraRightEdge)
+            }
+
+            if (last.position.x + floorLength / 2 < cameraRightEdge)
             SpawnFloor(last.position.x + floorLength, false);
+        }
     }
 }
