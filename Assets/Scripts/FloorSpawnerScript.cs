@@ -13,13 +13,14 @@ public class FloorSpawnerScript : MonoBehaviour {
     private float cameraLeftEdge;
     private float cameraRightEdge;
     private GameScript gameScript;
+    private int spikeLimit = 3;
+    private int spikeCoolDown = 2;
 
     // Function to spawn floors
     void SpawnFloor(float X = 0, bool first = true) {
         gameScript = FindObjectOfType<GameScript>();
         last = Instantiate(floor, new Vector3(X, Y, 0), Quaternion.identity, transform).transform;
-        int spikeLimit = 2;
-        int spikeCoolDown = 3;
+        
 
         // Fills floor with cell prefabs
         for (int x = 0; x < floorLength; x++) {
@@ -30,17 +31,22 @@ public class FloorSpawnerScript : MonoBehaviour {
             }
 
             // should be more rigorous later
-            if (spikeCoolDown == 3) {
+            if (first) continue;
+            if (spikeCoolDown == 2) {
                 // Randomly spawns spikes
-                if (!first && Random.value <= gameScript.spikeChance) {
+                if (Random.value <= gameScript.spikeChance) {
                     spikeLimit -= 1;
-                    if (spikeLimit == 0)  {
-                        spikeLimit = 1;
+                    if (spikeLimit == 0) {
+                        spikeLimit = 3;
                         spikeCoolDown = 0;
                     }
                     Vector3 spikePosition = new Vector3(x - floorLength / 2, floorHeight, 0);
                     GameObject spikePrefab = Instantiate(spike, spikePosition, Quaternion.identity, last);
                     spikePrefab.transform.localPosition = spikePosition;
+                }
+                else {
+                    spikeLimit = 3;
+                    spikeCoolDown = 1;
                 }
             }
             else { // just some basic logic to make the game fair
@@ -59,17 +65,15 @@ public class FloorSpawnerScript : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         // Moves floors to the left
-        if (GameScript.Instance.isInGame){
-            foreach (Transform child in transform) {
-            child.Translate(Vector3.left * gameScript.gameSpeed * Time.deltaTime);
+        foreach (Transform child in transform) {
+        child.Translate(Vector3.left * gameScript.gameSpeed * Time.deltaTime);
 
-            // Deletes floors outside of the playable area
-            if (child.position.x + floorLength / 2 < cameraLeftEdge)
-                Destroy(child.gameObject);
-            }
-
-            if (last.position.x + floorLength / 2 < cameraRightEdge)
-            SpawnFloor(last.position.x + floorLength, false);
+        // Deletes floors outside of the playable area
+        if (child.position.x + floorLength / 2 < cameraLeftEdge)
+            Destroy(child.gameObject);
         }
+
+        if (last.position.x + floorLength / 2 < cameraRightEdge)
+        SpawnFloor(last.position.x + floorLength, false);
     }
 }
