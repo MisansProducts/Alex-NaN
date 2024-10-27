@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Cell
   - Spike
+  - Light
   layers:
   - Default
   - TransparentFX
