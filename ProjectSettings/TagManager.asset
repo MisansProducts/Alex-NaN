@@ -44,3 +44,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: No Shadows
+    uniqueID: 914990185
+    locked: 0

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4539641061084551033}
   - component: {fileID: 4106816999992574465}
   - component: {fileID: 7555895486580725010}
+  - component: {fileID: -6975589757915163890}
   m_Layer: 7
   m_Name: Spike
   m_TagString: Spike
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 4835118057667436133}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.502065, y: 6.1934805, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -71,10 +72,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 914990185
+  m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 580958bc7ce415b43aba9fe43a8da69c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 214a86d8a9c905a40bd9c05312bbca5e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -129,10 +130,36 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.125, y: 0.5}
-      - {x: -0.5, y: -0.21875}
-      - {x: -0.5, y: -0.5}
+    - - {x: -0.5, y: -0.5}
+      - {x: 0, y: 0.45}
       - {x: 0.5, y: -0.5}
-      - {x: 0.5, y: -0.28125}
-      - {x: 0.09375, y: 0.5}
   m_UseDelaunayMesh: 0
+--- !u!114 &-6975589757915163890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4835118057667436133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 00000000
+  m_ShapePath:
+  - {x: -0.5, y: -0.5, z: 0}
+  - {x: 0, y: 0.45, z: 0}
+  - {x: 0.5, y: -0.5, z: 0}
+  m_ShapePathHash: -648835121
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 30666
+  m_LocalBounds:
+    m_Center: {x: 0, y: -0.025000006, z: 0}
+    m_Extent: {x: 0.5, y: 0.475, z: 0}

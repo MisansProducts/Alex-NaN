@@ -6,8 +6,12 @@ Alex NaN is a 2D endless runner game created with Unity.
 
 ![Version 2](imgs/img2.png)
 
+![Version 2](imgs/img3.png)
+
 ## Credits
 
-Alex Akoopie - Creator
+Alex Akoopie
 
-Henry Nan - Creator
+Henry Nan
+
+Kaitlyn Corpuz
