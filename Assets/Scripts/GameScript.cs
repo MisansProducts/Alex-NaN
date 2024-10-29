@@ -32,7 +32,7 @@ public class GameScript : MonoBehaviour {
         currentScoreText.text = "Score: " + currentScore.ToString();
         highScoreText.text = "Hi-Score: " + highScore.ToString();
         if (!mode2) {
-            spotLight.intensity = (1f - currentScore / spotLightScore) * 1f;
+            spotLight.intensity = Mathf.Lerp(1f, 0f, currentScore / spotLightScore);
             if (currentScore >= spotLightScore) {
                 gameSpeed = 0f;
                 mode2 = true;
@@ -84,7 +84,7 @@ public class GameScript : MonoBehaviour {
     void Update() {
         if (gameSpeed != 0 && mode2) {
             spotLightTime = Mathf.Clamp01(spotLightTime + Time.deltaTime / 10f);
-            spotLight.intensity = Mathf.Lerp(1f, 0f, Mathf.SmoothStep(0f, 1f, spotLightTime));
+            spotLight.intensity = Mathf.SmoothStep(1f, 0f, spotLightTime);
             battery = Mathf.Clamp01(battery + Time.deltaTime / batteryTime);
             batteryBar.GetComponent<Image>().fillAmount = battery;
         }
