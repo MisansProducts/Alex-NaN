@@ -7,7 +7,7 @@ public class FloorSpawnerScript : MonoBehaviour {
     private Transform last; // Last floor spawned
     private const int floorLength = 25;
     private const int floorHeight = 1;
-    private const float Y = -0.5f;
+    private const float Y = 0.5f;
     private const float edgePadding = 2.5f;
     private float cameraLeftEdge;
     private float cameraRightEdge;

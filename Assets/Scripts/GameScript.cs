@@ -61,7 +61,7 @@ public class GameScript : MonoBehaviour {
         batteryBorder.SetActive(false);
         batteryPromptText.SetActive(false);
 
-        Instantiate(player, new Vector3(-6.5f, 0.5f, 0), Quaternion.identity, transform);
+        Instantiate(player, new Vector3(1.5f, 1.5f, 0), Quaternion.identity, transform);
         Instantiate(floorSpawner, new Vector3(0, 0, 0), Quaternion.identity, transform);
     }
 
@@ -72,7 +72,7 @@ public class GameScript : MonoBehaviour {
         batteryBackground = GameObject.FindGameObjectWithTag("BatteryBG");
         batteryBorder = GameObject.FindGameObjectWithTag("BatteryBorder");
         batteryPromptText = GameObject.FindGameObjectWithTag("BatteryPrompt");
-        Instantiate(player, new Vector3(-6.5f, 0.5f, 0), Quaternion.identity, transform);
+        Instantiate(player, new Vector3(1.5f, 1.5f, 0), Quaternion.identity, transform);
         Instantiate(floorSpawner, new Vector3(0, 0, 0), Quaternion.identity, transform);
         
         batteryBackground.SetActive(false);
