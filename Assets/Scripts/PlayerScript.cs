@@ -54,6 +54,14 @@ public class PlayerScript : MonoBehaviour {
         if (isGrounded && Input.GetButton("Jump") && !isJumping) {
             StartJump();
         }
+        
+        if (gameScript.mode2 && Input.GetKeyDown(KeyCode.F) && gameScript.battery >= 1f / 3f) {
+            gameScript.batteryPromptText.SetActive(false); // need better solution later
+            gameScript.gameSpeed = 5f; // need better solution later
+            gameScript.spotLightTime = 0;
+            gameScript.spotLight.intensity = 1f;
+            gameScript.battery -= 1f / 3f;
+        }
     }
 
     void FixedUpdate() {
