@@ -13,12 +13,14 @@ public class PlayerScript : MonoBehaviour {
     private bool isJumping;
     private float jumpTimeCounter;
     private const float groundDistance = 0.2f;
+    private Animator animator;
 
     void Awake() {
         gameScript = FindObjectOfType<GameScript>();
         rb = GetComponent<Rigidbody2D>();
         groundLayer = 1 << LayerMask.NameToLayer("Floor");
         landingPos = transform.Find("feet");
+        animator = GetComponent<Animator>();
     }
 
     void OnCollisionEnter2D(Collision2D collision) {
@@ -42,12 +44,14 @@ public class PlayerScript : MonoBehaviour {
             }
             else {
                 isJumping = false;
+                animator.SetBool("isJumping", false);
             }
         }
 
         // Stop the jump if the button is released
         if (Input.GetButtonUp("Jump")) {
             isJumping = false;
+            animator.SetBool("isJumping", false);
         }
 
         // Auto jump if the button is still held when landing
@@ -73,5 +77,6 @@ public class PlayerScript : MonoBehaviour {
         isJumping = true;
         jumpTimeCounter = maxJumpTime;
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        animator.SetBool("isJumping", true);
     }
 }
