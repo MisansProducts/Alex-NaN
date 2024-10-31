@@ -3,7 +3,7 @@ using UnityEngine;
 public class FloorSpawnerScript : MonoBehaviour {
     public GameObject floor; // Floor prefab
     public GameObject cell; // 1x1 cell prefab
-    public GameObject spike; // Hazard
+    public GameObject singleSpike, doubleSpike, tripleSpike; // Hazard
     private Transform last; // Last floor spawned
     private const int floorLength = 25;
     private const int floorHeight = 1;
@@ -11,7 +11,6 @@ public class FloorSpawnerScript : MonoBehaviour {
     private const int leftEdge = -1; // 0 - 1 padding
     private const int rightEdge = 17; // 16 + 1 padding
     private GameScript gameScript;
-    private int spikeLimit = 3;
     private int spikeCoolDown = 2;
 
     // Function to spawn floors
@@ -32,18 +31,24 @@ public class FloorSpawnerScript : MonoBehaviour {
             if (spikeCoolDown == 2) {
                 // Randomly spawns spikes
                 if (Random.value <= gameScript.spikeChance) {
-                    spikeLimit -= 1;
-                    if (spikeLimit == 0) {
-                        spikeLimit = 3;
+                    Vector3 spikePosition = new Vector3(x - 0.5f - floorLength / 2, floorHeight, 0);
+                    float randomSpike = Random.value;
+                    GameObject spikePrefab;
+                    if (randomSpike <= 1f/3f) {
+                        spikePrefab = Instantiate(singleSpike, spikePosition, Quaternion.identity, last);
                         spikeCoolDown = 0;
+                        spikePrefab.transform.localPosition = spikePosition;
                     }
-                    Vector3 spikePosition = new Vector3(x - floorLength / 2, floorHeight, 0);
-                    GameObject spikePrefab = Instantiate(spike, spikePosition, Quaternion.identity, last);
-                    spikePrefab.transform.localPosition = spikePosition;
-                }
-                else {
-                    spikeLimit = 3;
-                    spikeCoolDown = 1;
+                    else if (randomSpike <= 2f/3f && x < floorLength - 1) {
+                        spikePrefab = Instantiate(doubleSpike, spikePosition, Quaternion.identity, last);
+                        spikeCoolDown = -1;
+                        spikePrefab.transform.localPosition = spikePosition;
+                    }
+                    else if (x < floorLength - 2) {
+                        spikePrefab = Instantiate(tripleSpike, spikePosition, Quaternion.identity, last);
+                        spikeCoolDown = -2;
+                        spikePrefab.transform.localPosition = spikePosition;
+                    }
                 }
             }
             else { // just some basic logic to make the game fair
