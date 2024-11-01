@@ -1,45 +1,49 @@
 using UnityEngine;
 
 public class FloorSpawnerScript : MonoBehaviour {
-    public GameObject floor; // Floor prefab
-    public GameObject cell; // 1x1 cell prefab
-    public GameObject singleSpike, doubleSpike, tripleSpike; // Hazard
+
+    // Objects
+    private GameScript gameScript;
     private Transform last; // Last floor spawned
+    [SerializeField] private GameObject floor; // Floor prefab
+    [SerializeField] private GameObject cell; // 1x1 cell prefab
+    [SerializeField] private GameObject singleSpike, doubleSpike, tripleSpike; // Hazards
+    
+    // Variables
+    private int spikeCoolDown = 2;
     private const int floorLength = 25;
     private const int floorHeight = 1;
     private const float Y = 0.5f;
     private const int leftEdge = -1; // 0 - 1 padding
     private const int rightEdge = 17; // 16 + 1 padding
-    private GameScript gameScript;
-    private int spikeCoolDown = 2;
 
     // Function to spawn floors
     void SpawnFloor(float X = 8f, bool first = true) {
         last = Instantiate(floor, new Vector3(X, Y, 0), Quaternion.identity, transform).transform;
-        
 
         // Fills floor with cell prefabs
         for (int x = 0; x < floorLength; x++) {
             for (int y = 0; y < floorHeight; y++) {
-                Vector3 cellPosition = new Vector3(x - floorLength / 2, y, 0);
+                Vector3 cellPosition = new Vector3(x - floorLength / 2, y, 0); // (floorLength / 2) is floor center
                 GameObject cellPrefab = Instantiate(cell, cellPosition, Quaternion.identity, last);
                 cellPrefab.transform.localPosition = cellPosition; // Local to last
             }
 
-            // should be more rigorous later
-            if (first) continue;
+            // =-=-=Spike Generation=-=-=
+            if (first || (gameScript.spotLightScore - gameScript.currentScore > 0 && gameScript.spotLightScore - gameScript.currentScore < 20)) continue; // skips spawning spikes
             if (spikeCoolDown == 2) {
                 // Randomly spawns spikes
                 if (Random.value <= gameScript.spikeChance) {
                     Vector3 spikePosition = new Vector3(x - 0.5f - floorLength / 2, floorHeight, 0);
                     float randomSpike = Random.value;
                     GameObject spikePrefab;
-                    if (randomSpike <= 1f/3f) {
+                    if (randomSpike <= 1f/2f) {
                         spikePrefab = Instantiate(singleSpike, spikePosition, Quaternion.identity, last);
                         spikeCoolDown = 0;
                         spikePrefab.transform.localPosition = spikePosition;
                     }
-                    else if (randomSpike <= 2f/3f && x < floorLength - 1) {
+                    else if (randomSpike <= 5f/6f) {
+                        if (x >= floorLength - 1) continue;
                         spikePrefab = Instantiate(doubleSpike, spikePosition, Quaternion.identity, last);
                         spikeCoolDown = -1;
                         spikePrefab.transform.localPosition = spikePosition;
@@ -57,9 +61,13 @@ public class FloorSpawnerScript : MonoBehaviour {
         }
     }
 
+    // Awake is called before the game starts; used to initialize object references
+    void Awake() {
+        gameScript = FindObjectOfType<GameScript>();
+    }
+
     // Start is called before the first frame update
     void Start() {
-        gameScript = FindObjectOfType<GameScript>();
         SpawnFloor();
     }
 

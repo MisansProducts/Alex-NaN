@@ -9,8 +9,6 @@ TagManager:
   - Light
   - Battery
   - BatteryPrompt
-  - BatteryBG
-  - BatteryBorder
   layers:
   - Default
   - TransparentFX

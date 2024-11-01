@@ -2,29 +2,61 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
-using Unity.VisualScripting;
 
 public class GameScript : MonoBehaviour {
-    public GameObject player;
-    public GameObject floorSpawner;
-    public Light2D spotLight;
-    public GameObject batteryBar;
-    public GameObject batteryBackground;
-    public GameObject batteryBorder;
-    public GameObject batteryPromptText;
-    [SerializeField] public float gameSpeed = 5f;
-    [SerializeField] public float spikeChance = 0.2f;
-    public int currentScore = 0;
-    public int highScore = 0;
-    private const float spotLightScore = 200f; // Score in which mode 2 is activated
-    public float spotLightTime = 0f;
-    public float battery = 1f;
-    public const float batteryTime = 33f;
-    [SerializeField] public bool mode2 = false;
-
     // UI Text references
-    public TextMeshProUGUI currentScoreText;
-    public TextMeshProUGUI highScoreText;
+    [SerializeField] private TextMeshProUGUI currentScoreText;
+    [SerializeField] private TextMeshProUGUI highScoreText;
+    [SerializeField] public TextMeshProUGUI flashPromptText;
+
+    // Game Objects
+    [SerializeField] private GameObject player;
+    [SerializeField] private GameObject floorSpawner;
+    [SerializeField] private GameObject batteryBar;
+    [SerializeField] private Image batteryBarFill;
+    [SerializeField] public Light2D spotLight;
+
+    // Game Variables
+    [SerializeField] public int currentScore;
+    [SerializeField] private int highScore;
+    [SerializeField] public float spotLightScore; // Score in which mode 2 is activated
+    [SerializeField] public float gameSpeed;
+    [SerializeField] public float spikeChance;
+    [HideInInspector] public float spotLightTime = 0f; // Time until spotlight is deactivated
+    [HideInInspector] public float battery = 1f;
+    [HideInInspector] public const float batteryTime = 33f; // Time until entire battery is depleted
+    [HideInInspector] public bool mode2 = false;
+    private float previousGameSpeed;
+    private const float playerX = 1.5f;
+    private const float playerY = 1.5f;
+
+    private void StartGame() {
+        Mode2(2);
+        Instantiate(player, new Vector3(playerX, playerY, 0), Quaternion.identity, transform);
+        Instantiate(floorSpawner, new Vector3(0, 0, 0), Quaternion.identity, transform);
+    }
+
+    public void Mode2(int activate) {
+        switch (activate) {
+            case 0: // First activated
+                gameSpeed = 0f;
+                mode2 = true;
+                battery = 1f;
+                batteryBarFill.fillAmount = battery;
+                batteryBar.SetActive(true);
+                flashPromptText.gameObject.SetActive(true);
+                break;
+            case 1: // Fully activated
+                gameSpeed = previousGameSpeed;
+                flashPromptText.gameObject.SetActive(false);
+                break;
+            case 2: // Deactivated
+                mode2 = false;
+                batteryBar.SetActive(false);
+                flashPromptText.gameObject.SetActive(false);
+                break;
+        }
+    }
 
     public void UpdateScore() {
         currentScore++;
@@ -33,14 +65,7 @@ public class GameScript : MonoBehaviour {
         highScoreText.text = "Hi-Score: " + highScore.ToString();
         if (!mode2) {
             spotLight.intensity = Mathf.Lerp(1f, 0f, currentScore / spotLightScore);
-            if (currentScore >= spotLightScore) {
-                gameSpeed = 0f;
-                mode2 = true;
-                batteryBackground.SetActive(true);
-                batteryBar.SetActive(true);
-                batteryBorder.SetActive(true);
-                batteryPromptText.SetActive(true);
-            }
+            if (currentScore >= spotLightScore) Mode2(0);
         }
     }
 
@@ -49,36 +74,16 @@ public class GameScript : MonoBehaviour {
         foreach (Transform child in transform) {
             Destroy(child.gameObject);
         }
-        gameSpeed = 5f;
+        gameSpeed = previousGameSpeed;
         currentScore = 0;
         spotLight.intensity = 1f;
         spotLightTime = 0f;
-        battery = 1f;
-        mode2 = false;
-
-        batteryBackground.SetActive(false);
-        batteryBar.SetActive(false);
-        batteryBorder.SetActive(false);
-        batteryPromptText.SetActive(false);
-
-        Instantiate(player, new Vector3(1.5f, 1.5f, 0), Quaternion.identity, transform);
-        Instantiate(floorSpawner, new Vector3(0, 0, 0), Quaternion.identity, transform);
+        StartGame();
     }
 
-    // Start is called before the first frame update
     void Start() {
-        spotLight = GameObject.FindGameObjectWithTag("Light").GetComponent<Light2D>();
-        batteryBar = GameObject.FindGameObjectWithTag("Battery");
-        batteryBackground = GameObject.FindGameObjectWithTag("BatteryBG");
-        batteryBorder = GameObject.FindGameObjectWithTag("BatteryBorder");
-        batteryPromptText = GameObject.FindGameObjectWithTag("BatteryPrompt");
-        Instantiate(player, new Vector3(1.5f, 1.5f, 0), Quaternion.identity, transform);
-        Instantiate(floorSpawner, new Vector3(0, 0, 0), Quaternion.identity, transform);
-        
-        batteryBackground.SetActive(false);
-        batteryBar.SetActive(false);
-        batteryBorder.SetActive(false);
-        batteryPromptText.SetActive(false);
+        previousGameSpeed = gameSpeed;
+        StartGame();
     }
 
     void Update() {
@@ -86,7 +91,7 @@ public class GameScript : MonoBehaviour {
             spotLightTime = Mathf.Clamp01(spotLightTime + Time.deltaTime / 10f);
             spotLight.intensity = Mathf.SmoothStep(1f, 0f, spotLightTime);
             battery = Mathf.Clamp01(battery + Time.deltaTime / batteryTime);
-            batteryBar.GetComponent<Image>().fillAmount = battery;
+            batteryBarFill.fillAmount = battery;
         }
     }
 }

@@ -1,26 +1,28 @@
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour {
-    [SerializeField] public float jumpForce; // Base jump force
-    [SerializeField] public float jumpHoldMultiplier; // Multiplier to extend jump height
-    [SerializeField] public float maxJumpTime; // Max time the jump can be held
-
+    // Objects
     private GameScript gameScript;
+    private Rigidbody2D rb;
+    private Animator animator;
     private LayerMask groundLayer; // Layer mask for ground detection
     private Transform landingPos;
-    private Rigidbody2D rb;
+
+    // Variables
+    [SerializeField] private float jumpForce; // Base jump force
+    [SerializeField] private float jumpHoldMultiplier; // Multiplier to extend jump height
+    [SerializeField] private float maxJumpTime; // Max time the jump can be held
+    private float jumpTimeCounter;
     private bool isGrounded;
     private bool isJumping;
-    private float jumpTimeCounter;
     private const float groundDistance = 0.2f;
-    private Animator animator;
 
     void Awake() {
         gameScript = FindObjectOfType<GameScript>();
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         groundLayer = 1 << LayerMask.NameToLayer("Floor");
         landingPos = transform.Find("feet");
-        animator = GetComponent<Animator>();
     }
 
     void OnCollisionEnter2D(Collision2D collision) {
@@ -60,8 +62,7 @@ public class PlayerScript : MonoBehaviour {
         }
         
         if (gameScript.mode2 && Input.GetKeyDown(KeyCode.F) && gameScript.battery >= 1f / 3f) {
-            gameScript.batteryPromptText.SetActive(false); // need better solution later
-            gameScript.gameSpeed = 5f; // need better solution later
+            gameScript.Mode2(1);
             gameScript.spotLightTime = 0;
             gameScript.spotLight.intensity = 1f;
             gameScript.battery -= 1f / 3f;
