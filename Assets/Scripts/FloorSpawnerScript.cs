@@ -9,7 +9,7 @@ public class FloorSpawnerScript : MonoBehaviour {
     private const int floorHeight = 1;
     private const float Y = 0.5f;
     private const int leftEdge = -1; // 0 - 1 padding
-    private const int rightEdge = 17; // 16 + 1 padding
+    private const int rightEdge = 22; // 21 + 1 padding
     private GameScript gameScript;
     private int spikeCoolDown = 2;
 
@@ -34,12 +34,12 @@ public class FloorSpawnerScript : MonoBehaviour {
                     Vector3 spikePosition = new Vector3(x - 0.5f - floorLength / 2, floorHeight, 0);
                     float randomSpike = Random.value;
                     GameObject spikePrefab;
-                    if (randomSpike <= 1f/3f) {
+                    if (randomSpike <= 0.5f) {
                         spikePrefab = Instantiate(singleSpike, spikePosition, Quaternion.identity, last);
                         spikeCoolDown = 0;
                         spikePrefab.transform.localPosition = spikePosition;
                     }
-                    else if (randomSpike <= 2f/3f && x < floorLength - 1) {
+                    else if (randomSpike <= 5f/6f && x < floorLength - 1) {
                         spikePrefab = Instantiate(doubleSpike, spikePosition, Quaternion.identity, last);
                         spikeCoolDown = -1;
                         spikePrefab.transform.localPosition = spikePosition;
