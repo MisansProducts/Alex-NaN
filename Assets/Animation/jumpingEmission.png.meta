@@ -1,12 +1,12 @@
 fileFormatVersion: 2
-guid: e5f19146eabdecd42843531b572ff2bc
+guid: b44751947ea14984b969b887bccce632
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 0
+    enableMipMap: 1
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -52,9 +52,9 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 1
+  alphaIsTransparency: 0
   spriteTessellationDetail: -1
-  textureType: 8
+  textureType: 0
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: alexoid_jump_0
+      name: bloom_jump_0
       rect:
         serializedVersion: 2
         x: 0
@@ -105,20 +105,20 @@ TextureImporter:
         width: 96
         height: 96
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a57f95269603200478060ddc20d8138e
-      internalID: 81041754
+      spriteID: 01107a9860bf22048b4c1513b07b6346
+      internalID: 1510234149
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: alexoid_jump_1
+      name: bloom_jump_1
       rect:
         serializedVersion: 2
         x: 0
@@ -126,20 +126,20 @@ TextureImporter:
         width: 96
         height: 96
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 49b178ed42bc8594eab5ed82ce945de7
-      internalID: -988940838
+      spriteID: 6542918e5fd353e40acd6b3c89bf929d
+      internalID: 467652955
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: alexoid_jump_2
+      name: bloom_jump_2
       rect:
         serializedVersion: 2
         x: 0
@@ -147,20 +147,20 @@ TextureImporter:
         width: 96
         height: 96
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 74b407697fccd8142a9257726a4dcd32
-      internalID: 1516727392
+      spriteID: 75cad4139fd368e44a61d778f05d8b4a
+      internalID: -1000905223
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: alexoid_jump_3
+      name: bloom_jump_3
       rect:
         serializedVersion: 2
         x: 0
@@ -168,20 +168,20 @@ TextureImporter:
         width: 96
         height: 96
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e5d118c61e8bf904a8d33c3caebc73b0
-      internalID: 2000191319
+      spriteID: 79f1c18286ca50a4ea2d4714bd597f12
+      internalID: 1977670382
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: alexoid_jump_4
+      name: bloom_jump_4
       rect:
         serializedVersion: 2
         x: 0
@@ -189,14 +189,14 @@ TextureImporter:
         width: 96
         height: 96
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e39a1151cd8acbd44894938ee1bacb1c
-      internalID: -48009312
+      spriteID: 5454a394960e8a34f91c763bf3cc6e25
+      internalID: -1360243372
       vertices: []
       indices: 
       edges: []
@@ -210,15 +210,13 @@ TextureImporter:
     indices: 
     edges: []
     weights: []
-    secondaryTextures:
-    - texture: {fileID: 2800000, guid: b44751947ea14984b969b887bccce632, type: 3}
-      name: _Emission
+    secondaryTextures: []
     nameFileIdTable:
-      alexoid_jump_0: 81041754
-      alexoid_jump_1: -988940838
-      alexoid_jump_2: 1516727392
-      alexoid_jump_3: 2000191319
-      alexoid_jump_4: -48009312
+      bloom_jump_0: 1510234149
+      bloom_jump_1: 467652955
+      bloom_jump_2: -1000905223
+      bloom_jump_3: 1977670382
+      bloom_jump_4: -1360243372
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

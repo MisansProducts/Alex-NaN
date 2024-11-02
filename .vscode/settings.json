@@ -56,7 +56,7 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Alex NaN.sln",
+    "dotnet.defaultSolution": "Alex-NaN.sln",
     "cSpell.words": [
         "Behaviour"
     ]
