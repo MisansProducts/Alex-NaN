@@ -317,7 +317,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpForce: 8
   jumpHoldMultiplier: 1.4
-  maxJumpTime: 0.285
+  maxJumpTime: 0.3
+  maxJumps: 1
 --- !u!95 &6580576925827412363
 Animator:
   serializedVersion: 5

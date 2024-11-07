@@ -13,7 +13,10 @@ public class FloorSpawnerScript : MonoBehaviour {
     private int spikeCoolDown = 2;
     private const int floorLength = 25;
     private const int floorHeight = 1;
+    private const int platformLength = 3;
+    private const int platformHeight = 1;
     private const float Y = 0.5f;
+    private const float platformY = 2.5f;
     private const int leftEdge = -1; // 0 - 1 padding
     private const int rightEdge = 17; // 16 + 1 padding
 
@@ -61,6 +64,20 @@ public class FloorSpawnerScript : MonoBehaviour {
         }
     }
 
+    // Function to spawn floating platforms
+    void spawnPlatForm(float platX = 3f, bool first = true) {
+        last = Instantiate(floor, new Vector3(platX, platformY, 0), Quaternion.identity, transform).transform;
+
+        // Fills floor with cell prefabs
+        for (int x = 0; x < platformLength; x++) {
+            for (int y = 0; y < platformHeight; y++) {
+                Vector3 cellPosition = new Vector3(x - platformLength / 2, y, 0); // (Length / 2) is floor center
+                GameObject cellPrefab = Instantiate(cell, cellPosition, Quaternion.identity, last);
+                cellPrefab.transform.localPosition = cellPosition; // Local to last
+            }
+        }
+    }
+
     // Awake is called before the game starts; used to initialize object references
     void Awake() {
         gameScript = FindObjectOfType<GameScript>();
@@ -82,7 +99,9 @@ public class FloorSpawnerScript : MonoBehaviour {
             Destroy(child.gameObject);
         }
 
-        if (last.position.x + floorLength / 2 < rightEdge)
-        SpawnFloor(last.position.x + floorLength, false);
+        if (last.position.x + floorLength / 2 < rightEdge){
+            SpawnFloor(last.position.x + floorLength, false);
+            spawnPlatForm(last.position.x + platformLength, false);
+        }
     }
 }
