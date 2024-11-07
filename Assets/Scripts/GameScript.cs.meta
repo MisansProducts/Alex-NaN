@@ -4,8 +4,15 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
+  - currentScoreText: {instanceID: 0}
+  - highScoreText: {instanceID: 0}
+  - flashPromptText: {instanceID: 0}
   - player: {fileID: 6761773257209038236, guid: 1f9ce0a38cc4d194eb4a4e01bfe3fdca, type: 3}
   - floorSpawner: {fileID: 8905549088608031209, guid: 837f116488d32644cb3025e7fd6e67bc, type: 3}
+  - platformSpawner: {fileID: 8905549088608031209, guid: 64e1cbc5c92613e459e5e929a8ba0181, type: 3}
+  - batteryBar: {instanceID: 0}
+  - batteryBarFill: {instanceID: 0}
+  - spotLight: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

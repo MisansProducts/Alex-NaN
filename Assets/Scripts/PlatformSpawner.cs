@@ -1,36 +1,37 @@
 using UnityEngine;
 
-public class FloorSpawnerScript : MonoBehaviour {
+public class platformSpawnerScript : MonoBehaviour {
 
     // Objects
     private GameScript gameScript;
     private Transform last; // Last floor spawned
-    [SerializeField] private GameObject floor; // Floor prefab
+    [SerializeField] private GameObject platform; // Floor prefab
 
     [SerializeField] private GameObject cell; // 1x1 cell prefab
     [SerializeField] private GameObject singleSpike, doubleSpike, tripleSpike; // Hazards
     
     // Variables
     private int spikeCoolDown = 2;
-    private const int floorLength = 25;
-    private const int floorHeight = 1;
+    private const int platLength = 25;
+    private const int platHeight = 3;
     private const float Y = 0.5f;
     private const int leftEdge = -1; // 0 - 1 padding
     private const int rightEdge = 17; // 16 + 1 padding
 
     // Function to spawn floors
-    void SpawnFloor(float X = 8f, bool first = true) {
-        last = Instantiate(floor, new Vector3(X, Y, 0), Quaternion.identity, transform).transform;
+    void SpawnPlatform(float X = 8f, bool first = true) {
+         Debug.Log("Spawn platform");
+        last = Instantiate(platform, new Vector3(X, Y, 0), Quaternion.identity, transform).transform;
 
         // Fills floor with cell prefabs
         // 21 to 30
         // create object ? for platform : ternary
-        for (int x = 0; x < floorLength; x++) {
-            for (int y = 0; y < floorHeight; y++) {
-                Vector3 cellPosition = new Vector3(x - floorLength / 2, y, 0); // (floorLength / 2) is floor center
+        for (int x = 0; x < platLength; x++) {
+            Debug.Log("Spawn platform x");
+                Vector3 cellPosition = new Vector3(x - platLength / 2, platHeight, 0); // (floorLength / 2) is floor center
                 GameObject cellPrefab = Instantiate(cell, cellPosition, Quaternion.identity, last);
                 cellPrefab.transform.localPosition = cellPosition; // Local to last
-            }
+                Debug.Log("Spawn platform y");
 
 
             // =-=-=Spike Generation=-=-=
@@ -38,7 +39,7 @@ public class FloorSpawnerScript : MonoBehaviour {
             if (spikeCoolDown == 2) {
                 // Randomly spawns spikes
                 if (Random.value <= gameScript.spikeChance) {
-                    Vector3 spikePosition = new Vector3(x - 0.5f - floorLength / 2, floorHeight, 0);
+                    Vector3 spikePosition = new Vector3(x - 0.5f - platLength / 2, platLength, 0);
                     float randomSpike = Random.value;
                     GameObject spikePrefab;
                     if (randomSpike <= 1f/2f) {
@@ -47,12 +48,12 @@ public class FloorSpawnerScript : MonoBehaviour {
                         spikePrefab.transform.localPosition = spikePosition;
                     }
                     else if (randomSpike <= 5f/6f) {
-                        if (x >= floorLength - 1) continue;
+                        if (x >= platLength - 1) continue;
                         spikePrefab = Instantiate(doubleSpike, spikePosition, Quaternion.identity, last);
                         spikeCoolDown = -1;
                         spikePrefab.transform.localPosition = spikePosition;
                     }
-                    else if (x < floorLength - 2) {
+                    else if (x < platLength - 2) {
                         spikePrefab = Instantiate(tripleSpike, spikePosition, Quaternion.identity, last);
                         spikeCoolDown = -2;
                         spikePrefab.transform.localPosition = spikePosition;
@@ -72,8 +73,8 @@ public class FloorSpawnerScript : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        Debug.Log("hiii");
-        SpawnFloor();
+         Debug.Log("hiii");
+        SpawnPlatform();
     }
 
     // Update is called once per frame
@@ -83,11 +84,11 @@ public class FloorSpawnerScript : MonoBehaviour {
         child.Translate(Vector3.left * gameScript.gameSpeed * Time.deltaTime);
 
         // Deletes floors outside of the playable area
-        if (child.position.x + floorLength / 2 < leftEdge)
+        if (child.position.x + platLength / 2 < leftEdge)
             Destroy(child.gameObject);
         }
 
-        if (last.position.x + floorLength / 2 < rightEdge)
-        SpawnFloor(last.position.x + floorLength, false);
+        if (last.position.x + platLength / 2 < rightEdge)
+        SpawnPlatform(last.position.x + platLength, false);
     }
 }
