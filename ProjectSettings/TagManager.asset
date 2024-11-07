@@ -46,6 +46,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: No Shadows
+  - name: sky
     uniqueID: 914990185
+    locked: 0
+  - name: mountains
+    uniqueID: 172887427
+    locked: 0
+  - name: trees
+    uniqueID: 3097775897
+    locked: 0
+  - name: player
+    uniqueID: 2193539503
     locked: 0
