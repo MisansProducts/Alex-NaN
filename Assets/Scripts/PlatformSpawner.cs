@@ -4,6 +4,7 @@ public class platformSpawnerScript : MonoBehaviour {
 
     // Objects
     private GameScript gameScript;
+    private FloorSpawnerScript floorScript;
     private Transform last; // Last floor spawned
     [SerializeField] private GameObject platform; // Floor prefab
 
@@ -12,26 +13,24 @@ public class platformSpawnerScript : MonoBehaviour {
     
     // Variables
     private int spikeCoolDown = 2;
-    private const int platLength = 25;
-    private const int platHeight = 3;
+    private int platLength = 5;
+    private int platHeight = 3;
     private const float Y = 0.5f;
     private const int leftEdge = -1; // 0 - 1 padding
     private const int rightEdge = 17; // 16 + 1 padding
 
     // Function to spawn floors
-    void SpawnPlatform(float X = 8f, bool first = true) {
-         Debug.Log("Spawn platform");
+    void SpawnPlatform(float X = 8f, bool first = true, int floorHeight = 1) {
         last = Instantiate(platform, new Vector3(X, Y, 0), Quaternion.identity, transform).transform;
+        platHeight = floorHeight + 2;
 
         // Fills floor with cell prefabs
         // 21 to 30
         // create object ? for platform : ternary
         for (int x = 0; x < platLength; x++) {
-            Debug.Log("Spawn platform x");
                 Vector3 cellPosition = new Vector3(x - platLength / 2, platHeight, 0); // (floorLength / 2) is floor center
                 GameObject cellPrefab = Instantiate(cell, cellPosition, Quaternion.identity, last);
                 cellPrefab.transform.localPosition = cellPosition; // Local to last
-                Debug.Log("Spawn platform y");
 
 
             // =-=-=Spike Generation=-=-=
@@ -69,11 +68,11 @@ public class platformSpawnerScript : MonoBehaviour {
     // Awake is called before the game starts; used to initialize object references
     void Awake() {
         gameScript = FindObjectOfType<GameScript>();
+        floorScript = FindObjectOfType<FloorSpawnerScript>();
     }
 
     // Start is called before the first frame update
     void Start() {
-         Debug.Log("hiii");
         SpawnPlatform();
     }
 
@@ -88,7 +87,13 @@ public class platformSpawnerScript : MonoBehaviour {
             Destroy(child.gameObject);
         }
 
-        if (last.position.x + platLength / 2 < rightEdge)
-        SpawnPlatform(last.position.x + platLength, false);
+        // if (last.position.x + platLength / 2 < rightEdge)
+        // SpawnPlatform(last.position.x + platLength, false);
+
+        // Random chance of spawning platforms
+        if (Random.Range(0,5) == 0) {
+            int floorHeight = floorScript.getFloorHeight();
+            SpawnPlatform(last.position.x + platLength, false, floorHeight);
+        }
     }
 }

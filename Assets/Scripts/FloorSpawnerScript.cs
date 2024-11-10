@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class FloorSpawnerScript : MonoBehaviour {
@@ -12,8 +13,9 @@ public class FloorSpawnerScript : MonoBehaviour {
     
     // Variables
     private int spikeCoolDown = 2;
+    private int elevationCoolDown = 0; 
     private const int floorLength = 25;
-    private const int floorHeight = 1;
+    private int floorHeight = 1;
     private const float Y = 0.5f;
     private const int leftEdge = -1; // 0 - 1 padding
     private const int rightEdge = 17; // 16 + 1 padding
@@ -32,6 +34,17 @@ public class FloorSpawnerScript : MonoBehaviour {
                 cellPrefab.transform.localPosition = cellPosition; // Local to last
             }
 
+            // =-=-=Elevation Manipulation=-=-=
+            if (elevationCoolDown == 10) {
+                if(Random.Range(0,1) == 0) {    // elevation has a 50% chance of changing each step after 10 steps; feel free to change
+                    floorHeight = Random.Range(1, 5);
+                    elevationCoolDown = 0;
+                    continue; // prevent spikes being spawned on edges of cliffs
+                }
+            }
+            else {
+                elevationCoolDown++;
+            }
 
             // =-=-=Spike Generation=-=-=
             if (first || (gameScript.spotLightScore - gameScript.currentScore > 0 && gameScript.spotLightScore - gameScript.currentScore < 20)) continue; // skips spawning spikes
@@ -89,5 +102,12 @@ public class FloorSpawnerScript : MonoBehaviour {
 
         if (last.position.x + floorLength / 2 < rightEdge)
         SpawnFloor(last.position.x + floorLength, false);
+    }
+
+    // returns the value of floor height 
+    // used to determine the y-value of floating platforms
+    public int getFloorHeight() {
+        int height = floorHeight;    
+        return height;
     }
 }
