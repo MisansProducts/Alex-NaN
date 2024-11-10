@@ -15,7 +15,7 @@ public class FloorSpawnerScript : MonoBehaviour {
     private int spikeCoolDown = 2;
     private int elevationCoolDown = 0; 
     private const int floorLength = 25;
-    private const int floorHeight = 1;
+    private int floorHeight = 0;
     private const int platformLength = 3;
     private const int platformHeight = 1;
     private const float Y = 0.5f;
@@ -31,11 +31,10 @@ public class FloorSpawnerScript : MonoBehaviour {
         // 21 to 30
         // create object ? for platform : ternary
         for (int x = 0; x < floorLength; x++) {
-            for (int y = 0; y < floorHeight; y++) {
-                Vector3 cellPosition = new Vector3(x - floorLength / 2, y, 0); // (floorLength / 2) is floor center
-                GameObject cellPrefab = Instantiate(cell, cellPosition, Quaternion.identity, last);
-                cellPrefab.transform.localPosition = cellPosition; // Local to last
-            }
+            Vector3 cellPosition = new Vector3(x - floorLength / 2, floorHeight, 0); // (floorLength / 2) is floor center
+            GameObject cellPrefab = Instantiate(cell, cellPosition, Quaternion.identity, last);
+            cellPrefab.transform.localPosition = cellPosition; // Local to last
+            
 
             // =-=-=Elevation Manipulation=-=-=
             if (elevationCoolDown == 10) {
@@ -102,7 +101,6 @@ public class FloorSpawnerScript : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        Debug.Log("hiii");
         SpawnFloor();
     }
 

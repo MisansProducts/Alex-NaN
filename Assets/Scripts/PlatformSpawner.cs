@@ -22,7 +22,6 @@ public class platformSpawnerScript : MonoBehaviour {
 
     // Function to spawn floors
     void SpawnPlatform(float X = 8f, bool first = true) {
-        Debug.Log("dxghk");
         last = Instantiate(platform, new Vector3(X, Y, 0), Quaternion.identity, transform).transform;
 
         // Fills floor with cell prefabs
