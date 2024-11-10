@@ -53,7 +53,7 @@ public class FloorSpawnerScript : MonoBehaviour {
             if (spikeCoolDown == 2) {
                 // Randomly spawns spikes
                 if (Random.value <= gameScript.spikeChance) {
-                    Vector3 spikePosition = new Vector3(x - 0.5f - floorLength / 2, floorHeight, 0);
+                    Vector3 spikePosition = new Vector3(x - 0.5f - floorLength / 2, floorHeight + 1, 0);
                     float randomSpike = Random.value;
                     GameObject spikePrefab;
                     if (randomSpike <= 1f/2f) {
@@ -117,7 +117,7 @@ public class FloorSpawnerScript : MonoBehaviour {
 
         if (last.position.x + floorLength / 2 < rightEdge){
             SpawnFloor(last.position.x + floorLength, false);
-            spawnPlatForm(last.position.x + platformLength, false);
+            //spawnPlatForm(last.position.x + platformLength, false);
         }
     }
 
