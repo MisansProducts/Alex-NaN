@@ -1,17 +1,17 @@
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour {
-    // Objects
     private GameScript gameScript;
     private Rigidbody2D rb;
     private Animator animator;
-    private LayerMask groundLayer; // Layer mask for ground detection
+    private LayerMask groundLayer; 
     private Transform landingPos;
 
-    // Variables
-    [SerializeField] private float jumpForce; // Base jump force
-    [SerializeField] private float jumpHoldMultiplier; // Multiplier to extend jump height
-    [SerializeField] private float maxJumpTime; // Max time the jump can be held
+    [SerializeField] private float jumpForce; 
+    [SerializeField] private float jumpHoldMultiplier; 
+    [SerializeField] private float maxJumpTime; 
+    [SerializeField] private int maxJumps; 
+    private int jumpCount;  
     private float jumpTimeCounter;
     private bool isGrounded;
     private bool isJumping;
@@ -28,21 +28,21 @@ public class PlayerScript : MonoBehaviour {
     void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.CompareTag("Spike")) {
             gameScript.GameOver();
-            // Destroy(gameObject);
         }
     }
 
     void Update() {
-        // Start the jump if the button is pressed and the player is grounded
-        if (Input.GetButtonDown("Jump") && isGrounded) {
+        // Start a new jump if conditions are met
+        if (Input.GetButtonDown("Jump") && (isGrounded || jumpCount < maxJumps)) {
             StartJump();
         }
 
-        // Continue the jump while holding the button and within allowed jump time
+        // Continue the jump while holding the button and within jump time
         if (Input.GetButton("Jump") && isJumping) {
             if (jumpTimeCounter > 0) {
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce * jumpHoldMultiplier);
                 jumpTimeCounter -= Time.deltaTime;
+                animator.SetBool("isJumping", true);
             }
             else {
                 isJumping = false;
@@ -72,6 +72,12 @@ public class PlayerScript : MonoBehaviour {
     void FixedUpdate() {
         // Check if the player is grounded
         isGrounded = Physics2D.OverlapCircle(landingPos.position, groundDistance, groundLayer);
+        
+        // Reset jump count when grounded
+        if (isGrounded) {
+            jumpCount = 0;
+            animator.SetBool("isJumping", false);
+        }
     }
     
     private void StartJump() {
@@ -79,5 +85,8 @@ public class PlayerScript : MonoBehaviour {
         jumpTimeCounter = maxJumpTime;
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         animator.SetBool("isJumping", true);
+
+        // Increment jump count on every new jump initiation
+        jumpCount++;
     }
 }

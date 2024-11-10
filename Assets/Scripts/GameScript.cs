@@ -28,7 +28,7 @@ public class GameScript : MonoBehaviour {
     [HideInInspector] public const float batteryTime = 33f; // Time until entire battery is depleted
     [HideInInspector] public bool mode2 = false;
     private float previousGameSpeed;
-    private const float playerX = 1.5f;
+    private const float playerX = 3f;
     private const float playerY = 1.5f;
 
     private void StartGame() {
