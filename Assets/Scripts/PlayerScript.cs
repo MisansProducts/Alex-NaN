@@ -16,6 +16,7 @@ public class PlayerScript : MonoBehaviour {
     private bool isGrounded;
     private bool isJumping;
     private const float groundDistance = 0.2f;
+    private  float spawnX;
 
     void Awake() {
         gameScript = FindObjectOfType<GameScript>();
@@ -23,6 +24,7 @@ public class PlayerScript : MonoBehaviour {
         animator = GetComponent<Animator>();
         groundLayer = 1 << LayerMask.NameToLayer("Floor");
         landingPos = transform.Find("feet");
+        spawnX = transform.position.x;
     }
 
     void OnCollisionEnter2D(Collision2D collision) {
@@ -66,6 +68,11 @@ public class PlayerScript : MonoBehaviour {
             gameScript.spotLightTime = 0;
             gameScript.spotLight.intensity = 1f;
             gameScript.battery -= 1f / 3f;
+        }
+
+        // if X position is changed somehow, slowly move back to spawn
+        if (transform.position.x != spawnX) {
+            transform.position = Vector2.MoveTowards(transform.position, new Vector2(spawnX, transform.position.y), 0.001f);
         }
     }
 

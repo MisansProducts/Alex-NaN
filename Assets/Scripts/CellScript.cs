@@ -15,7 +15,6 @@ public class CellScript : MonoBehaviour {
             gameScript.UpdateScore();
         }
     }
-
     void Awake() {
         gameScript = FindObjectOfType<GameScript>();
         cellSprite = GetComponent<SpriteRenderer>();
