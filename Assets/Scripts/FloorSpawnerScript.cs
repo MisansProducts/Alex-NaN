@@ -82,7 +82,7 @@ public class FloorSpawnerScript : MonoBehaviour {
                 GameObject cellPrefab = Instantiate(cell, cellPosition, Quaternion.identity, last);
                 cellPrefab.transform.localPosition = cellPosition; // Local to last
                 cellPosition.y += 1f;
-                if (Random.value <= 0.3) { // another random floating point, higher for floating platforms
+                if (Random.value <= 0.1) { // another random floating point, higher for floating platforms
                     GameObject batteryPrefab = Instantiate(battery, cellPosition, Quaternion.identity, last);
                     batteryPrefab.transform.localPosition = cellPosition;
                 }

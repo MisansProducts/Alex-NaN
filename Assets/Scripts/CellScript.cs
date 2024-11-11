@@ -9,7 +9,7 @@ public class CellScript : MonoBehaviour {
     
     private void OnCollisionEnter2D(UnityEngine.Collision2D collision) {
         if (collision.gameObject.CompareTag("Player")) {
-            cellSprite.sprite = active;
+            //cellSprite.sprite = active;
             cellSprite.material = glowMaterial; // need to fix shader
 
             gameScript.UpdateScore();
