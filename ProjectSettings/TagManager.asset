@@ -6,9 +6,7 @@ TagManager:
   tags:
   - Cell
   - Spike
-  - Light
   - Battery
-  - BatteryPrompt
   layers:
   - Default
   - TransparentFX

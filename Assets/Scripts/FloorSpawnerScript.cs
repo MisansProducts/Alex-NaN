@@ -8,6 +8,7 @@ public class FloorSpawnerScript : MonoBehaviour {
     [SerializeField] private GameObject floor; // Floor prefab
     [SerializeField] private GameObject cell; // 1x1 cell prefab
     [SerializeField] private GameObject singleSpike, doubleSpike, tripleSpike; // Hazards
+    [SerializeField] private GameObject battery;
     
     // Variables
     private int spikeCoolDown = 2;
@@ -30,6 +31,12 @@ public class FloorSpawnerScript : MonoBehaviour {
                 Vector3 cellPosition = new Vector3(x - floorLength / 2, y, 0); // (floorLength / 2) is floor center
                 GameObject cellPrefab = Instantiate(cell, cellPosition, Quaternion.identity, last);
                 cellPrefab.transform.localPosition = cellPosition; // Local to last
+                cellPosition.y+= 1f;
+                if (Random.value <= 0.05) { // some random floating point idgaf
+                    GameObject batteryPrefab = Instantiate(battery, cellPosition, Quaternion.identity, last);
+                    batteryPrefab.transform.localPosition = cellPosition;
+                    spikeCoolDown = 1; // so it doesn't spawn spike on top of it
+                }
             }
 
             // =-=-=Spike Generation=-=-=
@@ -74,6 +81,11 @@ public class FloorSpawnerScript : MonoBehaviour {
                 Vector3 cellPosition = new Vector3(x - platformLength / 2, y, 0); // (Length / 2) is floor center
                 GameObject cellPrefab = Instantiate(cell, cellPosition, Quaternion.identity, last);
                 cellPrefab.transform.localPosition = cellPosition; // Local to last
+                cellPosition.y += 1f;
+                if (Random.value <= 0.3) { // another random floating point, higher for floating platforms
+                    GameObject batteryPrefab = Instantiate(battery, cellPosition, Quaternion.identity, last);
+                    batteryPrefab.transform.localPosition = cellPosition;
+                }
             }
         }
     }

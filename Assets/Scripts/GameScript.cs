@@ -13,7 +13,7 @@ public class GameScript : MonoBehaviour {
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject floorSpawner;
     [SerializeField] private GameObject batteryBar;
-    [SerializeField] private Image batteryBarFill;
+    [SerializeField] public Image batteryBarFill;
     [SerializeField] public Light2D spotLight;
 
     // Game Variables

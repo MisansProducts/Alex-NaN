@@ -31,6 +31,10 @@ public class PlayerScript : MonoBehaviour {
         if (collision.gameObject.CompareTag("Spike")) {
             gameScript.GameOver();
         }
+        if (collision.gameObject.CompareTag("Battery")) {
+            Destroy(collision.gameObject);
+            gameScript.battery += 1/12f;
+        }
     }
 
     void Update() {

@@ -49,4 +49,4 @@ MonoBehaviour:
   singleSpike: {fileID: 4835118057667436133, guid: f84eaf5487678c54c9dbac6f38f45e61, type: 3}
   doubleSpike: {fileID: 4835118057667436133, guid: b57ad77fb317d4e4d8e6550f792f7656, type: 3}
   tripleSpike: {fileID: 4835118057667436133, guid: c15c15cfef43b204e9d93a20c362e3b2, type: 3}
-  floatingPlatform: {fileID: 8486997264168092890, guid: 1360bb64a8c6c254da91e1e2c8ee327b, type: 3}
+  battery: {fileID: 5228575035561208310, guid: 144510710d0c32a4d9d670cd0e0661c3, type: 3}
