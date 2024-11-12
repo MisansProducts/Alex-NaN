@@ -36,7 +36,8 @@ public class FloorSpawnerScript : MonoBehaviour {
             GameObject cellPrefab = Instantiate(cell, cellPosition, Quaternion.identity, last);
             cellPrefab.transform.localPosition = cellPosition; // Local to last
             cellPosition.y+= 1f;
-            if (Random.value <= 0.05) { // some random floating point idgaf
+            
+            if (spikeCoolDown == 2 && Random.value <= 0.05) { // some random floating point idgaf
                 GameObject batteryPrefab = Instantiate(battery, cellPosition, Quaternion.identity, last);
                 batteryPrefab.transform.localPosition = cellPosition;
                 spikeCoolDown = 1; // so it doesn't spawn spike on top of it
