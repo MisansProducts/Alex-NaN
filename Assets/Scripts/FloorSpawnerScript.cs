@@ -1,5 +1,6 @@
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 public class FloorSpawnerScript : MonoBehaviour {
 
@@ -14,7 +15,7 @@ public class FloorSpawnerScript : MonoBehaviour {
     
     // Variables
     private int spikeCoolDown = 2;
-    private int elevationCoolDown = 0; 
+    private int elevationCoolDown = -20; 
     private const int floorLength = 25;
     private int floorHeight = 0;
     private const int platformLength = 3;
@@ -23,6 +24,10 @@ public class FloorSpawnerScript : MonoBehaviour {
     private const float platformY = 2.5f;
     private const int leftEdge = -1; // 0 - 1 padding
     private const int rightEdge = 17; // 16 + 1 padding
+    private const int holeSpawnCoolDown = 25;
+    private int lastHole = -30;
+    private const int holeLength = 4;
+    private int holeSpawn = 0;
 
     // Function to spawn floors
     void SpawnFloor(float X = 8f, bool first = true) {
@@ -32,56 +37,70 @@ public class FloorSpawnerScript : MonoBehaviour {
         // 21 to 30
         // create object ? for platform : ternary
         for (int x = 0; x < floorLength; x++) {
-            Vector3 cellPosition = new Vector3(x - floorLength / 2, floorHeight, 0); // (floorLength / 2) is floor center
-            GameObject cellPrefab = Instantiate(cell, cellPosition, Quaternion.identity, last);
-            cellPrefab.transform.localPosition = cellPosition; // Local to last
-            cellPosition.y+= 1f;
-            
-            if (spikeCoolDown == 2 && Random.value <= 0.05) { // some random floating point idgaf
-                GameObject batteryPrefab = Instantiate(battery, cellPosition, Quaternion.identity, last);
-                batteryPrefab.transform.localPosition = cellPosition;
-                spikeCoolDown = 1; // so it doesn't spawn spike on top of it
-            }
-            // =-=-=Elevation Manipulation=-=-=
-            if (elevationCoolDown == 10) {
-                if(Random.Range(0,1) == 0) {    // elevation has a 50% chance of changing each step after 10 steps; feel free to change
-                    floorHeight = Random.Range(1, 5);
-                    elevationCoolDown = 0;
-                    continue; // prevent spikes being spawned on edges of cliffs
+            // =-=-=Hole Spawning=-=-=
+            if(lastHole >= holeSpawnCoolDown) {
+                Debug.Log("Hole Spawned");
+                holeSpawn++;
+                if(holeSpawn >= holeLength) {
+                    holeSpawn = 0;
+                    lastHole = 0;
                 }
+                continue;
             }
             else {
-                elevationCoolDown++;
-            }
+                lastHole++;
 
-            // =-=-=Spike Generation=-=-=
-            if (first || (gameScript.spotLightScore - gameScript.currentScore > 0 && gameScript.spotLightScore - gameScript.currentScore < 20)) continue; // skips spawning spikes
-            if (spikeCoolDown == 2) {
-                // Randomly spawns spikes
-                if (Random.value <= gameScript.spikeChance) {
-                    Vector3 spikePosition = new Vector3(x - 0.5f - floorLength / 2, floorHeight + 1, 0);
-                    float randomSpike = Random.value;
-                    GameObject spikePrefab;
-                    if (randomSpike <= 1f/2f) {
-                        spikePrefab = Instantiate(singleSpike, spikePosition, Quaternion.identity, last);
-                        spikeCoolDown = 0;
-                        spikePrefab.transform.localPosition = spikePosition;
-                    }
-                    else if (randomSpike <= 5f/6f) {
-                        if (x >= floorLength - 1) continue;
-                        spikePrefab = Instantiate(doubleSpike, spikePosition, Quaternion.identity, last);
-                        spikeCoolDown = -1;
-                        spikePrefab.transform.localPosition = spikePosition;
-                    }
-                    else if (x < floorLength - 2) {
-                        spikePrefab = Instantiate(tripleSpike, spikePosition, Quaternion.identity, last);
-                        spikeCoolDown = -2;
-                        spikePrefab.transform.localPosition = spikePosition;
+                Vector3 cellPosition = new Vector3(x - floorLength / 2, floorHeight, 0); // (floorLength / 2) is floor center
+                GameObject cellPrefab = Instantiate(cell, cellPosition, Quaternion.identity, last);
+                cellPrefab.transform.localPosition = cellPosition; // Local to last
+                cellPosition.y+= 1f;
+                
+                if (spikeCoolDown == 2 && Random.value <= 0.05) { // some random floating point idgaf
+                    GameObject batteryPrefab = Instantiate(battery, cellPosition, Quaternion.identity, last);
+                    batteryPrefab.transform.localPosition = cellPosition;
+                    spikeCoolDown = 1; // so it doesn't spawn spike on top of it
+                }
+                // =-=-=Elevation Manipulation=-=-=
+                if (elevationCoolDown == 10) {
+                    if(Random.Range(0,1) == 0) {    // elevation has a 50% chance of changing each step after 10 steps; feel free to change
+                        floorHeight = Random.Range(1, 5);
+                        elevationCoolDown = 0;
+                        continue; // prevent spikes being spawned on edges of cliffs
+                        }
+                }
+                else {
+                    elevationCoolDown++;
+                }
+
+                // =-=-=Spike Generation=-=-=
+                if (first || (gameScript.spotLightScore - gameScript.currentScore > 0 && gameScript.spotLightScore - gameScript.currentScore < 20)) continue; // skips spawning spikes
+                if (spikeCoolDown == 2) {
+                    // Randomly spawns spikes
+                    if (Random.value <= gameScript.spikeChance) {
+                        Vector3 spikePosition = new Vector3(x - 0.5f - floorLength / 2, floorHeight + 1, 0);
+                        float randomSpike = Random.value;
+                        GameObject spikePrefab;
+                        if (randomSpike <= 1f/2f) {
+                            spikePrefab = Instantiate(singleSpike, spikePosition, Quaternion.identity, last);
+                            spikeCoolDown = 0;
+                            spikePrefab.transform.localPosition = spikePosition;
+                        }
+                        else if (randomSpike <= 5f/6f) {
+                            if (x >= floorLength - 1) continue;
+                            spikePrefab = Instantiate(doubleSpike, spikePosition, Quaternion.identity, last);
+                            spikeCoolDown = -1;
+                            spikePrefab.transform.localPosition = spikePosition;
+                        }
+                        else if (x < floorLength - 2) {
+                            spikePrefab = Instantiate(tripleSpike, spikePosition, Quaternion.identity, last);
+                            spikeCoolDown = -2;
+                            spikePrefab.transform.localPosition = spikePosition;
+                        }
                     }
                 }
-            }
-            else { // just some basic logic to make the game fair
-                spikeCoolDown++;
+                else { // just some basic logic to make the game fair
+                    spikeCoolDown++;
+                }
             }
         }
     }
