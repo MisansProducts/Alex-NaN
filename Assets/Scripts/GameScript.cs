@@ -12,6 +12,7 @@ public class GameScript : MonoBehaviour {
     // Game Objects
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject floorSpawner;
+    [SerializeField] private GameObject platformSpawner;
     [SerializeField] private GameObject batteryBar;
     [SerializeField] public Image batteryBarFill;
     [SerializeField] public Light2D spotLight;
@@ -34,6 +35,7 @@ public class GameScript : MonoBehaviour {
         Mode2(2);
         Instantiate(player, new Vector3(playerX, playerY, 0), Quaternion.identity, transform);
         Instantiate(floorSpawner, new Vector3(0, 0, 0), Quaternion.identity, transform);
+        Instantiate(platformSpawner, new Vector3(0, 0, 0), Quaternion.identity, transform);
     }
 
     public void Mode2(int activate) {
