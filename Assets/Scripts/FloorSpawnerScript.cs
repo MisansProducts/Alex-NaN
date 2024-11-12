@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Analytics;
+using UnityEngine.UIElements;
 
 public class FloorSpawnerScript : MonoBehaviour {
 
@@ -28,6 +29,7 @@ public class FloorSpawnerScript : MonoBehaviour {
     private int lastHole = -30;
     private const int holeLength = 4;
     private int holeSpawn = 0;
+    private uint forceFloor = 0;
 
     // Function to spawn floors
     void SpawnFloor(float X = 8f, bool first = true) {
@@ -38,8 +40,7 @@ public class FloorSpawnerScript : MonoBehaviour {
         // create object ? for platform : ternary
         for (int x = 0; x < floorLength; x++) {
             // =-=-=Hole Spawning=-=-=
-            if(lastHole >= holeSpawnCoolDown) {
-                Debug.Log("Hole Spawned");
+            if(lastHole >= holeSpawnCoolDown && forceFloor == 0) {
                 holeSpawn++;
                 if(holeSpawn >= holeLength) {
                     holeSpawn = 0;
@@ -48,6 +49,9 @@ public class FloorSpawnerScript : MonoBehaviour {
                 continue;
             }
             else {
+                if(forceFloor > 0) {
+                    forceFloor--;
+                }
                 lastHole++;
 
                 Vector3 cellPosition = new Vector3(x - floorLength / 2, floorHeight, 0); // (floorLength / 2) is floor center
@@ -90,11 +94,13 @@ public class FloorSpawnerScript : MonoBehaviour {
                             spikePrefab = Instantiate(doubleSpike, spikePosition, Quaternion.identity, last);
                             spikeCoolDown = -1;
                             spikePrefab.transform.localPosition = spikePosition;
+                            forceFloor = 1;
                         }
                         else if (x < floorLength - 2) {
                             spikePrefab = Instantiate(tripleSpike, spikePosition, Quaternion.identity, last);
                             spikeCoolDown = -2;
                             spikePrefab.transform.localPosition = spikePosition;
+                            forceFloor = 2;
                         }
                     }
                 }

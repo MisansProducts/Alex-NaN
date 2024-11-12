@@ -54,7 +54,7 @@ public class platformSpawnerScript : MonoBehaviour {
                             spikeCoolDown = -1;
                             spikePrefab.transform.localPosition = spikePosition;
                         }
-                        else if (x < platLength - 2) {
+                        else if (x < platLength - 3) {
                             spikePrefab = Instantiate(tripleSpike, spikePosition, Quaternion.identity, last);
                             spikeCoolDown = -2;
                             spikePrefab.transform.localPosition = spikePosition;

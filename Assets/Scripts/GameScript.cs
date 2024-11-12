@@ -23,6 +23,7 @@ public class GameScript : MonoBehaviour {
     [SerializeField] public float spotLightScore; // Score in which mode 2 is activated
     [SerializeField] public float gameSpeed;
     [SerializeField] public float spikeChance;
+    [SerializeField] public bool devMode = false; // Disables Game Over when killed
     [HideInInspector] public float spotLightTime = 0f; // Time until spotlight is deactivated
     [HideInInspector] public float battery = 1f;
     [HideInInspector] public const float batteryTime = 33f; // Time until entire battery is depleted
@@ -72,15 +73,17 @@ public class GameScript : MonoBehaviour {
     }
 
     public void GameOver() {
-        gameSpeed = 0f;
-        foreach (Transform child in transform) {
-            Destroy(child.gameObject);
+        if(devMode == false) {
+            gameSpeed = 0f;
+            foreach (Transform child in transform) {
+                Destroy(child.gameObject);
+            }
+            gameSpeed = previousGameSpeed;
+            currentScore = 0;
+            spotLight.intensity = 1f;
+            spotLightTime = 0f;
+            StartGame();
         }
-        gameSpeed = previousGameSpeed;
-        currentScore = 0;
-        spotLight.intensity = 1f;
-        spotLightTime = 0f;
-        StartGame();
     }
 
     void Start() {
