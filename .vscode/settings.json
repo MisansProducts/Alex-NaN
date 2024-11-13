@@ -58,6 +58,7 @@
     },
     "dotnet.defaultSolution": "Alex-NaN.sln",
     "cSpell.words": [
-        "Behaviour"
+        "Behaviour",
+        "Lerp"
     ]
 }

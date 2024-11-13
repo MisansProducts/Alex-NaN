@@ -34,7 +34,8 @@ public class GameScript : MonoBehaviour {
 
     private void StartGame() {
         Mode2(2);
-        Instantiate(player, new Vector3(playerX, playerY, 0), Quaternion.identity, transform);
+        //Instantiate(player, new Vector3(playerX, playerY, 0), Quaternion.identity, transform);
+        player.transform.position = new Vector3(playerX, playerY, 0);
         Instantiate(floorSpawner, new Vector3(0, 0, 0), Quaternion.identity, transform);
         Instantiate(platformSpawner, new Vector3(0, 0, 0), Quaternion.identity, transform);
     }
