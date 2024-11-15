@@ -5,7 +5,7 @@ using UnityEngine;
 public class CamTrackPlayer : MonoBehaviour
 {
     [SerializeField] private Transform player; 
-    [SerializeField] private float verticalSmoothSpeed = 0.2f;
+    [SerializeField] private float verticalSmoothSpeed = 5f;
     [SerializeField] private float upperLimit = 5f;   
     [SerializeField] private float lowerLimit = -2f;    
     [SerializeField] private float trackingThreshold = 3.5f; 
@@ -30,12 +30,10 @@ public class CamTrackPlayer : MonoBehaviour
             targetY = originalY; // Set the target Y to the camera's original Y position
         }
 
-        float smoothY = Mathf.Lerp(transform.position.y, targetY, verticalSmoothSpeed); // Smoothly move the camera's Y position towards the target Y position
-
-        float clampedY = Mathf.Clamp(smoothY, lowerLimit, upperLimit); // Clamp the Y position between the upper and lower limits
+        float clampedY = Mathf.Clamp(targetY, lowerLimit, upperLimit); // Clamp the Y position between the upper and lower limits
 
         Vector3 newPosition = new Vector3(transform.position.x, clampedY, transform.position.z); // Create a new position with the clamped Y position
 
-        transform.position = newPosition; // Set the camera's position to the new position
+        transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * verticalSmoothSpeed);
     }
 }
