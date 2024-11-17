@@ -53,4 +53,4 @@ MonoBehaviour:
   fuelPrefab: {fileID: 3714670759958023754, guid: f4e262d07854a6c4782fc506e2b857ae, type: 3}
   shieldPrefab: {fileID: 2757643699875724378, guid: 420a72e27cccf7045a4dc4c10552614b, type: 3}
   extraJumpPrefab: {fileID: 6517890473708217486, guid: 6a3216cb15230a041aeb87ba4644aa9d, type: 3}
-  powerupSpawnCooldown: 20
+  powerupSpawnCooldown: 10
