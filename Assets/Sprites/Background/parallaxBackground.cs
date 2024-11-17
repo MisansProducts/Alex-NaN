@@ -24,7 +24,7 @@ public class parallaxBackground : MonoBehaviour
         if (transform.position.x < -length)
         {
             // Move this background to the right of the other background
-            transform.position = new Vector3(otherBackground.transform.position.x + length, transform.position.y, transform.position.z);
+            transform.position = new Vector3(otherBackground.transform.position.x + length - 0.01f, transform.position.y, transform.position.z); //hardcode 0.01f to prevent flickering
         }
     }
 }

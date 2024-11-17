@@ -50,3 +50,7 @@ MonoBehaviour:
   doubleSpike: {fileID: 4835118057667436133, guid: b57ad77fb317d4e4d8e6550f792f7656, type: 3}
   tripleSpike: {fileID: 4835118057667436133, guid: c15c15cfef43b204e9d93a20c362e3b2, type: 3}
   battery: {fileID: 5228575035561208310, guid: 144510710d0c32a4d9d670cd0e0661c3, type: 3}
+  fuelPrefab: {fileID: 3714670759958023754, guid: f4e262d07854a6c4782fc506e2b857ae, type: 3}
+  shieldPrefab: {fileID: 2757643699875724378, guid: 420a72e27cccf7045a4dc4c10552614b, type: 3}
+  extraJumpPrefab: {fileID: 6517890473708217486, guid: 6a3216cb15230a041aeb87ba4644aa9d, type: 3}
+  powerupSpawnCooldown: 20

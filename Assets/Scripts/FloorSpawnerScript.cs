@@ -1,5 +1,6 @@
 using JetBrains.Annotations;
 using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.Analytics;
 using UnityEngine.UIElements;
 
@@ -7,12 +8,17 @@ public class FloorSpawnerScript : MonoBehaviour {
 
     // Objects
     private GameScript gameScript;
+    private PlayerScript playerScript;
     private Transform last; // Last floor spawned
     [SerializeField] private GameObject floor; // Floor prefab
 
     [SerializeField] private GameObject cell; // 1x1 cell prefab
     [SerializeField] private GameObject singleSpike, doubleSpike, tripleSpike; // Hazards
     [SerializeField] private GameObject battery;
+    // Add new powerup prefabs
+    [SerializeField] private GameObject fuelPrefab; // Adds maxjumptime 
+    [SerializeField] private GameObject shieldPrefab; // Adds invincibility for one hit
+    [SerializeField] private GameObject extraJumpPrefab; // Adds an extra jump
     
     // Variables
     private int spikeCoolDown = 2;
@@ -30,6 +36,10 @@ public class FloorSpawnerScript : MonoBehaviour {
     private const int holeLength = 4;
     private int holeSpawn = 0;
     private uint forceFloor = 0;
+    [SerializeField] private float powerupSpawnCooldown = 20f; // Cooldown time for spawning powerups
+    private float powerupTimer;
+    private int maxFuelCount = 3;
+    private int maxExtraJumpCount = 1;
 
     // Function to spawn floors
     void SpawnFloor(float X = 8f, bool first = true) {
@@ -130,14 +140,73 @@ public class FloorSpawnerScript : MonoBehaviour {
         }
     }
 
+    private void HandlePowerupSpawning() {
+        powerupTimer -= Time.deltaTime;
+
+        if (powerupTimer <= 0) {
+            SpawnRandomPowerup();
+            powerupTimer = powerupSpawnCooldown; // Reset the timer
+        }
+    }
+
+    private void SpawnRandomPowerup() {
+        // Find all the cells currently in the scene
+        GameObject[] cells = GameObject.FindGameObjectsWithTag("Cell");
+        if (cells.Length == 0) return; // No cells to spawn on
+
+        // Filter cells to only those to the right of the player
+        Vector3 playerPosition = FindObjectOfType<PlayerScript>().transform.position;
+        List<GameObject> validCells = new List<GameObject>();
+        foreach (GameObject cell in cells) {
+            if (cell.transform.position.x > playerPosition.x) {
+                validCells.Add(cell);
+            }
+        }
+
+        if (validCells.Count == 0) return; // No valid cells to spawn on
+
+        // Randomly choose a valid cell to spawn the powerup on
+        GameObject selectedCell = validCells[Random.Range(0, validCells.Count)];
+        Vector3 spawnPosition = selectedCell.transform.position + Vector3.up; // Spawn above the cell
+
+        // Randomly choose a powerup to spawn
+        int powerupType = Random.Range(0, 3);
+
+        GameObject powerupInstance = null;
+        switch (powerupType) {
+            case 0: // Fuel
+                if (playerScript.fuelCount < maxFuelCount) {
+                    powerupInstance = Instantiate(fuelPrefab, spawnPosition, Quaternion.identity, selectedCell.transform);
+                }
+                break;
+            case 1: // ExtraJump
+                if (playerScript.extraJumpCount < maxExtraJumpCount) {
+                    powerupInstance = Instantiate(extraJumpPrefab, spawnPosition, Quaternion.identity, selectedCell.transform);
+                }
+                break;
+            case 2: // Shield
+                powerupInstance = Instantiate(shieldPrefab, spawnPosition, Quaternion.identity, selectedCell.transform);
+                break;
+        }
+
+        if (powerupInstance != null) {
+            powerupInstance.transform.parent = selectedCell.transform; // Attach powerup to the cell
+        }
+    }
+
     // Awake is called before the game starts; used to initialize object references
     void Awake() {
         gameScript = FindObjectOfType<GameScript>();
+        GameObject playerObject = GameObject.FindWithTag("Player");
+        if (playerObject != null) {
+            playerScript = playerObject.GetComponent<PlayerScript>();
+        }
     }
 
     // Start is called before the first frame update
     void Start() {
         SpawnFloor();
+        powerupTimer = powerupSpawnCooldown;
     }
 
     // Update is called once per frame
@@ -155,6 +224,8 @@ public class FloorSpawnerScript : MonoBehaviour {
             SpawnFloor(last.position.x + floorLength, false);
             //spawnPlatForm(last.position.x + platformLength, false);
         }
+
+        HandlePowerupSpawning();
     }
 
     // returns the value of floor height 

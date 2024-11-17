@@ -8,6 +8,9 @@ TagManager:
   - Spike
   - Battery
   - UI
+  - Fuel
+  - Shield
+  - ExtraJump
   layers:
   - Default
   - TransparentFX

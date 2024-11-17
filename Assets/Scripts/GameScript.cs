@@ -73,6 +73,13 @@ public class GameScript : MonoBehaviour {
         }
     }
 
+    public void ResetPowerUps() {
+        player.GetComponent<PlayerScript>().maxJumpTime = 0.3f;
+        player.GetComponent<PlayerScript>().maxJumps = 1;
+        player.GetComponent<PlayerScript>().fuelCount = 0;
+        player.GetComponent<PlayerScript>().extraJumpCount = 0;
+    } 
+
     public void GameOver() {
         if(devMode == false) {
             gameSpeed = 0f;
@@ -83,9 +90,10 @@ public class GameScript : MonoBehaviour {
             currentScore = 0;
             spotLight.intensity = 1f;
             spotLightTime = 0f;
+            ResetPowerUps();
             StartGame();
         }
-    }
+    }  
 
     void Start() {
         previousGameSpeed = gameSpeed;
