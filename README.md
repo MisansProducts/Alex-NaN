@@ -2,7 +2,8 @@
 
 Alex NaN is a 2D endless runner game created with Unity.
 
-![RunnerDemoGif](https://github.com/user-attachments/assets/7d0a07a9-6fc7-4c00-b350-28b691ea5c02)
+![ALEXNAN_Demo3-ezgif com-resize (1)](https://github.com/user-attachments/assets/d3728524-8c68-466b-8613-ae548d0eaef8)
+
 
 ## To Do List
 
@@ -77,22 +78,22 @@ Alex NaN is a 2D endless runner game created with Unity.
 ## Alex To Do
 
 - Make batteries
-- Make camera follow player's height
+- ~~Make camera follow player's height~~
 - Anchor nanoid to alexoid
 
 ## Henry To Do
 
-- Make sprites for cells, spikes, lava, etc
+- ~~Make sprites for cells, spikes, lava, etc~~
 - ~~Make collision with walls work~~
-- Organize background layers
-- Fix background ambient lighting
-- Make upper and lower background layers (sky, space, underground, hell)
+- ~~Organize background layers~~
+- ~~Fix background ambient lighting~~
+- ~~Make upper and lower background layers (sky, space, underground, hell)~~
 
 ## Kaitlyn To Do
 
 - Make sure platforms are hollowed out
 - Pitfalls
-- Different elevation stuff
+- ~~Different elevation stuff~~
 - Make optional preset configurations (more predictable)
 - Add slopes
 
