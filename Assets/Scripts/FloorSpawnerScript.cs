@@ -22,11 +22,19 @@ public class FloorSpawnerScript : MonoBehaviour {
 
     // Function to spawn floors
     private void SpawnFloor(float X = 8f, bool first = true) {
-        print("WOW! A FLOOR!!!");
-        floorLength = Random.Range(5,15);
-        last = Instantiate(floor, new Vector3(X, Random.Range(1,5), 0), Quaternion.identity, transform).transform;
-        last.localScale = new Vector3(floorLength, 1, 1); // edits floor's scale
-        last.GetComponent<Renderer>().material.color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f); // random color for testing
+        if(first)
+        {
+            last = Instantiate(floor, new Vector3(X, Y, 0), Quaternion.identity, transform).transform;
+            last.localScale = new Vector3(40, 1, 1); // edits floor's scale
+            last.GetComponent<Renderer>().material.color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f); // random color for testing   
+        }
+        else {
+            print("WOW! A FLOOR!!!");
+            floorLength = Random.Range(5,15);
+            last = Instantiate(floor, new Vector3(X, Random.Range(1,5), 0), Quaternion.identity, transform).transform;
+            last.localScale = new Vector3(floorLength, 1, 1); // edits floor's scale
+            last.GetComponent<Renderer>().material.color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f); // random color for testing
+        }
         
     }
 
