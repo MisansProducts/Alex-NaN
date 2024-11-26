@@ -33,4 +33,9 @@ public class SettingMenu : MonoBehaviour
     {
         backgroundMusic.setVolume(sliderValue);
     }
+    public void ReturnGame()
+    {
+        //SceneManager.SetActiveScene(SceneManager.GetSceneByName("GameplayScene"));
+        SceneManager.UnloadSceneAsync("SettingMenu");
+    }
 }
