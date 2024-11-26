@@ -16,6 +16,7 @@ public class GameScript : MonoBehaviour {
     [SerializeField] private GameObject batteryBar;
     [SerializeField] public Image batteryBarFill;
     [SerializeField] public Light2D spotLight;
+    [SerializeField] private BackgroundMusic backgroundMusic;
 
     // Game Variables
     [SerializeField] public int currentScore;
@@ -33,6 +34,7 @@ public class GameScript : MonoBehaviour {
     private const float playerY = 1.5f;
 
     private void StartGame() {
+        backgroundMusic.StartGame();
         Mode2(2);
         //Instantiate(player, new Vector3(playerX, playerY, 0), Quaternion.identity, transform);
         player.transform.position = new Vector3(playerX, playerY, 0);
@@ -49,6 +51,7 @@ public class GameScript : MonoBehaviour {
                 batteryBarFill.fillAmount = battery;
                 batteryBar.SetActive(true);
                 flashPromptText.gameObject.SetActive(true);
+                backgroundMusic.switchBGM();
                 break;
             case 1: // Fully activated
                 gameSpeed = previousGameSpeed;
@@ -107,5 +110,10 @@ public class GameScript : MonoBehaviour {
             battery = Mathf.Clamp01(battery + Time.deltaTime / batteryTime);
             batteryBarFill.fillAmount = battery;
         }
+    }
+
+    void Awake()
+    {
+        backgroundMusic = FindObjectOfType<BackgroundMusic>();
     }
 }

@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 public class SettingMenu : MonoBehaviour
 {
 
+    private BackgroundMusic backgroundMusic;
+    private Slider volumeSlider;
+
+
     void Start()
     {
+        backgroundMusic = FindObjectOfType<BackgroundMusic>();
+        volumeSlider = FindObjectOfType<Slider>();
+        volumeSlider.value = backgroundMusic.getVolume();
     }
 
     public void EnableKeyboard()
@@ -23,7 +31,6 @@ public class SettingMenu : MonoBehaviour
 
     public void AdjustVolume(float sliderValue)
     {
-        AudioSource audio = (AudioSource)GameObject.FindObjectOfType(typeof(AudioSource));
-        audio.volume = sliderValue;
+        backgroundMusic.setVolume(sliderValue);
     }
 }
