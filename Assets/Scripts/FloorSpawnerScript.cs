@@ -1,7 +1,5 @@
-using JetBrains.Annotations;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Analytics;
-using UnityEngine.UIElements;
 
 public class FloorSpawnerScript : MonoBehaviour {
 
@@ -15,27 +13,33 @@ public class FloorSpawnerScript : MonoBehaviour {
     [SerializeField] private GameObject battery;
     
     // Variables
-    private int floorLength = 25;
-    private const float Y = 0.5f;
-    private const int leftEdge = -1; // 0 - 1 padding
-    private const int rightEdge = 17; // 16 + 1 padding
+    private struct FloorMeta {
+        public Transform Floor;
+        public int Length;
 
-    // Function to spawn floors
-    private void SpawnFloor(float X = 8f, bool first = true) {
-        if(first)
-        {
-            last = Instantiate(floor, new Vector3(X, Y, 0), Quaternion.identity, transform).transform;
-            last.localScale = new Vector3(40, 1, 1); // edits floor's scale
-            last.GetComponent<Renderer>().material.color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f); // random color for testing   
-        }
-        else {
-            print("WOW! A FLOOR!!!");
-            floorLength = Random.Range(5,15);
-            last = Instantiate(floor, new Vector3(X, Random.Range(1,5), 0), Quaternion.identity, transform).transform;
-            last.localScale = new Vector3(floorLength, 1, 1); // edits floor's scale
-            last.GetComponent<Renderer>().material.color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f); // random color for testing
+        public FloorMeta(Transform floor, int length) {
+            Floor = floor;
+            Length = length;
         }
         
+    }
+    private Queue<FloorMeta> floorLengths = new Queue<FloorMeta>();
+    private FloorMeta firstFloor;
+    private int lastLength = 25;
+    private const int leftEdge = -1; // 0 - 1 padding
+    private const int rightEdge = 17; // 16 + 1 padding
+    private int floorNumber = 1;
+
+    // Function to spawn floors
+    private void SpawnFloor(float X = 0f, float Y = 0f, bool first = true) {
+        print($"Floor number: {floorNumber}");
+        floorNumber++;
+        lastLength = first ? 25 : Random.Range(5, 25);
+        last = Instantiate(floor, new Vector3(X, Y, 0), Quaternion.identity, transform).transform;
+        last.localScale = new Vector3(lastLength, 1, 1); // edits floor's scale
+        last.GetComponent<Renderer>().material.color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f); // random color for testing
+
+        floorLengths.Enqueue(new FloorMeta(last, lastLength));
     }
 
     // Awake is called before the game starts; used to initialize object references
@@ -46,6 +50,7 @@ public class FloorSpawnerScript : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         SpawnFloor();
+        firstFloor = floorLengths.Dequeue();
     }
 
     // Update is called once per frame
@@ -56,19 +61,17 @@ public class FloorSpawnerScript : MonoBehaviour {
     // Same as Update() but more consistent
     void FixedUpdate() {
         // Moves floors to the left
-        foreach (Transform child in transform) {
+        foreach (Transform child in transform)
             child.Translate(Vector3.left * gameScript.gameSpeed * Time.deltaTime);
 
-            // Deletes floors outside of the playable area
-            if (child.position.x + 15 < leftEdge)
-                Destroy(child.gameObject);
-        }
-
-        //Maybe useful for a different game mode
-        //floorLength = Random.Range(5,15);
-
-        if (last.position.x + floorLength / 2 < rightEdge){
-            SpawnFloor(last.position.x + floorLength, false);
+        // Creates floors outside of the playable area
+        if (last.position.x + lastLength < rightEdge)
+            SpawnFloor(last.position.x + lastLength, Random.Range(1, 5), false);
+        
+        // Deletes floors outside of the playable area
+        if (firstFloor.Floor.position.x + firstFloor.Length < leftEdge) {
+            Destroy(firstFloor.Floor.gameObject);
+            firstFloor = floorLengths.Dequeue();
         }
     }
 }
