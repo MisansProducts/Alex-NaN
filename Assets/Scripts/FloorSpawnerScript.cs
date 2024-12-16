@@ -30,20 +30,29 @@ public class FloorSpawnerScript : MonoBehaviour {
     private int floorNumber = 1; // for debugging
     private int spikeCoolDownIt = 0; // iterator for hazard cooldown
 
-    // Function to generate hazards
-    private void GenerateHazards(float X, int Y) {
+    // Function to generate structure
+    private void GenerateStructure(float X, int Y, bool first) {
         int newLastLength = lastLength; // Local to hazard generation
+        if (first) goto cellGeneration; // skips hole gen on first floor
         // =-=-=Hole Generation=-=-=
         if (Random.value <= gameScript.holeChance) {
             newLastLength = lastLength - 3; // 3 wide holes
             last.localScale = new Vector3(newLastLength, 1, 1);
         }
-        for (int cell = 0; cell < newLastLength; cell++) {
+        // =-=-=Main Structure Generation Loop=-=-=
+        cellGeneration:
+        for (int i = 0; i < newLastLength; i++) {
+            // =-=-=Cell Generation=-=-=
+            Vector3 cellPosition = new Vector3(X + i, Y, 0);
+            GameObject cellPrefab = Instantiate(cell, cellPosition, Quaternion.identity);
+            cellPrefab.transform.SetParent(last, true);
+            cellPrefab.transform.localScale = new Vector3(1f / last.localScale.x, 1f / last.localScale.y, 1f / last.localScale.z);
+            if (first) continue; // skips hazard gen on first floor
             // =-=-=Spike Generation=-=-=
             if (spikeCoolDownIt == gameScript.spikeCoolDown) {
                 // Randomly spawns spikes
                 if (Random.value <= gameScript.spikeChance) {
-                    Vector3 spikePosition = new Vector3(X + cell, Y + 1, 0);
+                    Vector3 spikePosition = new Vector3(X + i, Y + 1, 0);
                     GameObject spikePrefab = null;
                     // Randomly chooses which type of spike to spawn
                     float randomSpike = Random.value;
@@ -53,7 +62,7 @@ public class FloorSpawnerScript : MonoBehaviour {
                         spikeCoolDownIt = 0;
                     }
                     else if (randomSpike <= gameScript.singleSpikeChance + gameScript.doubleSpikeChance) { // Double
-                        if (cell + 1 >= newLastLength) { // Fixes overhanging spikes; guaranteed singleSpike
+                        if (i + 1 >= newLastLength) { // Fixes overhanging spikes; guaranteed singleSpike
                             randomSpike -= gameScript.doubleSpikeChance;
                             goto retrySpike;
                         }
@@ -61,7 +70,7 @@ public class FloorSpawnerScript : MonoBehaviour {
                         spikeCoolDownIt = -1;
                     }
                     else if (randomSpike > gameScript.singleSpikeChance + gameScript.doubleSpikeChance) { // Triple
-                        if (cell + 2 >= newLastLength) { // Fixes overhanging spikes; tries for doubleSpike
+                        if (i + 2 >= newLastLength) { // Fixes overhanging spikes; tries for doubleSpike
                             randomSpike -= gameScript.tripleSpikeChance;
                             goto retrySpike;
                         }
@@ -86,7 +95,7 @@ public class FloorSpawnerScript : MonoBehaviour {
         last = Instantiate(floor, new Vector3(X, Y, 0), Quaternion.identity, transform).transform;
         last.localScale = new Vector3(lastLength, 1, 1); // edits floor's scale
         last.GetComponent<Renderer>().material.color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f); // random color for testing
-        if (!first) GenerateHazards(X, Y); // generates hazards
+        GenerateStructure(X, Y, first); // generates structure
         floorLengths.Enqueue(new FloorMeta(last, lastLength));
     }
 
