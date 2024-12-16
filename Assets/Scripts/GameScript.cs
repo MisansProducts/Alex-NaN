@@ -28,6 +28,7 @@ public class GameScript : MonoBehaviour {
 
     [SerializeField] public float doubleSpikeChance;
     [SerializeField] public float tripleSpikeChance;
+    [SerializeField] public float holeChance;
     [SerializeField] public bool devMode = false; // Disables Game Over when killed
     [HideInInspector] public float spotLightTime = 0f; // Time until spotlight is deactivated
     [HideInInspector] public float battery = 1f;

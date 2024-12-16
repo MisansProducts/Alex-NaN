@@ -839,6 +839,7 @@ MonoBehaviour:
   singleSpikeChance: 0.5
   doubleSpikeChance: 0.5
   tripleSpikeChance: 0.2
+  holeChance: 1
   devMode: 1
   spotLightTime: 0
   battery: 1

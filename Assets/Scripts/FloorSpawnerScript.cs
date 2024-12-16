@@ -32,7 +32,14 @@ public class FloorSpawnerScript : MonoBehaviour {
 
     // Function to generate hazards
     private void GenerateHazards(float X, int Y) {
-        for (int cell = 0; cell < lastLength; cell++) {
+        int newLastLength = lastLength; // Local to hazard generation
+        // =-=-=Hole Generation=-=-=
+        if (Random.value <= gameScript.holeChance) {
+            newLastLength = lastLength - 3; // 3 wide holes
+            last.localScale = new Vector3(newLastLength, 1, 1);
+        }
+        for (int cell = 0; cell < newLastLength; cell++) {
+            // =-=-=Spike Generation=-=-=
             if (spikeCoolDownIt == gameScript.spikeCoolDown) {
                 // Randomly spawns spikes
                 if (Random.value <= gameScript.spikeChance) {
@@ -46,7 +53,7 @@ public class FloorSpawnerScript : MonoBehaviour {
                         spikeCoolDownIt = 0;
                     }
                     else if (randomSpike <= gameScript.singleSpikeChance + gameScript.doubleSpikeChance) { // Double
-                        if (cell + 1 >= lastLength) { // Fixes overhanging spikes; guaranteed singleSpike
+                        if (cell + 1 >= newLastLength) { // Fixes overhanging spikes; guaranteed singleSpike
                             randomSpike -= gameScript.doubleSpikeChance;
                             goto retrySpike;
                         }
@@ -54,7 +61,7 @@ public class FloorSpawnerScript : MonoBehaviour {
                         spikeCoolDownIt = -1;
                     }
                     else if (randomSpike > gameScript.singleSpikeChance + gameScript.doubleSpikeChance) { // Triple
-                        if (cell + 2 >= lastLength) { // Fixes overhanging spikes; tries for doubleSpike
+                        if (cell + 2 >= newLastLength) { // Fixes overhanging spikes; tries for doubleSpike
                             randomSpike -= gameScript.tripleSpikeChance;
                             goto retrySpike;
                         }
