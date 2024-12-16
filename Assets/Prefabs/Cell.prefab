@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2404089231692185114}
   - component: {fileID: 8984118847092235878}
   - component: {fileID: -7214571285004309244}
-  - component: {fileID: 7465396596249619988}
   - component: {fileID: -8984891191770752460}
   m_Layer: 6
   m_Name: Cell
@@ -94,7 +93,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8486997264168092890}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -122,7 +121,7 @@ BoxCollider2D:
   m_Offset: {x: 0.042642117, y: 0.10431981}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     oldSize: {x: 1.1707317, y: 1.1707317}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
@@ -132,33 +131,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.0928583, y: 1.2086396}
   m_EdgeRadius: 0
---- !u!50 &7465396596249619988
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8486997264168092890}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &-8984891191770752460
 MonoBehaviour:
   m_ObjectHideFlags: 0

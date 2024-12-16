@@ -23,6 +23,13 @@ public class GameScript : MonoBehaviour {
     [SerializeField] public float spotLightScore; // Score in which mode 2 is activated
     [SerializeField] public float gameSpeed;
     [SerializeField] public float spikeChance;
+    [SerializeField] public int spikeCoolDown = 2; // At least 2 safe spaces before generating spikes
+    [SerializeField] public float singleSpikeChance;
+
+    [SerializeField] public float doubleSpikeChance;
+    [SerializeField] public float tripleSpikeChance;
+    [SerializeField] public float holeChance;
+    [SerializeField] public float powerupSpawnCooldown = 20f; // Cooldown time for spawning powerups
     [SerializeField] public bool devMode = false; // Disables Game Over when killed
     [HideInInspector] public float spotLightTime = 0f; // Time until spotlight is deactivated
     [HideInInspector] public float battery = 1f;
@@ -37,7 +44,6 @@ public class GameScript : MonoBehaviour {
         //Instantiate(player, new Vector3(playerX, playerY, 0), Quaternion.identity, transform);
         player.transform.position = new Vector3(playerX, playerY, 0);
         Instantiate(floorSpawner, new Vector3(0, 0, 0), Quaternion.identity, transform);
-        Instantiate(platformSpawner, new Vector3(0, 0, 0), Quaternion.identity, transform);
     }
 
     public void Mode2(int activate) {

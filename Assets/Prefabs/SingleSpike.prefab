@@ -118,10 +118,10 @@ PolygonCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.5, y: 0}
+  m_Offset: {x: 0.5, y: 0.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0.5}
+    pivot: {x: 0, y: 0}
     oldSize: {x: 1, y: 1}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
@@ -154,12 +154,12 @@ MonoBehaviour:
   m_SelfShadows: 0
   m_ApplyToSortingLayers: 00000000afc1be82
   m_ShapePath:
-  - {x: 0, y: -0.5, z: 0}
-  - {x: 0.5, y: 0.5, z: 0}
-  - {x: 1, y: -0.5, z: 0}
-  m_ShapePathHash: -231671881
+  - {x: 0, y: 0, z: 0}
+  - {x: 0.5, y: 1, z: 0}
+  - {x: 1, y: 0, z: 0}
+  m_ShapePathHash: -936314953
   m_Mesh: {fileID: 0}
-  m_InstanceId: 30604
+  m_InstanceId: 37308
   m_LocalBounds:
-    m_Center: {x: 0.5, y: 0, z: 0}
+    m_Center: {x: 0.5, y: 0.5, z: 0}
     m_Extent: {x: 0.5, y: 0.5, z: 0}
