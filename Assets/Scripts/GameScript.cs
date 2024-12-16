@@ -23,6 +23,11 @@ public class GameScript : MonoBehaviour {
     [SerializeField] public float spotLightScore; // Score in which mode 2 is activated
     [SerializeField] public float gameSpeed;
     [SerializeField] public float spikeChance;
+    [SerializeField] public int spikeCoolDown = 2; // At least 2 safe spaces before generating spikes
+    [SerializeField] public float singleSpikeChance;
+
+    [SerializeField] public float doubleSpikeChance;
+    [SerializeField] public float tripleSpikeChance;
     [SerializeField] public bool devMode = false; // Disables Game Over when killed
     [HideInInspector] public float spotLightTime = 0f; // Time until spotlight is deactivated
     [HideInInspector] public float battery = 1f;
