@@ -13,6 +13,7 @@ TagManager:
   - ExtraJump
   - BGM
   - SoundEffects
+  - OOB
   layers:
   - Default
   - TransparentFX

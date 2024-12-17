@@ -54,3 +54,7 @@ MonoBehaviour:
   shieldPrefab: {fileID: 2757643699875724378, guid: 420a72e27cccf7045a4dc4c10552614b, type: 3}
   extraJumpPrefab: {fileID: 6517890473708217486, guid: 6a3216cb15230a041aeb87ba4644aa9d, type: 3}
   powerupSpawnCooldown: 10
+  hazardCooldown: 2
+  singleSpikeChance: 0.5
+  doubleSpikeChance: 0.5
+  tripleSpikeChance: 0.25
