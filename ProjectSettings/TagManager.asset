@@ -11,6 +11,7 @@ TagManager:
   - Fuel
   - Shield
   - ExtraJump
+  - OOB
   layers:
   - Default
   - TransparentFX

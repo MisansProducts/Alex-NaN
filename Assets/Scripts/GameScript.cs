@@ -12,7 +12,7 @@ public class GameScript : MonoBehaviour {
     // Game Objects
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject floorSpawner;
-    [SerializeField] private GameObject platformSpawner;
+    [SerializeField] private GameObject outOfBounds;
     [SerializeField] private GameObject batteryBar;
     [SerializeField] public Image batteryBarFill;
     [SerializeField] public Light2D spotLight;
@@ -44,6 +44,10 @@ public class GameScript : MonoBehaviour {
         //Instantiate(player, new Vector3(playerX, playerY, 0), Quaternion.identity, transform);
         player.transform.position = new Vector3(playerX, playerY, 0);
         Instantiate(floorSpawner, new Vector3(0, 0, 0), Quaternion.identity, transform);
+        GameObject oob = Instantiate(outOfBounds, new Vector3(7.5f, -3.5f, 0), Quaternion.identity, transform);
+        oob.transform.localScale = new Vector3(17, 1, 1);
+        oob = Instantiate(outOfBounds, new Vector3(-1.5f, 4.5f, 0), Quaternion.Euler(0, 0, -90), transform);
+        oob.transform.localScale = new Vector3(15, 1, 1);
     }
 
     public void Mode2(int activate) {

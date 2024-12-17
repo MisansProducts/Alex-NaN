@@ -46,6 +46,8 @@ public class PlayerScript : MonoBehaviour {
                 gameScript.GameOver();
             }
         }
+        if (collision.gameObject.CompareTag("OOB"))
+            gameScript.GameOver();
     }
 
     void OnTriggerEnter2D(Collider2D other) {
