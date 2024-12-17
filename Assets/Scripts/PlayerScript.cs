@@ -56,18 +56,21 @@ public class PlayerScript : MonoBehaviour {
         if (other.gameObject.CompareTag("Battery")) {
             Destroy(other.gameObject);
             gameScript.battery += 1 / 12f;
+            collect.Play();
         }
 
         if (other.gameObject.CompareTag("Fuel")) {
             Destroy(other.gameObject);
             maxJumpTime += 0.2f;
             fuelCount++;
+            collect.Play();
         }
 
         if (other.gameObject.CompareTag("ExtraJump")) {
             Destroy(other.gameObject);
             maxJumps++;
             extraJumpCount++;
+            collect.Play();
         }
 
         if (other.gameObject.CompareTag("Shield")) {
@@ -76,8 +79,8 @@ public class PlayerScript : MonoBehaviour {
             shieldObject.SetActive(true);
             isShieldActive = true;
             Debug.Log("Shield activated");
+            collect.Play();
         }
-        collect.Play();
     }
 
     void Update() {
