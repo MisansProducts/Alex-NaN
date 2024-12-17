@@ -15,7 +15,6 @@ public class BackgroundMusic : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        DontDestroyOnLoad(gameObject);
     }
 
     public void switchBGM()

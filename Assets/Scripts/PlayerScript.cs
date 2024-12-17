@@ -8,6 +8,8 @@ public class PlayerScript : MonoBehaviour {
     private Transform landingPos;
     private float maxHeight = 11f;
 
+    [SerializeField] public AudioSource jump;
+    [SerializeField] public AudioSource collect;
     [SerializeField] private float jumpForce; 
     [SerializeField] private float jumpHoldMultiplier; 
     [SerializeField] public float maxJumpTime; 
@@ -73,12 +75,14 @@ public class PlayerScript : MonoBehaviour {
             isShieldActive = true;
             Debug.Log("Shield activated");
         }
+        collect.Play();
     }
 
     void Update() {
         // Start a new jump if conditions are met
         if (Input.GetButtonDown("Jump") && (isGrounded || jumpCount < maxJumps)) {
             StartJump();
+            jump.Play();
         }
 
         // Continue the jump while holding the button and within jump time

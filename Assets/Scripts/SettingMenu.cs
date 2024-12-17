@@ -9,14 +9,17 @@ public class SettingMenu : MonoBehaviour
 {
 
     private BackgroundMusic backgroundMusic;
-    private Slider volumeSlider;
+    private SoundEffects soundEffects;
+    [SerializeField] private Slider volumeSliderBGM;
+    [SerializeField] private Slider volumeSliderSoundEffects;
 
 
     void Start()
     {
         backgroundMusic = FindObjectOfType<BackgroundMusic>();
-        volumeSlider = FindObjectOfType<Slider>();
-        volumeSlider.value = backgroundMusic.getVolume();
+        soundEffects = FindObjectOfType<SoundEffects>();
+        volumeSliderBGM.value = backgroundMusic.getVolume();
+        volumeSliderSoundEffects.value = soundEffects.getVolume();
     }
 
     public void EnableKeyboard()
@@ -29,10 +32,16 @@ public class SettingMenu : MonoBehaviour
 
     }
 
-    public void AdjustVolume(float sliderValue)
+    public void AdjustBGMVolume(float sliderValue)
     {
         backgroundMusic.setVolume(sliderValue);
     }
+
+    public void AdjustEffectsVolume(float sliderValue)
+    {
+        soundEffects.setVolume(sliderValue);
+    }
+
     public void ReturnGame()
     {
         //SceneManager.SetActiveScene(SceneManager.GetSceneByName("GameplayScene"));

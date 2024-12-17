@@ -11,6 +11,8 @@ TagManager:
   - Fuel
   - Shield
   - ExtraJump
+  - BGM
+  - SoundEffects
   layers:
   - Default
   - TransparentFX
