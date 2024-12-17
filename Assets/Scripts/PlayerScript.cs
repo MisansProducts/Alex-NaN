@@ -8,6 +8,8 @@ public class PlayerScript : MonoBehaviour {
     private Transform landingPos;
     private float maxHeight = 11f;
 
+    [SerializeField] public AudioSource jump;
+    [SerializeField] public AudioSource collect;
     [SerializeField] private float jumpForce; 
     [SerializeField] private float jumpHoldMultiplier; 
     [SerializeField] public float maxJumpTime; 
@@ -54,18 +56,21 @@ public class PlayerScript : MonoBehaviour {
         if (other.gameObject.CompareTag("Battery")) {
             Destroy(other.gameObject);
             gameScript.battery += 1 / 12f;
+            collect.Play();
         }
 
         if (other.gameObject.CompareTag("Fuel")) {
             Destroy(other.gameObject);
             maxJumpTime += 0.2f;
             fuelCount++;
+            collect.Play();
         }
 
         if (other.gameObject.CompareTag("ExtraJump")) {
             Destroy(other.gameObject);
             maxJumps++;
             extraJumpCount++;
+            collect.Play();
         }
 
         if (other.gameObject.CompareTag("Shield")) {
@@ -74,6 +79,7 @@ public class PlayerScript : MonoBehaviour {
             shieldObject.SetActive(true);
             isShieldActive = true;
             Debug.Log("Shield activated");
+            collect.Play();
         }
     }
 
@@ -81,6 +87,7 @@ public class PlayerScript : MonoBehaviour {
         // Start a new jump if conditions are met
         if (Input.GetButtonDown("Jump") && (isGrounded || jumpCount < maxJumps)) {
             StartJump();
+            jump.Play();
         }
 
         // Continue the jump while holding the button and within jump time
