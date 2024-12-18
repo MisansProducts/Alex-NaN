@@ -106,22 +106,28 @@ public class FloorSpawnerScript : MonoBehaviour {
                 if (spikeCoolDownIt < 0) continue; // cannot spawn powerups on hazards
                 Vector3 powerupPosition = new Vector3(X + i, Y + 1, 0);
                 // Randomly choose a powerup to spawn
-                switch (Random.Range(0, 3)) {
+                switch (Random.Range(0, 4)) {
                     case 0: // Fuel
                         if (playerScript.fuelCount < maxFuelCount) {
                             CreateInstanceHelper(fuelPrefab, powerupPosition);
                             break;
                         }
-                        goto case 1;
+                        goto case 3; // skips to battery spawn
                     case 1: // ExtraJump
                         if (playerScript.extraJumpCount < maxExtraJumpCount) {
                             CreateInstanceHelper(extraJumpPrefab, powerupPosition);
                             break;
                         }
-                        goto case 2;
+                        goto case 3; // skips to battery spawn
                     case 2: // Shield
                         CreateInstanceHelper(shieldPrefab, powerupPosition);
                         break;
+                    case 3: // Battery
+                        if (gameScript.mode2) {
+                            CreateInstanceHelper(battery, powerupPosition);
+                            break;
+                        }
+                        goto case 2; // must be shield spawn if not mode 2
                 }
                 spawnRandomPowerup = false;
             }
