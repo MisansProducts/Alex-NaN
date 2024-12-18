@@ -11,6 +11,7 @@ public class GameScript : MonoBehaviour {
 
     // Game Objects
     [SerializeField] private GameObject player;
+    [SerializeField] private GameObject fog;
     [SerializeField] private GameObject floorSpawner;
     [SerializeField] private GameObject outOfBounds;
     [SerializeField] private GameObject batteryBar;
@@ -67,6 +68,7 @@ public class GameScript : MonoBehaviour {
             case 1: // Fully activated
                 gameSpeed = previousGameSpeed;
                 flashPromptText.gameObject.SetActive(false);
+                fog.GetComponent<FogScaleChanger>().enabled = true; // fog spawns
                 break;
             case 2: // Deactivated
                 mode2 = false;
@@ -92,6 +94,7 @@ public class GameScript : MonoBehaviour {
         player.GetComponent<PlayerScript>().maxJumps = 1;
         player.GetComponent<PlayerScript>().fuelCount = 0;
         player.GetComponent<PlayerScript>().extraJumpCount = 0;
+        fog.GetComponent<FogScaleChanger>().ResetFog(); //reset fog here too
     } 
 
     public void GameOver() {
@@ -101,7 +104,7 @@ public class GameScript : MonoBehaviour {
                 Destroy(child.gameObject);
             gameSpeed = previousGameSpeed;
             currentScore = 0;
-            spotLight.intensity = 1f;
+            spotLight.intensity = 1f; //change here
             spotLightTime = 0f;
             ResetPowerUps();
             StartGame();
