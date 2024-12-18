@@ -26,7 +26,6 @@ public class GameScript : MonoBehaviour {
     [SerializeField] public float spikeChance;
     [SerializeField] public int spikeCoolDown = 2; // At least 2 safe spaces before generating spikes
     [SerializeField] public float singleSpikeChance;
-
     [SerializeField] public float doubleSpikeChance;
     [SerializeField] public float tripleSpikeChance;
     [SerializeField] public float holeChance;
@@ -46,6 +45,8 @@ public class GameScript : MonoBehaviour {
         //Instantiate(player, new Vector3(playerX, playerY, 0), Quaternion.identity, transform);
         player.transform.position = new Vector3(playerX, playerY, 0);
         Instantiate(floorSpawner, new Vector3(0, 0, 0), Quaternion.identity, transform);
+
+        // Creates the out-of-bounds death walls
         GameObject oob = Instantiate(outOfBounds, new Vector3(7.5f, -3.5f, 0), Quaternion.identity, transform);
         oob.transform.localScale = new Vector3(17, 1, 1);
         oob = Instantiate(outOfBounds, new Vector3(-1.5f, 4.5f, 0), Quaternion.Euler(0, 0, -90), transform);
@@ -96,9 +97,8 @@ public class GameScript : MonoBehaviour {
     public void GameOver() {
         if(devMode == false) {
             gameSpeed = 0f;
-            foreach (Transform child in transform) {
+            foreach (Transform child in transform)
                 Destroy(child.gameObject);
-            }
             gameSpeed = previousGameSpeed;
             currentScore = 0;
             spotLight.intensity = 1f;
@@ -106,7 +106,11 @@ public class GameScript : MonoBehaviour {
             ResetPowerUps();
             StartGame();
         }
-    }  
+    }
+
+    void Awake() {
+        backgroundMusic = FindObjectOfType<BackgroundMusic>();
+    }
 
     void Start() {
         previousGameSpeed = gameSpeed;
@@ -120,10 +124,5 @@ public class GameScript : MonoBehaviour {
             battery = Mathf.Clamp01(battery + Time.deltaTime / batteryTime);
             batteryBarFill.fillAmount = battery;
         }
-    }
-
-    void Awake()
-    {
-        backgroundMusic = FindObjectOfType<BackgroundMusic>();
     }
 }
