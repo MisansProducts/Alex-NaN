@@ -10,7 +10,6 @@ public class FogScaleChanger : MonoBehaviour
 
     public float targetScale; // The scale value we're moving towards
     public Vector3 originalScale;
-    public float cooldown = 10f; // The time to wait before scaling again
 
     void Start()
     {
@@ -39,6 +38,15 @@ public class FogScaleChanger : MonoBehaviour
     public void ResetFog()
     {
         // reset the scale
+        enabled = false;
+        transform.localScale = originalScale;
+        targetScale = maxScale;
+        enabled = true;
+    }
+    public void onDeath()
+    {
+        // reset the scale
+        enabled = false;
         transform.localScale = originalScale;
         targetScale = maxScale;
     }

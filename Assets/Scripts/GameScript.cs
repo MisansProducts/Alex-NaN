@@ -64,11 +64,11 @@ public class GameScript : MonoBehaviour {
                 batteryBar.SetActive(true);
                 flashPromptText.gameObject.SetActive(true);
                 backgroundMusic.switchBGM();
+                fog.GetComponent<FogScaleChanger>().enabled = true; // fog spawns
                 break;
             case 1: // Fully activated
                 gameSpeed = previousGameSpeed;
                 flashPromptText.gameObject.SetActive(false);
-                fog.GetComponent<FogScaleChanger>().enabled = true; // fog spawns
                 break;
             case 2: // Deactivated
                 mode2 = false;
@@ -94,7 +94,8 @@ public class GameScript : MonoBehaviour {
         player.GetComponent<PlayerScript>().maxJumps = 1;
         player.GetComponent<PlayerScript>().fuelCount = 0;
         player.GetComponent<PlayerScript>().extraJumpCount = 0;
-        fog.GetComponent<FogScaleChanger>().ResetFog(); //reset fog here too
+        fog.GetComponent<FogScaleChanger>().onDeath(); //reset fog here too
+
     } 
 
     public void GameOver() {

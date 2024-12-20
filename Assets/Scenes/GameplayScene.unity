@@ -675,7 +675,6 @@ MonoBehaviour:
   maxScale: 12
   targetScale: 0
   originalScale: {x: 0, y: 0, z: 0}
-  cooldown: 10
 --- !u!1 &256070565
 GameObject:
   m_ObjectHideFlags: 0
@@ -1482,7 +1481,7 @@ MonoBehaviour:
   backgroundMusic: {fileID: 368394896}
   currentScore: 0
   highScore: 0
-  spotLightScore: 100
+  spotLightScore: 10
   gameSpeed: 5
   spikeChance: 0.5
   spikeCoolDown: 2
@@ -2407,6 +2406,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 686683075765381322, guid: 1f9ce0a38cc4d194eb4a4e01bfe3fdca, type: 3}
+      propertyPath: fog
+      value: 
+      objectReference: {fileID: 164486481}
     - target: {fileID: 686683075765381322, guid: 1f9ce0a38cc4d194eb4a4e01bfe3fdca, type: 3}
       propertyPath: jump
       value: 

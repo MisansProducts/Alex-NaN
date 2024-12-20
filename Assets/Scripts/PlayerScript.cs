@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour {
     private GameScript gameScript;
+    private FogScaleChanger fogSpawn;
     private Rigidbody2D rb;
     private Animator animator;
     private LayerMask groundLayer; 
     private Transform landingPos;
     private float maxHeight = 11f;
-
     [SerializeField] public AudioSource jump;
     [SerializeField] public AudioSource collect;
     [SerializeField] private float jumpForce; 
@@ -34,6 +34,7 @@ public class PlayerScript : MonoBehaviour {
         landingPos = transform.Find("feet");
         spawnX = transform.position.x;
         shieldObject.SetActive(false); // Initially disable the shield object
+        fogSpawn = FindObjectOfType<FogScaleChanger>();
     }
 
     void OnCollisionEnter2D(Collision2D collision) {
@@ -118,6 +119,7 @@ public class PlayerScript : MonoBehaviour {
             gameScript.spotLightTime = 0;
             gameScript.spotLight.intensity = 1f;
             gameScript.battery -= 1f / 3f;
+            fogSpawn.ResetFog();
         }
 
         // if X position is changed somehow, slowly move back to spawn
