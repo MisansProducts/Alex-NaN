@@ -57,7 +57,7 @@ public class GameScript : MonoBehaviour {
     public void Mode2(int activate) {
         switch (activate) {
             case 0: // First activated
-                gameSpeed = 0f;
+                //gameSpeed = 0f;
                 mode2 = true;
                 battery = 1f;
                 batteryBarFill.fillAmount = battery;
