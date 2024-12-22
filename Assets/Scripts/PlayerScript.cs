@@ -41,9 +41,7 @@ public class PlayerScript : MonoBehaviour {
                 // Shield is active, deactivate it after collision
                 isShieldActive = false;
                 shieldObject.SetActive(false);
-                Debug.Log("Shield absorbed the hit");
             } else {
-                Debug.Log("Killed by Spike");
                 gameScript.GameOver();
             }
         }
@@ -77,7 +75,6 @@ public class PlayerScript : MonoBehaviour {
             // Enable shield object and activate shield
             shieldObject.SetActive(true);
             isShieldActive = true;
-            Debug.Log("Shield activated");
             collect.Play();
         }
     }

@@ -10,7 +10,7 @@ public class BackgroundMusic : MonoBehaviour
     [SerializeField] private AudioClip start;
     [SerializeField] private AudioClip mode0;
     [SerializeField] private AudioClip lightMode;
-    private bool switching = false;
+    // private bool switching = false;
     private float volumeSettings;
     void Start()
     {
