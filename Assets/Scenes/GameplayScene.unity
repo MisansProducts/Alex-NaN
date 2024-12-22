@@ -1481,17 +1481,16 @@ MonoBehaviour:
   backgroundMusic: {fileID: 368394896}
   currentScore: 0
   highScore: 0
-  spotLightScore: 10
+  spotLightScore: 200
   gameSpeed: 5
-  spikeChance: 0.5
+  spikeChance: 0.3
   spikeCoolDown: 2
-  singleSpikeChance: 5
-  doubleSpikeChance: 3
+  singleSpikeChance: 3
+  doubleSpikeChance: 2
   tripleSpikeChance: 1
   holeChance: 0.3
   powerupSpawnCooldown: 15
   devMode: 0
-  spotLightTime: 0
   battery: 1
   mode2: 0
 --- !u!4 &544151774
