@@ -30,7 +30,7 @@ public class GameScript : MonoBehaviour {
     [SerializeField] public float doubleSpikeChance;
     [SerializeField] public float tripleSpikeChance;
     [SerializeField] public float holeChance;
-    [SerializeField] public float powerupSpawnCooldown = 20f; // Cooldown time for spawning powerups
+    [SerializeField] public int powerupSpawnCooldown; // Number of cells before spawning powerups
     [SerializeField] public bool devMode = false; // Disables Game Over when killed
     [HideInInspector] public float battery = 1f;
     [HideInInspector] public const float batteryTime = 33f; // Time until entire battery is depleted

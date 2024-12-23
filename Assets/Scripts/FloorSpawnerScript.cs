@@ -36,7 +36,7 @@ public class FloorSpawnerScript : MonoBehaviour {
     private int spikeCoolDownIt = 0; // iterator for hazard cooldown
     private int spikeCoolDownItPlat = 0; // hazard cooldown iterator for platforms
     private bool spawnRandomPowerup = false;
-    private float powerupTimer;
+    private int powerupTimer;
     private int maxFuelCount = 3;
     private int maxExtraJumpCount = 1;
 
@@ -112,7 +112,7 @@ public class FloorSpawnerScript : MonoBehaviour {
 
             // =-=-=Powerup Generation=-=-=
             if (spawnRandomPowerup) {
-                if ((!isPlatform && spikeCoolDownIt < 0) || (isPlatform && spikeCoolDownItPlat < 0)) continue; // cannot spawn powerups on hazards
+                if ((!isPlatform && spikeCoolDownIt < 1) || (isPlatform && spikeCoolDownItPlat < 1)) continue; // cannot spawn powerups on hazards
                 Vector3 powerupPosition = new Vector3(X + i, Y + 1, 0);
                 // Randomly choose a powerup to spawn
                 switch (Random.Range(0, 4)) {
@@ -140,14 +140,15 @@ public class FloorSpawnerScript : MonoBehaviour {
                 }
                 spawnRandomPowerup = false;
             }
+            else HandlePowerupSpawning();
         }
     }
 
     // Function to handle powerup spawning
     private void HandlePowerupSpawning() {
-        powerupTimer -= Time.deltaTime;
+        powerupTimer -= 1;
 
-        if (powerupTimer <= 0) {
+        if (powerupTimer == 0) {
             spawnRandomPowerup = true;
             powerupTimer = gameScript.powerupSpawnCooldown; // Reset the timer
         }
@@ -207,7 +208,7 @@ public class FloorSpawnerScript : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        HandlePowerupSpawning();
+
     }
 
     // Same as Update() but more consistent
