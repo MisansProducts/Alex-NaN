@@ -60,6 +60,9 @@ TagManager:
   - name: trees
     uniqueID: 3097775897
     locked: 0
+  - name: pickups
+    uniqueID: 3435962673
+    locked: 0
   - name: player
     uniqueID: 2193539503
     locked: 0

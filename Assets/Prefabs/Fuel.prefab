@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 724604276737143375}
   - component: {fileID: -6672593410469278477}
   - component: {fileID: 1386769715237553827}
+  - component: {fileID: 6665709247680246111}
   m_Layer: 0
   m_Name: Fuel
   m_TagString: Fuel
@@ -53,7 +54,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -71,9 +72,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -2101427793
+  m_SortingLayerID: -859004623
   m_SortingLayer: 4
-  m_SortingOrder: 11
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: f56a3de86f148af45b930383137d7ed1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -117,7 +118,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.47595054, y: 1.2094481}
+  m_Offset: {x: 1, y: 1.03}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -128,5 +129,35 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.326625, y: 2.6493258}
+  m_Size: {x: 1.24, y: 1.18}
   m_EdgeRadius: 0
+--- !u!114 &6665709247680246111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3714670759958023754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 00000000afc1be82
+  m_ShapePath:
+  - {x: 0.38, y: 0.44, z: 0}
+  - {x: 0.38, y: 1.62, z: 0}
+  - {x: 1.62, y: 1.62, z: 0}
+  - {x: 1.62, y: 0.44, z: 0}
+  m_ShapePathHash: -1811796173
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 35214
+  m_LocalBounds:
+    m_Center: {x: 1, y: 1.03, z: 0}
+    m_Extent: {x: 0.62, y: 0.59000003, z: 0}

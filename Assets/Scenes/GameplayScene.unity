@@ -594,7 +594,7 @@ VFXRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2101427793
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 50
 --- !u!2083052967 &164486483
 VisualEffect:
@@ -1489,7 +1489,7 @@ MonoBehaviour:
   doubleSpikeChance: 2
   tripleSpikeChance: 1
   holeChance: 0.3
-  powerupSpawnCooldown: 15
+  powerupSpawnCooldown: 5
   devMode: 0
   battery: 1
   mode2: 0
@@ -2252,7 +2252,7 @@ MonoBehaviour:
   m_Intensity: 0
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000afc1be82194fa4b8830d4e0a69a48936
+  m_ApplyToSortingLayers: 0000000069a48936830d4e0a194fa4b831a1ccccafc1be82
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -3024,7 +3024,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 0000000069a48936830d4e0a194fa4b8afc1be82
+  m_ApplyToSortingLayers: 0000000069a48936830d4e0a194fa4b8afc1be8231a1cccc
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0

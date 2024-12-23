@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1538914278911628079}
   - component: {fileID: -5704430786756971301}
   - component: {fileID: 6337823781883892256}
+  - component: {fileID: 3197817227555829916}
   m_Layer: 0
   m_Name: Shield
   m_TagString: Shield
@@ -71,9 +72,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -2101427793
+  m_SortingLayerID: -859004623
   m_SortingLayer: 4
-  m_SortingOrder: 11
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 06770e99a82251741aea3c2f8069f51e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -117,7 +118,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.5138547, y: 1.26199}
+  m_Offset: {x: 1.05, y: 1.02}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -128,5 +129,39 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.1964475, y: 2.8589704}
+  m_Size: {x: 1.11, y: 1.3}
   m_EdgeRadius: 0
+--- !u!114 &3197817227555829916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2757643699875724378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 00000000afc1be82
+  m_ShapePath:
+  - {x: 0.96, y: 0.37, z: 0}
+  - {x: 0.5, y: 0.85, z: 0}
+  - {x: 0.5, y: 1.4, z: 0}
+  - {x: 0.84, y: 1.66, z: 0}
+  - {x: 1.25, y: 1.66, z: 0}
+  - {x: 1.6, y: 1.4, z: 0}
+  - {x: 1.6, y: 0.85, z: 0}
+  - {x: 1.13, y: 0.37, z: 0}
+  m_ShapePathHash: 1796531480
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 35502
+  m_LocalBounds:
+    m_Center: {x: 1.05, y: 1.015, z: 0}
+    m_Extent: {x: 0.55, y: 0.645, z: 0}
