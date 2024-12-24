@@ -7,6 +7,8 @@ public class PlayerScript : MonoBehaviour {
     private LayerMask groundLayer; 
     private Transform landingPos;
     private float maxHeight = 11f;
+    [SerializeField] public Animator flashAnimator;
+    [SerializeField] public ParticleSystem flashParticles = default;
     [SerializeField] public AudioSource jump;
     [SerializeField] public AudioSource collect;
     [SerializeField] private float jumpForce; 
@@ -111,6 +113,8 @@ public class PlayerScript : MonoBehaviour {
 
         // MODE 2
         if (gameScript.mode2 && Input.GetKeyDown(KeyCode.F) && gameScript.battery >= GameScript.batteryDrainAmount) {
+            flashAnimator.SetTrigger("flash");
+            flashParticles.Play();
             gameScript.Flashed();
         }
 

@@ -230,6 +230,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!198 &87114201 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4087576051500270257, guid: 65be3eb378cd3564d8024404a45e969c, type: 3}
+  m_PrefabInstance: {fileID: 132096144}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &115625378
 GameObject:
   m_ObjectHideFlags: 0
@@ -378,21 +383,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5213031654236886603, guid: 65be3eb378cd3564d8024404a45e969c, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 5213031654236886603, guid: 65be3eb378cd3564d8024404a45e969c, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 8653376599689434616, guid: 65be3eb378cd3564d8024404a45e969c, type: 3}
       propertyPath: m_Name
       value: lightDriod
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 2543423307651378270, guid: 65be3eb378cd3564d8024404a45e969c, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65be3eb378cd3564d8024404a45e969c, type: 3}
@@ -1481,7 +1477,7 @@ MonoBehaviour:
   backgroundMusic: {fileID: 368394896}
   currentScore: 0
   highScore: 0
-  spotLightScore: 200
+  spotLightScore: 20
   gameSpeed: 5
   spikeChance: 0.3
   spikeCoolDown: 2
@@ -1489,7 +1485,7 @@ MonoBehaviour:
   doubleSpikeChance: 2
   tripleSpikeChance: 1
   holeChance: 0.3
-  powerupSpawnCooldown: 5
+  powerupSpawnCooldown: 20
   devMode: 0
   battery: 1
   mode2: 0
@@ -2417,6 +2413,14 @@ PrefabInstance:
       propertyPath: collect
       value: 
       objectReference: {fileID: 256070567}
+    - target: {fileID: 686683075765381322, guid: 1f9ce0a38cc4d194eb4a4e01bfe3fdca, type: 3}
+      propertyPath: flashAnimator
+      value: 
+      objectReference: {fileID: 1733760683}
+    - target: {fileID: 686683075765381322, guid: 1f9ce0a38cc4d194eb4a4e01bfe3fdca, type: 3}
+      propertyPath: flashParticles
+      value: 
+      objectReference: {fileID: 87114201}
     - target: {fileID: 6761773257209038236, guid: 1f9ce0a38cc4d194eb4a4e01bfe3fdca, type: 3}
       propertyPath: m_Name
       value: Player
@@ -4155,6 +4159,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1621732348}
   m_CullTransparentMesh: 1
+--- !u!95 &1733760683 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: -5891143927508456641, guid: 65be3eb378cd3564d8024404a45e969c, type: 3}
+  m_PrefabInstance: {fileID: 132096144}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1790588377
 GameObject:
   m_ObjectHideFlags: 0
