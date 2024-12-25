@@ -83,8 +83,8 @@ public class GameScript : MonoBehaviour {
     public void UpdateScore() {
         currentScore++;
         highScore = currentScore > highScore ? currentScore : highScore;
-        currentScoreText.text = "Score: " + currentScore.ToString();
-        highScoreText.text = "Hi-Score: " + highScore.ToString();
+        currentScoreText.text = currentScore.ToString();
+        highScoreText.text = highScore.ToString();
         if (!mode2 && currentScore >= spotLightScore) Mode2(0);
     }
 
