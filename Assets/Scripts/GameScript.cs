@@ -38,6 +38,7 @@ public class GameScript : MonoBehaviour {
     [HideInInspector] public const float batteryTime = 11f; // Time until one charge is depleted
     [HideInInspector] public const int batteryMaxCharges = 3;
     [HideInInspector] public int batteryCharges = 3;
+    [HideInInspector] public float batteryCharging = 0f;
     [HideInInspector] public bool mode2 = false;
     [HideInInspector] private FogScaleChanger fogScaleChanger;
     private const float playerX = 3f;
@@ -65,6 +66,7 @@ public class GameScript : MonoBehaviour {
                 battery = 1f;
                 batteryBarFill.fillAmount = battery;
                 batteryBarCharges.sprite = batteryBarChargesFrames[2];
+                batteryCharging = 0f;
                 batteryBar.SetActive(true);
                 flashPromptText.gameObject.SetActive(true);
                 // backgroundMusic.switchBGM(); // lags the game when switching to mode 2; need to make it seamless
@@ -124,7 +126,8 @@ public class GameScript : MonoBehaviour {
 
     void Update() {
         if (mode2) {
-            battery = Mathf.Clamp01(battery + Time.deltaTime / batteryTime);
+            battery = (batteryCharging == 0) ? Mathf.Clamp01(battery + Time.deltaTime / batteryTime) : Mathf.Clamp01(battery + 4 * (Time.deltaTime / batteryTime));
+            batteryCharging = Mathf.Clamp01(batteryCharging - Time.deltaTime);
             batteryBarFill.fillAmount = battery;
             if (battery == 1f && batteryCharges != batteryMaxCharges) {
                 batteryCharges += 1;

@@ -54,7 +54,7 @@ public class PlayerScript : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.CompareTag("Battery")) {
             Destroy(other.gameObject);
-            gameScript.battery += 1 / 12f;
+            gameScript.batteryCharging += 1f;
             collect.Play();
         }
 
