@@ -16,6 +16,8 @@ public class GameScript : MonoBehaviour {
     [SerializeField] private GameObject outOfBounds;
     [SerializeField] private GameObject batteryBar;
     [SerializeField] public Image batteryBarFill;
+    [SerializeField] public Image batteryBarCharges;
+    [SerializeField] public Sprite[] batteryBarChargesFrames;
     [SerializeField] public Light2D spotLight;
     [SerializeField] private BackgroundMusic backgroundMusic;
 
@@ -33,8 +35,9 @@ public class GameScript : MonoBehaviour {
     [SerializeField] public int powerupSpawnCooldown; // Number of cells before spawning powerups
     [SerializeField] public bool devMode = false; // Disables Game Over when killed
     [HideInInspector] public float battery = 1f;
-    [HideInInspector] public const float batteryTime = 33f; // Time until entire battery is depleted
-    [HideInInspector] public const float batteryDrainAmount = 1f / 3f;
+    [HideInInspector] public const float batteryTime = 11f; // Time until one charge is depleted
+    [HideInInspector] public const int batteryMaxCharges = 3;
+    [HideInInspector] public int batteryCharges = 3;
     [HideInInspector] public bool mode2 = false;
     [HideInInspector] private FogScaleChanger fogScaleChanger;
     private const float playerX = 3f;
@@ -58,8 +61,10 @@ public class GameScript : MonoBehaviour {
         switch (activate) {
             case 0: // First activated
                 mode2 = true;
+                batteryCharges = batteryMaxCharges;
                 battery = 1f;
                 batteryBarFill.fillAmount = battery;
+                batteryBarCharges.sprite = batteryBarChargesFrames[2];
                 batteryBar.SetActive(true);
                 flashPromptText.gameObject.SetActive(true);
                 // backgroundMusic.switchBGM(); // lags the game when switching to mode 2; need to make it seamless
@@ -75,7 +80,9 @@ public class GameScript : MonoBehaviour {
 
     // This is what happens when you press 'F'
     public void Flashed() {
-        battery -= batteryDrainAmount;
+        if (batteryCharges == batteryMaxCharges) battery = 0;
+        batteryCharges -= 1;
+        batteryBarCharges.sprite = batteryBarChargesFrames[batteryCharges]; // will at most be 2
         fogScaleChanger.ResetFog();
         flashPromptText.gameObject.SetActive(false); // need better code
     }
@@ -88,14 +95,6 @@ public class GameScript : MonoBehaviour {
         if (!mode2 && currentScore >= spotLightScore) Mode2(0);
     }
 
-    public void ResetPowerUps() {
-        player.GetComponent<PlayerScript>().maxJumpTime = 0.3f;
-        player.GetComponent<PlayerScript>().maxJumps = 1;
-        player.GetComponent<PlayerScript>().fuelCount = 0;
-        player.GetComponent<PlayerScript>().extraJumpCount = 0;
-        fogScaleChanger.onDeath(); //reset fog here too
-    } 
-
     public void GameOver() {
         if(devMode == false) {
             foreach (Transform child in transform)
@@ -104,6 +103,14 @@ public class GameScript : MonoBehaviour {
             ResetPowerUps();
             StartGame();
         }
+    }
+
+    private void ResetPowerUps() {
+        player.GetComponent<PlayerScript>().maxJumpTime = 0.3f;
+        player.GetComponent<PlayerScript>().maxJumps = 1;
+        player.GetComponent<PlayerScript>().fuelCount = 0;
+        player.GetComponent<PlayerScript>().extraJumpCount = 0;
+        fogScaleChanger.onDeath(); //reset fog here too
     }
 
     void Awake() {
@@ -119,6 +126,13 @@ public class GameScript : MonoBehaviour {
         if (mode2) {
             battery = Mathf.Clamp01(battery + Time.deltaTime / batteryTime);
             batteryBarFill.fillAmount = battery;
+            if (battery == 1f && batteryCharges != batteryMaxCharges) {
+                batteryCharges += 1;
+                if (batteryCharges < batteryMaxCharges) {
+                    battery = 0f;
+                    batteryBarCharges.sprite = batteryBarChargesFrames[batteryCharges];
+                }
+            }
         }
     }
 }

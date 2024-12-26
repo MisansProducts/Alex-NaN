@@ -112,7 +112,7 @@ public class PlayerScript : MonoBehaviour {
         }
 
         // MODE 2
-        if (gameScript.mode2 && Input.GetKeyDown(KeyCode.F) && gameScript.battery >= GameScript.batteryDrainAmount) {
+        if (gameScript.mode2 && Input.GetKeyDown(KeyCode.F) && gameScript.batteryCharges > 0) {
             flashAnimator.SetTrigger("flash");
             flashParticles.Play();
             gameScript.Flashed();
