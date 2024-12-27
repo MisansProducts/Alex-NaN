@@ -9,15 +9,19 @@ public class GameScript : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI highScoreText;
     [SerializeField] public TextMeshProUGUI flashPromptText;
 
-    // Game Objects
-    [SerializeField] private GameObject player;
-    [SerializeField] private GameObject fog;
-    [SerializeField] private GameObject floorSpawner;
-    [SerializeField] private GameObject outOfBounds;
+    // UI References
     [SerializeField] private GameObject batteryBar;
     [SerializeField] public Image batteryBarFill;
     [SerializeField] public Image batteryBarCharges;
     [SerializeField] public Sprite[] batteryBarChargesFrames;
+
+    // Game Objects
+    [SerializeField] private GameObject player;
+    [HideInInspector] private PlayerScript playerScript;
+    [SerializeField] private GameObject fog;
+    [HideInInspector] private FogScaleChanger fogScaleChanger;
+    [SerializeField] private GameObject floorSpawner;
+    [SerializeField] private GameObject outOfBounds;
     [SerializeField] public Light2D spotLight;
     [SerializeField] private BackgroundMusic backgroundMusic;
 
@@ -33,29 +37,25 @@ public class GameScript : MonoBehaviour {
     [SerializeField] public float tripleSpikeChance;
     [SerializeField] public float holeChance;
     [SerializeField] public int powerupSpawnCooldown; // Number of cells before spawning powerups
+    [SerializeField] public float batteryTime; // Time until one charge is depleted
     [SerializeField] public bool devMode = false; // Disables Game Over when killed
-    [HideInInspector] public float battery = 1f;
-    [HideInInspector] public const float batteryTime = 11f; // Time until one charge is depleted
     [HideInInspector] public const int batteryMaxCharges = 3;
+    [HideInInspector] public float battery = 1f;
     [HideInInspector] public int batteryCharges = 3;
     [HideInInspector] public float batteryCharging = 0f;
     [HideInInspector] public bool mode2 = false;
-    [HideInInspector] private FogScaleChanger fogScaleChanger;
     private const float playerX = 3f;
     private const float playerY = 1.5f;
 
     private void StartGame() {
         backgroundMusic.StartGame();
         Mode2(1);
-        //Instantiate(player, new Vector3(playerX, playerY, 0), Quaternion.identity, transform);
         player.transform.position = new Vector3(playerX, playerY, 0);
         Instantiate(floorSpawner, new Vector3(0, 0, 0), Quaternion.identity, transform);
 
         // Creates the out-of-bounds death walls
-        GameObject oob = Instantiate(outOfBounds, new Vector3(7.5f, -3.5f, 0), Quaternion.identity, transform);
-        oob.transform.localScale = new Vector3(17, 1, 1);
-        oob = Instantiate(outOfBounds, new Vector3(-1.5f, 4.5f, 0), Quaternion.Euler(0, 0, -90), transform);
-        oob.transform.localScale = new Vector3(15, 1, 1);
+        Instantiate(outOfBounds, new Vector3(7.5f, -3.5f, 0), Quaternion.identity, transform).transform.localScale = new Vector3(17, 1, 1);
+        Instantiate(outOfBounds, new Vector3(-1.5f, 4.5f, 0), Quaternion.Euler(0, 0, -90), transform).transform.localScale = new Vector3(15, 1, 1);
     }
 
     public void Mode2(int activate) {
@@ -92,32 +92,55 @@ public class GameScript : MonoBehaviour {
     public void UpdateScore() {
         currentScore++;
         highScore = currentScore > highScore ? currentScore : highScore;
+
+        // Updates current and high score UI
         currentScoreText.text = currentScore.ToString();
         highScoreText.text = highScore.ToString();
-        if (!mode2 && currentScore >= spotLightScore) Mode2(0);
+
+        // Starts mode 2
+        if (!mode2 && currentScore >= spotLightScore)
+            Mode2(0);
     }
 
     public void GameOver() {
-        if(devMode == false) {
-            foreach (Transform child in transform)
-                Destroy(child.gameObject);
-            currentScore = 0;
-            ResetPowerUps();
-            StartGame();
-        }
+        if (devMode) return; // dev mode does not end the game
+        foreach (Transform child in transform)
+            Destroy(child.gameObject);
+        currentScore = 0;
+        ResetPowerUps();
+        StartGame();
     }
 
     private void ResetPowerUps() {
-        player.GetComponent<PlayerScript>().maxJumpTime = 0.3f;
-        player.GetComponent<PlayerScript>().maxJumps = 1;
-        player.GetComponent<PlayerScript>().fuelCount = 0;
-        player.GetComponent<PlayerScript>().extraJumpCount = 0;
-        fogScaleChanger.onDeath(); //reset fog here too
+        playerScript.maxJumpTime = 0.3f;
+        playerScript.maxJumps = 1;
+        playerScript.fuelCount = 0;
+        playerScript.extraJumpCount = 0;
+        fogScaleChanger.onDeath();
+    }
+    
+    private void HandleBatteryBar() {
+        float increase = batteryCharging == 0 ? Time.deltaTime / batteryTime : 4 * Time.deltaTime / batteryTime; // Amount to increase; quadrupled for battery pickups
+        battery = Mathf.Clamp01(battery + increase); // Increases battery over time
+        batteryCharging = Mathf.Clamp01(batteryCharging - Time.deltaTime); // Disables battery powerup effect after 1 second
+        batteryBarFill.fillAmount = battery; // Updates battery bar UI
+
+        // Increases battery charges after filling the battery bar
+        if (battery == 1f && batteryCharges != batteryMaxCharges) {
+            batteryCharges += 1;
+
+            // Battery bar resets when filling a charge; prevents reset
+            if (batteryCharges < batteryMaxCharges) {
+                battery = 0f;
+                batteryBarCharges.sprite = batteryBarChargesFrames[batteryCharges];
+            }
+        }
     }
 
     void Awake() {
         backgroundMusic = FindObjectOfType<BackgroundMusic>();
         fogScaleChanger = fog.GetComponent<FogScaleChanger>();
+        playerScript = player.GetComponent<PlayerScript>();
     }
 
     void Start() {
@@ -125,17 +148,6 @@ public class GameScript : MonoBehaviour {
     }
 
     void Update() {
-        if (mode2) {
-            battery = (batteryCharging == 0) ? Mathf.Clamp01(battery + Time.deltaTime / batteryTime) : Mathf.Clamp01(battery + 4 * (Time.deltaTime / batteryTime));
-            batteryCharging = Mathf.Clamp01(batteryCharging - Time.deltaTime);
-            batteryBarFill.fillAmount = battery;
-            if (battery == 1f && batteryCharges != batteryMaxCharges) {
-                batteryCharges += 1;
-                if (batteryCharges < batteryMaxCharges) {
-                    battery = 0f;
-                    batteryBarCharges.sprite = batteryBarChargesFrames[batteryCharges];
-                }
-            }
-        }
+        if (mode2) HandleBatteryBar();
     }
 }

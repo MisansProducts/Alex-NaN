@@ -1548,10 +1548,6 @@ MonoBehaviour:
   currentScoreText: {fileID: 1276776732}
   highScoreText: {fileID: 1961970224}
   flashPromptText: {fileID: 287285158}
-  player: {fileID: 560902304}
-  fog: {fileID: 164486481}
-  floorSpawner: {fileID: 8905549088608031209, guid: 837f116488d32644cb3025e7fd6e67bc, type: 3}
-  outOfBounds: {fileID: 2139049231128064723, guid: a585d7641e44bb442812a86374207f0d, type: 3}
   batteryBar: {fileID: 1970679610}
   batteryBarFill: {fileID: 1103744025}
   batteryBarCharges: {fileID: 945439807}
@@ -1559,6 +1555,10 @@ MonoBehaviour:
   - {fileID: -876961735, guid: 0132a472e6b02f54589740f0d8d11dab, type: 3}
   - {fileID: -1721853205, guid: 0132a472e6b02f54589740f0d8d11dab, type: 3}
   - {fileID: -1181750818, guid: 0132a472e6b02f54589740f0d8d11dab, type: 3}
+  player: {fileID: 560902304}
+  fog: {fileID: 164486481}
+  floorSpawner: {fileID: 8905549088608031209, guid: 837f116488d32644cb3025e7fd6e67bc, type: 3}
+  outOfBounds: {fileID: 2139049231128064723, guid: a585d7641e44bb442812a86374207f0d, type: 3}
   spotLight: {fileID: 1305117414}
   backgroundMusic: {fileID: 368394896}
   currentScore: 0
@@ -1572,6 +1572,7 @@ MonoBehaviour:
   tripleSpikeChance: 1
   holeChance: 0.25
   powerupSpawnCooldown: 55
+  batteryTime: 11
   devMode: 0
   battery: 1
   batteryCharges: 3
