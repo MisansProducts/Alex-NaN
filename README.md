@@ -1,63 +1,47 @@
 # Alex NaN
-
 Alex NaN is a 2D endless runner game created with Unity.
 
-![ALEXNAN_Demo3-ezgif com-resize (1)](https://github.com/user-attachments/assets/d3728524-8c68-466b-8613-ae548d0eaef8)
+<img src="https://github.com/user-attachments/assets/6309457b-2e45-4662-8dca-698d4b1ea5d0" width="720">
 
+## Premise
+Two robots, Alexoid and their trusty support unit, NaNoid, are navigating through the mysterious twilight forest, where malevolent glowing triangular structures pierce the darkness like ancient monuments. The pixel-perfect night sky looms above them, painted in deep blues and purples, while an ominous moon casts an ethereal glow across the landscape.
 
-## To Do List
+As they progress through this cybernetic wilderness you (the player) must guide them to safety. You must carefully time their jumps, for one miscalculation could reset their entire journey.
 
-### Graphics
+## Features
+Here are the features that the game currently utilizes:
+- Randomly generated platforms and hazards
+- Fog that obscures vision
+  - Along with a device to hinder it 
+- Powerups and pickups
+- Parameterized difficulty properties
+- Directional lighting and shadowcasting
+- Lightweight collision detection
+- Background parallax
+- Music, sounds, and settings
+- Death
 
-#### Polish
-
-- Make things look crispier in general
-  
-#### Particles
-
-- Add a particle system
-  - Particles for player death
-  - Particles for player jump
-  - Maybe add trails for particles
-
-#### Sprites
-
-- Add a diegetic battery bar
-
-### Code
-
-- Increase readability
-
-## Alex To Do
-
-- Reimplement batteries
-- Anchor nanoid to alexoid
-- Take a look at the camera tracking
-
-## Henry To Do
-
-- Realign dirt sprite to cell (unaligned from pivot change)
-- Make the cells glow again
-  - Should use EdgeCollider2D
-
-## Kaitlyn To Do
-
-- Settings menu
-- Add platforms again
-- Pitfalls
-- Make optional preset configurations (more predictable)
-- Add slopes
+## Upcoming features
+Some of the features we wish to implement in the future include:
+- Object pooling
+- Custom shaders
+- Diagetic UI design
 
 ## Snapshots
 
-![Version 1](imgs/img1.png)
+### Version 1
+<img src="imgs/img1.png" width="720">
 
-![Version 2](imgs/img2.png)
+### Version 2
+<img src="imgs/img2.png" width="720">
 
-![Version 3](imgs/img3.png)
+### Version 3
+<img src="imgs/img3.png" width="720">
+
+### Version 4
+<img src="imgs/img4.png" width="720">
 
 ## Credits
-
 Alex Akoopie
 
 Henry Nan
