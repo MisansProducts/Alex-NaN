@@ -9,8 +9,7 @@ public class PlayerScript : MonoBehaviour {
     private float maxHeight = 11f;
     [SerializeField] public Animator flashAnimator;
     [SerializeField] public ParticleSystem flashParticles = default;
-    [SerializeField] public AudioSource jump;
-    [SerializeField] public AudioSource collect;
+    [SerializeField] public AudioSource audioManager;
     [SerializeField] private float jumpForce; 
     [SerializeField] private float jumpHoldMultiplier; 
     [SerializeField] public float maxJumpTime; 
@@ -18,6 +17,7 @@ public class PlayerScript : MonoBehaviour {
     private int jumpCount;  
     private float jumpTimeCounter;
     private bool isGrounded;
+    private bool isGroundedLock; // prevents spamming audio
     private bool isJumping;
     private const float groundDistance = 0.2f;
     private float spawnX;
@@ -43,6 +43,7 @@ public class PlayerScript : MonoBehaviour {
                 // Shield is active, deactivate it after collision
                 isShieldActive = false;
                 shieldObject.SetActive(false);
+                SoundEffects.Instance.PlaySound(SoundEffects.Instance.shieldPop);
             } else {
                 gameScript.GameOver();
             }
@@ -55,21 +56,21 @@ public class PlayerScript : MonoBehaviour {
         if (other.gameObject.CompareTag("Battery")) {
             Destroy(other.gameObject);
             gameScript.batteryCharging += 1f;
-            collect.Play();
+            SoundEffects.Instance.PlaySound(SoundEffects.Instance.pickup);
         }
 
         if (other.gameObject.CompareTag("Fuel")) {
             Destroy(other.gameObject);
             maxJumpTime += 0.2f;
             fuelCount++;
-            collect.Play();
+            SoundEffects.Instance.PlaySound(SoundEffects.Instance.pickup);
         }
 
         if (other.gameObject.CompareTag("ExtraJump")) {
             Destroy(other.gameObject);
             maxJumps++;
             extraJumpCount++;
-            collect.Play();
+            SoundEffects.Instance.PlaySound(SoundEffects.Instance.pickup);
         }
 
         if (other.gameObject.CompareTag("Shield")) {
@@ -77,15 +78,20 @@ public class PlayerScript : MonoBehaviour {
             // Enable shield object and activate shield
             shieldObject.SetActive(true);
             isShieldActive = true;
-            collect.Play();
+            SoundEffects.Instance.PlaySound(SoundEffects.Instance.pickup);
         }
+    }
+
+    void Start() {
+        isGroundedLock = false; // doesn't work; should not play when game starts
     }
 
     void Update() {
         // Start a new jump if conditions are met
         if (Input.GetButtonDown("Jump") && (isGrounded || jumpCount < maxJumps)) {
             StartJump();
-            jump.Play();
+            if (isGrounded) SoundEffects.Instance.PlaySound(SoundEffects.Instance.jumpStart);
+            else SoundEffects.Instance.PlaySound(SoundEffects.Instance.jumpMid);
         }
 
         // Continue the jump while holding the button and within jump time
@@ -98,6 +104,9 @@ public class PlayerScript : MonoBehaviour {
                 isJumping = false;
                 animator.SetBool("isJumping", false);
             }
+            // THIS DOESN'T WORK AS INTENDED
+            // Try to have jumpHold play until done then loop for as long as jump is held
+            // SoundEffects.Instance.PlaySound(SoundEffects.Instance.jumpHold);
         }
 
         // Stop the jump if the button is released
@@ -116,7 +125,9 @@ public class PlayerScript : MonoBehaviour {
             flashAnimator.SetTrigger("flash");
             flashParticles.Play();
             gameScript.Flashed();
+            SoundEffects.Instance.PlaySound(SoundEffects.Instance.flash);
         }
+        else if (gameScript.mode2 && Input.GetKeyDown(KeyCode.F)) SoundEffects.Instance.PlaySound(SoundEffects.Instance.error);
 
         // if X position is changed somehow, slowly move back to spawn
         if (transform.position.x != spawnX) {
@@ -137,7 +148,12 @@ public class PlayerScript : MonoBehaviour {
         if (isGrounded) {
             jumpCount = 0;
             animator.SetBool("isJumping", false);
+            if (isGroundedLock) {
+                isGroundedLock = false;
+                SoundEffects.Instance.PlaySound(SoundEffects.Instance.floor);
+            }
         }
+        else isGroundedLock = true;
     }
 
     private void StartJump() {

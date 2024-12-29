@@ -219,7 +219,7 @@ public class FloorSpawnerScript : MonoBehaviour {
 
         // Creates floors outside of the playable area
         if (last.position.x + lastLength < rightEdge)
-            SpawnFloor(last.position.x + lastLength, Random.Range(1, lastValidY), false);
+            SpawnFloor(last.position.x + lastLength, Random.Range(0, lastValidY), false);
         
         // Deletes floors outside of the playable area
         if (firstFloor.Floor.position.x + firstFloor.Length < leftEdge) {

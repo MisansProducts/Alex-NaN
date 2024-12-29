@@ -48,6 +48,7 @@ public class GameScript : MonoBehaviour {
     private const float playerY = 1.5f;
 
     private void StartGame() {
+        SoundEffects.Instance.StopSound();
         backgroundMusic.StartGame();
         Mode2(1);
         player.transform.position = new Vector3(playerX, playerY, 0);
@@ -104,6 +105,7 @@ public class GameScript : MonoBehaviour {
 
     public void GameOver() {
         if (devMode) return; // dev mode does not end the game
+        SoundEffects.Instance.PlaySound(SoundEffects.Instance.death); // this doesn't play because of SoundEffects.Instance.StopSound(); in StartGame()
         foreach (Transform child in transform)
             Destroy(child.gameObject);
         currentScore = 0;
