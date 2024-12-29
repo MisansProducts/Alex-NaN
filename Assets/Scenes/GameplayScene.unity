@@ -1342,9 +1342,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de5fb343b7467d64daf906ab21b08439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  start: {fileID: 8300000, guid: b521c5e2427f7ae419729a2917ad353a, type: 3}
-  mode0: {fileID: 8300000, guid: 9550b48bbf2d3544fa5893a2d36c5b99, type: 3}
-  lightMode: {fileID: 8300000, guid: 6067f9b1386425a45961b65441b6f2ed, type: 3}
+  mode1: {fileID: 8300000, guid: 1076aaa0333468b41be3034903d4da45, type: 3}
+  mode2Intro: {fileID: 8300000, guid: 0976797488f051f44972caf29a89f924, type: 3}
+  mode2: {fileID: 8300000, guid: f66425a71ec04424ab5879115b27df73, type: 3}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

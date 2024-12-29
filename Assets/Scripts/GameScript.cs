@@ -69,7 +69,7 @@ public class GameScript : MonoBehaviour {
                 batteryCharging = 0f;
                 batteryBar.SetActive(true);
                 flashPromptText.gameObject.SetActive(true);
-                // backgroundMusic.switchBGM(); // lags the game when switching to mode 2; need to make it seamless
+                backgroundMusic.switchBGM(); // lags the game when switching to mode 2; need to make it seamless
                 fogScaleChanger.enabled = true; // fog spawns
                 break;
             case 1: // Deactivated
