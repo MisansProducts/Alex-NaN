@@ -22,6 +22,7 @@ public class SoundEffects : MonoBehaviour
     private float volumeSettings;
 
     void Awake() {
+        audioSource = GetComponent<AudioSource>();
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
     }
@@ -35,21 +36,12 @@ public class SoundEffects : MonoBehaviour
 
     public void setVolume(float volume)
     {
-        // kaitlyn wtf is this
-        // need to use array , replace with findobjectsbytype
-        volumeSettings = volume;
-        var sounds = FindObjectsByType<AudioSource>(FindObjectsSortMode.None);
-        foreach (var sound in sounds) 
-        {
-            if(sound.CompareTag("SoundEffects"))
-            {
-                sound.volume = volumeSettings;
-            }
-        }
+        audioSource.volume = volume;
     }
 
     public float getVolume()
     {
-        return volumeSettings;
+        return audioSource.volume;
     }
+
 }

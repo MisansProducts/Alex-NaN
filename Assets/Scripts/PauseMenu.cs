@@ -8,6 +8,7 @@ public class PauseMenu : MonoBehaviour
 {
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private TextMeshProUGUI countdownText;
+    [SerializeField] private GameObject settingsMenu;
 
     private bool isPaused = false;
 
@@ -60,6 +61,6 @@ public class PauseMenu : MonoBehaviour
 
     public void OpenSettings()
     {
-        SceneManager.LoadScene("SettingMenu",LoadSceneMode.Additive);
+        settingsMenu.SetActive(true);
     }
 }

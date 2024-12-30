@@ -12,6 +12,7 @@ public class SettingMenu : MonoBehaviour
     private SoundEffects soundEffects;
     [SerializeField] private Slider volumeSliderBGM;
     [SerializeField] private Slider volumeSliderSoundEffects;
+    [SerializeField] private GameObject settingMenu;
 
 
     void Start()
@@ -22,15 +23,13 @@ public class SettingMenu : MonoBehaviour
         volumeSliderSoundEffects.value = soundEffects.getVolume();
     }
 
-    public void EnableKeyboard()
+    void Update()
     {
-
-    }
-
-    public void EnableMouse()
-    {
-
-    }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            BackToPauseMenu();
+        }
+    } 
 
     public void AdjustBGMVolume(float sliderValue)
     {
@@ -42,9 +41,8 @@ public class SettingMenu : MonoBehaviour
         soundEffects.setVolume(sliderValue);
     }
 
-    public void ReturnGame()
+    public void BackToPauseMenu()
     {
-        //SceneManager.SetActiveScene(SceneManager.GetSceneByName("GameplayScene"));
-        SceneManager.UnloadSceneAsync("SettingMenu");
+        settingMenu.SetActive(false);
     }
 }
