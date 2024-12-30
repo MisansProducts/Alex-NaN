@@ -19,8 +19,17 @@ public class SettingMenu : MonoBehaviour
     {
         backgroundMusic = FindObjectOfType<BackgroundMusic>();
         soundEffects = FindObjectOfType<SoundEffects>();
-        volumeSliderBGM.value = backgroundMusic.getVolume();
-        volumeSliderSoundEffects.value = soundEffects.getVolume();
+        
+        if (PlayerPrefs.HasKey("BGMVolume") && PlayerPrefs.HasKey("EffectsVolume"))
+        {
+            LoadVolume();
+        }
+        else
+        {
+            PlayerPrefs.SetFloat("BGMVolume", 0.5f);
+            PlayerPrefs.SetFloat("EffectsVolume", 0.5f);
+            LoadVolume();
+        }
     }
 
     void Update()
@@ -34,11 +43,19 @@ public class SettingMenu : MonoBehaviour
     public void AdjustBGMVolume(float sliderValue)
     {
         backgroundMusic.setVolume(sliderValue);
+        PlayerPrefs.SetFloat("BGMVolume", sliderValue);
     }
 
     public void AdjustEffectsVolume(float sliderValue)
     {
         soundEffects.setVolume(sliderValue);
+        PlayerPrefs.SetFloat("EffectsVolume", sliderValue);
+    }
+
+    public void LoadVolume()
+    {
+        volumeSliderBGM.value = PlayerPrefs.GetFloat("BGMVolume");
+        volumeSliderSoundEffects.value = PlayerPrefs.GetFloat("EffectsVolume");
     }
 
     public void BackToPauseMenu()
