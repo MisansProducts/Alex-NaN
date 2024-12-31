@@ -56,4 +56,8 @@ public class BackgroundMusic : MonoBehaviour
         audioSource.loop = true;
         audioSource.Play();
     }
+    
+    public void StopSound() {
+        audioSource.Stop();
+    }
 }

@@ -9,7 +9,7 @@ public class SoundEffects : MonoBehaviour
 {
     public static SoundEffects Instance;
     public AudioSource audioSource;
-    [SerializeField] public AudioClip death; // plays but gets overrided by StopSound()
+    [SerializeField] public AudioClip death;
     [SerializeField] public AudioClip error;
     [SerializeField] public AudioClip flash;
     [SerializeField] public AudioClip floor;
@@ -17,7 +17,7 @@ public class SoundEffects : MonoBehaviour
     [SerializeField] public AudioClip jumpMid;
     [SerializeField] public AudioClip jumpStart;
     [SerializeField] public AudioClip pickup;
-    [SerializeField] public AudioClip select; // not used right now
+    [SerializeField] public AudioClip select;
     [SerializeField] public AudioClip shieldPop;
     private float volumeSettings;
 
