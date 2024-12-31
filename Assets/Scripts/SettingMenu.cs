@@ -23,6 +23,8 @@ public class SettingMenu : MonoBehaviour
         if (PlayerPrefs.HasKey("BGMVolume") && PlayerPrefs.HasKey("EffectsVolume"))
         {
             LoadVolume();
+            backgroundMusic.setVolume(PlayerPrefs.GetFloat("BGMVolume"));
+            soundEffects.setVolume(PlayerPrefs.GetFloat("EffectsVolume"));
         }
         else
         {

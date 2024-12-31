@@ -1724,9 +1724,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de5fb343b7467d64daf906ab21b08439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mode1: {fileID: 8300000, guid: 1076aaa0333468b41be3034903d4da45, type: 3}
-  mode2Intro: {fileID: 8300000, guid: 0976797488f051f44972caf29a89f924, type: 3}
-  mode2: {fileID: 8300000, guid: f66425a71ec04424ab5879115b27df73, type: 3}
+  mode1: {fileID: 8300000, guid: 87f5a5c0d5b22754b94e88816d81788a, type: 3}
+  mode2Intro: {fileID: 8300000, guid: 74cbe31f1faab3d42a765b71d8dbd74a, type: 3}
+  mode2: {fileID: 8300000, guid: 83432f7c8dc882f4e85bc1d674f6b1c9, type: 3}
 --- !u!1 &394581357
 GameObject:
   m_ObjectHideFlags: 0
