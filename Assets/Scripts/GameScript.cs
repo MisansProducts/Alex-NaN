@@ -98,6 +98,8 @@ public class GameScript : MonoBehaviour {
         currentScoreText.text = currentScore.ToString();
         highScoreText.text = highScore.ToString();
 
+        PlayerPrefs.SetInt("HighScore", highScore);
+
         // Starts mode 2
         if (!mode2 && currentScore >= spotLightScore)
             Mode2(0);
@@ -147,6 +149,7 @@ public class GameScript : MonoBehaviour {
 
     void Start() {
         StartGame();
+        if (PlayerPrefs.HasKey("HighScore")) highScore = PlayerPrefs.GetInt("HighScore");
     }
 
     void Update() {
