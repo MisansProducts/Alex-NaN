@@ -98,8 +98,6 @@ public class GameScript : MonoBehaviour {
         currentScoreText.text = currentScore.ToString();
         highScoreText.text = highScore.ToString();
 
-        PlayerPrefs.SetInt("HighScore", highScore);
-
         // Starts mode 2
         if (!mode2 && currentScore >= spotLightScore)
             Mode2(0);
@@ -110,6 +108,7 @@ public class GameScript : MonoBehaviour {
         SoundEffects.Instance.PlaySound(SoundEffects.Instance.death); // this doesn't play because of SoundEffects.Instance.StopSound(); in StartGame()
         foreach (Transform child in transform)
             Destroy(child.gameObject);
+        PlayerPrefs.SetInt("HighScore", highScore);
         currentScore = 0;
         ResetPowerUps();
         StartGame();
