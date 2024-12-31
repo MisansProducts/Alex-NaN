@@ -62,6 +62,7 @@ public class SettingMenu : MonoBehaviour
 
     public void BackToPauseMenu()
     {
+        SoundEffects.Instance.PlaySound(SoundEffects.Instance.select);
         settingMenu.SetActive(false);
     }
 }

@@ -29,6 +29,7 @@ public class PauseMenu : MonoBehaviour
 
     public void PauseGame()
     {
+        SoundEffects.Instance.PlaySound(SoundEffects.Instance.select);
         pauseMenu.SetActive(true);
         Time.timeScale = 0;
         isPaused = true;
@@ -36,6 +37,7 @@ public class PauseMenu : MonoBehaviour
 
     public void ResumeGame()
     {
+        SoundEffects.Instance.PlaySound(SoundEffects.Instance.select);
         pauseMenu.SetActive(false);
         StartCoroutine(WaitAndResume());
     }
@@ -47,6 +49,7 @@ public class PauseMenu : MonoBehaviour
         {
             countdownText.text = i.ToString();
             yield return new WaitForSecondsRealtime(1);
+            SoundEffects.Instance.PlaySound(SoundEffects.Instance.select);
         }
         countdownText.gameObject.SetActive(false);
         Time.timeScale = 1;
@@ -55,12 +58,14 @@ public class PauseMenu : MonoBehaviour
 
     public void HomeButton()
     {
+        SoundEffects.Instance.PlaySound(SoundEffects.Instance.select);
         SceneManager.LoadSceneAsync(0);
         Time.timeScale = 1;
     }
 
     public void OpenSettings()
     {
+        SoundEffects.Instance.PlaySound(SoundEffects.Instance.select);
         settingsMenu.SetActive(true);
     }
 }
