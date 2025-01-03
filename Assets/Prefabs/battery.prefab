@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: -859004623
   m_SortingLayer: 4
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 0c4c745a83d83524fa36829dc3f298d6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a2b493ea893a98f41a243018547d4e67, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -118,18 +118,18 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.5, y: 0.5}
+  m_Offset: {x: 0.25743628, y: 0.55106604}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: -0.5, y: 0}
-    oldSize: {x: 0.5, y: 1}
+    pivot: {x: 0.36475736, y: 0.23747014}
+    oldSize: {x: 2, y: 2}
     newSize: {x: 8, y: 16}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 1}
+  m_Size: {x: 0.5765991, y: 1.2553298}
   m_EdgeRadius: 0
 --- !u!114 &4756452645336210538
 MonoBehaviour:
@@ -145,19 +145,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ShadowGroup: 0
   m_ComponentVersion: 1
-  m_HasRenderer: 0
+  m_HasRenderer: 1
   m_UseRendererSilhouette: 1
   m_CastsShadows: 1
   m_SelfShadows: 0
   m_ApplyToSortingLayers: 00000000afc1be82
   m_ShapePath:
-  - {x: 0.25, y: 0, z: 0}
-  - {x: 0.25, y: 1, z: 0}
-  - {x: 0.75, y: 1, z: 0}
-  - {x: 0.75, y: 0, z: 0}
-  m_ShapePathHash: 0
+  - {x: -0.030862808, y: -0.06383252, z: 0}
+  - {x: -0.018096447, y: 1.178731, z: 0}
+  - {x: 0.5585017, y: 1.1914978, z: 0}
+  - {x: 0.5585027, y: -0.05106616, z: 0}
+  m_ShapePathHash: -1531902155
   m_Mesh: {fileID: 0}
-  m_InstanceId: -77598
+  m_InstanceId: -44736
   m_LocalBounds:
-    m_Center: {x: 0.5, y: 0.5, z: 0}
-    m_Extent: {x: 0.25, y: 0.5, z: 0}
+    m_Center: {x: 0.26381993, y: 0.56383264, z: 0}
+    m_Extent: {x: 0.29468274, y: 0.62766516, z: 0}
