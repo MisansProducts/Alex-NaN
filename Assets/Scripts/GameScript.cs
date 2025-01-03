@@ -106,6 +106,7 @@ public class GameScript : MonoBehaviour {
 
     public void GameOver() {
         if (devMode) return; // Developer mode does not end the game
+        if (gameSpeed == 0) return; // Cannot activate multiple times
 
         float tempGameSpeed = gameSpeed;
         gameSpeed = 0;

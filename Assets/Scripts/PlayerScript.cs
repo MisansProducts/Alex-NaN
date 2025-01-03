@@ -88,7 +88,7 @@ public class PlayerScript : MonoBehaviour {
 
     void Update() {
         // Start a new jump if conditions are met
-        if (Input.GetButtonDown("Jump") && (isGrounded || jumpCount < maxJumps)) {
+        if (gameScript.gameSpeed != 0 && Input.GetButtonDown("Jump") && (isGrounded || jumpCount < maxJumps)) {
             StartJump();
             if (isGrounded) SoundEffects.Instance.PlaySound(SoundEffects.Instance.jumpStart);
             else SoundEffects.Instance.PlaySound(SoundEffects.Instance.jumpMid);
@@ -116,7 +116,7 @@ public class PlayerScript : MonoBehaviour {
         }
 
         // Auto jump if the button is still held when landing
-        if (isGrounded && Input.GetButton("Jump") && !isJumping) {
+        if (gameScript.gameSpeed != 0 && isGrounded && Input.GetButton("Jump") && !isJumping) {
             StartJump();
         }
 
