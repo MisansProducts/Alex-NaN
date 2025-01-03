@@ -2116,6 +2116,7 @@ MonoBehaviour:
   batteryCharges: 3
   batteryCharging: 0
   mode2: 0
+  playerAnimator: {fileID: 560902312}
 --- !u!4 &544151774
 Transform:
   m_ObjectHideFlags: 0
@@ -2237,6 +2238,11 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &560902312 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6580576925827412363, guid: 1f9ce0a38cc4d194eb4a4e01bfe3fdca, type: 3}
+  m_PrefabInstance: {fileID: 994850962}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &584842175
 GameObject:
   m_ObjectHideFlags: 0

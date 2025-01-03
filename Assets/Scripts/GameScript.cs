@@ -47,6 +47,7 @@ public class GameScript : MonoBehaviour {
     [HideInInspector] public bool mode2 = false;
     private const float playerX = 3f;
     private const float playerY = 1.5f;
+    [SerializeField] public Animator playerAnimator;
 
     private void StartGame() {
         backgroundMusic.StartGame();
@@ -104,29 +105,45 @@ public class GameScript : MonoBehaviour {
     }
 
     public void GameOver() {
-        if (devMode) return; // dev mode does not end the game
+        if (devMode) return; // Developer mode does not end the game
+
         float tempGameSpeed = gameSpeed;
         gameSpeed = 0;
+
+        // Stop ongoing sounds and play death sound
         SoundEffects.Instance.StopSound();
         backgroundMusic.StopSound();
-        SoundEffects.Instance.PlaySound(SoundEffects.Instance.death); // this doesn't play because of SoundEffects.Instance.StopSound(); in StartGame()
-        Time.timeScale = 0;
-        StartCoroutine(WaitAndResume(1, tempGameSpeed));
+        SoundEffects.Instance.PlaySound(SoundEffects.Instance.death);
+
+        // Play the death animation
+        playerAnimator.Play("player_death");
+
+        // Start a coroutine to wait for the animation to finish
+        float deathAnimationDuration = 1.5f;
+        StartCoroutine(WaitAndResume(deathAnimationDuration, tempGameSpeed));
     }
 
-    private IEnumerator WaitAndResume(float time, float tempGameSpeed) {
-        yield return new WaitForSecondsRealtime(time);
+
+    private IEnumerator WaitAndResume(float animationTime, float tempGameSpeed) {
+        // Wait for the death animation to complete
+        yield return new WaitForSecondsRealtime(animationTime);
+
+        // Reset Time.timeScale and proceed with game reset
         Time.timeScale = 1;
+
+        // Destroy existing objects and reset the game state
         foreach (Transform child in transform)
             Destroy(child.gameObject);
         PlayerPrefs.SetInt("HighScore", highScore);
         currentScore = 0;
         gameSpeed = tempGameSpeed;
+
         ResetPowerUps();
         StartGame();
     }
 
     private void ResetPowerUps() {
+        playerAnimator.Play("player_run");
         playerScript.maxJumpTime = 0.3f;
         playerScript.maxJumps = 1;
         playerScript.fuelCount = 0;
