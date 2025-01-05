@@ -1881,6 +1881,7 @@ GameObject:
   - component: {fileID: 519420034}
   - component: {fileID: 519420035}
   - component: {fileID: 519420036}
+  - component: {fileID: 519420037}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2054,6 +2055,19 @@ MonoBehaviour:
   volumeSliderBGM: {fileID: 1745040598}
   volumeSliderSoundEffects: {fileID: 394581359}
   settingMenu: {fileID: 1166070290}
+--- !u!114 &519420037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa5f0fb3bc559d9428335bdec8d34a31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetAspect: 1.7777778
 --- !u!1 &544151772
 GameObject:
   m_ObjectHideFlags: 0
@@ -3917,10 +3931,10 @@ RectTransform:
   - {fileID: 394581358}
   m_Father: {fileID: 54634437}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 607, y: 15}
-  m_SizeDelta: {x: -1186, y: -230}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -353, y: 15}
+  m_SizeDelta: {x: 734, y: 850}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1166070292
 MonoBehaviour:
@@ -4915,10 +4929,10 @@ RectTransform:
   - {fileID: 1559874565}
   m_Father: {fileID: 54634437}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 607, y: 15}
-  m_SizeDelta: {x: -1186, y: -230}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -353, y: 15}
+  m_SizeDelta: {x: 734, y: 850}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1397033565
 MonoBehaviour:
@@ -5926,9 +5940,9 @@ RectTransform:
   - {fileID: 1410286417}
   m_Father: {fileID: 54634437}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 503.94}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -36.059998}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1621732350
@@ -6024,7 +6038,7 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1621732348}
-  m_CullTransparentMesh: 1
+  m_CullTransparentMesh: 0
 --- !u!1 &1721026147
 GameObject:
   m_ObjectHideFlags: 0
