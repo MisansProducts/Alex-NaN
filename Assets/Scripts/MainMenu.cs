@@ -12,4 +12,19 @@ public class MainMenu : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void Windowed()
+    {
+        // if current screen mode is fullscreen, change to windowed
+        if (Screen.fullScreen)
+        {
+            Screen.SetResolution(1920, 1080, false);
+        }
+        // if current screen mode is windowed, change to fullscreen
+        else
+        {
+            Screen.SetResolution(1920, 1080, true);
+        }
+        
+    }
 }
