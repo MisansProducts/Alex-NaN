@@ -1,5 +1,6 @@
 # Alex NaN
 Alex NaN is a 2D endless runner game created with Unity.
+Web version https://64yomi.itch.io/alex-nan-demo
 
 <img src="https://github.com/user-attachments/assets/6309457b-2e45-4662-8dca-698d4b1ea5d0" width="720">
 
