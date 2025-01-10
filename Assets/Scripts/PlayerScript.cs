@@ -88,14 +88,14 @@ public class PlayerScript : MonoBehaviour {
 
     void Update() {
         // Start a new jump if conditions are met
-        if (gameScript.gameSpeed != 0 && Input.GetButtonDown("Jump") && (isGrounded || jumpCount < maxJumps)) {
+        if (gameScript.gameSpeed != 0 && (Input.GetButtonDown("Jump") || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)) && (isGrounded || jumpCount < maxJumps)) {
             StartJump();
             if (isGrounded) SoundEffects.Instance.PlaySound(SoundEffects.Instance.jumpStart);
             else SoundEffects.Instance.PlaySound(SoundEffects.Instance.jumpMid);
         }
 
         // Continue the jump while holding the button and within jump time
-        if (Input.GetButton("Jump") && isJumping) {
+        if ((Input.GetButton("Jump") || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Stationary)) && isJumping) {
             if (jumpTimeCounter > 0) {
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce * jumpHoldMultiplier);
                 jumpTimeCounter -= Time.deltaTime;
@@ -110,13 +110,13 @@ public class PlayerScript : MonoBehaviour {
         }
 
         // Stop the jump if the button is released
-        if (Input.GetButtonUp("Jump")) {
+        if (Input.GetButtonUp("Jump") || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)) {
             isJumping = false;
             animator.SetBool("isJumping", false);
         }
 
         // Auto jump if the button is still held when landing
-        if (gameScript.gameSpeed != 0 && isGrounded && Input.GetButton("Jump") && !isJumping) {
+        if (gameScript.gameSpeed != 0 && isGrounded && (Input.GetButton("Jump") || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)) && !isJumping) {
             StartJump();
         }
 
