@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour {
     private GameScript gameScript;
@@ -9,7 +11,7 @@ public class PlayerScript : MonoBehaviour {
     private float maxHeight = 11f;
     [SerializeField] public Animator flashAnimator;
     [SerializeField] public ParticleSystem flashParticles = default;
-    [SerializeField] public AudioSource audioManager;
+    [SerializeField] private Button jumpButton; // Reference to UI button
     [SerializeField] private float jumpForce; 
     [SerializeField] private float jumpHoldMultiplier; 
     [SerializeField] public float maxJumpTime; 
@@ -19,6 +21,7 @@ public class PlayerScript : MonoBehaviour {
     private bool isGrounded;
     private bool isGroundedLock; // prevents spamming audio
     private bool isJumping;
+    private bool keyDOWN, keyHOLD, keyUP;
     private const float groundDistance = 0.2f;
     private float spawnX;
     public int extraJumpCount = 0;
@@ -26,6 +29,7 @@ public class PlayerScript : MonoBehaviour {
 
     [SerializeField] private GameObject shieldObject; // Reference to shield object
     private bool isShieldActive = false;
+    private bool isMobile = false;
 
     void Awake() {
         gameScript = FindObjectOfType<GameScript>();
@@ -84,18 +88,60 @@ public class PlayerScript : MonoBehaviour {
 
     void Start() {
         isGroundedLock = false; // doesn't work; should not play when game starts
+        isMobile = true;
+        // Show/hide button based on platform
+        if (jumpButton != null) {
+            jumpButton.gameObject.SetActive(true); // debug
+
+            // Add EventTrigger for pointer events
+            EventTrigger trigger = jumpButton.gameObject.AddComponent<EventTrigger>();
+
+            // PointerDown
+            EventTrigger.Entry pointerDownEntry = new EventTrigger.Entry();
+            pointerDownEntry.eventID = EventTriggerType.PointerDown;
+            pointerDownEntry.callback.AddListener((data) => { OnJumpButtonDown((PointerEventData)data); });
+            trigger.triggers.Add(pointerDownEntry);
+
+            // PointerUp
+            EventTrigger.Entry pointerUpEntry = new EventTrigger.Entry();
+            pointerUpEntry.eventID = EventTriggerType.PointerUp;
+            pointerUpEntry.callback.AddListener((data) => { OnJumpButtonUp((PointerEventData)data); });
+            trigger.triggers.Add(pointerUpEntry);
+        }
     }
 
+    public void OnJumpButtonDown(PointerEventData data) {
+        Debug.Log("Button Down");
+        keyDOWN = true;
+        keyHOLD = true;
+        keyUP = false;
+    }
+
+    public void OnJumpButtonUp(PointerEventData data) {
+        Debug.Log("Button Up");
+        keyDOWN = false;
+        keyHOLD = false;
+        keyUP = true;
+    }
+    
     void Update() {
+        // Handles non-mobile jumping
+        if (!isMobile) {
+            keyDOWN = Input.GetButtonDown("Jump");
+            keyHOLD = Input.GetButton("Jump");
+            keyUP = Input.GetButtonUp("Jump");
+        }
+
         // Start a new jump if conditions are met
-        if (gameScript.gameSpeed != 0 && (Input.GetButtonDown("Jump") || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)) && (isGrounded || jumpCount < maxJumps)) {
+        if (gameScript.gameSpeed != 0 && keyDOWN && (isGrounded || jumpCount < maxJumps)) {
+            keyDOWN = false;
             StartJump();
             if (isGrounded) SoundEffects.Instance.PlaySound(SoundEffects.Instance.jumpStart);
             else SoundEffects.Instance.PlaySound(SoundEffects.Instance.jumpMid);
         }
 
         // Continue the jump while holding the button and within jump time
-        if ((Input.GetButton("Jump") || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Stationary)) && isJumping) {
+        if (keyHOLD && isJumping) {
             if (jumpTimeCounter > 0) {
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce * jumpHoldMultiplier);
                 jumpTimeCounter -= Time.deltaTime;
@@ -110,13 +156,14 @@ public class PlayerScript : MonoBehaviour {
         }
 
         // Stop the jump if the button is released
-        if (Input.GetButtonUp("Jump") || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)) {
+        if (keyUP) {
+            keyUP = false;
             isJumping = false;
             animator.SetBool("isJumping", false);
         }
 
         // Auto jump if the button is still held when landing
-        if (gameScript.gameSpeed != 0 && isGrounded && (Input.GetButton("Jump") || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)) && !isJumping) {
+        if (gameScript.gameSpeed != 0 && isGrounded && keyHOLD && !isJumping) {
             StartJump();
         }
 
