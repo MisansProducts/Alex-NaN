@@ -11,7 +11,8 @@ public class PlayerScript : MonoBehaviour {
     private float maxHeight = 11f;
     [SerializeField] public Animator flashAnimator;
     [SerializeField] public ParticleSystem flashParticles = default;
-    [SerializeField] private Button jumpButton; // Reference to UI button
+    [SerializeField] private Button jumpButton;
+    [SerializeField] private Button flashButton;
     [SerializeField] private float jumpForce; 
     [SerializeField] private float jumpHoldMultiplier; 
     [SerializeField] public float maxJumpTime; 
@@ -21,7 +22,7 @@ public class PlayerScript : MonoBehaviour {
     private bool isGrounded;
     private bool isGroundedLock; // prevents spamming audio
     private bool isJumping;
-    private bool keyDOWN, keyHOLD, keyUP;
+    private bool keyDOWN, keyHOLD, keyUP, keyFLASH;
     private const float groundDistance = 0.2f;
     private float spawnX;
     public int extraJumpCount = 0;
@@ -88,10 +89,10 @@ public class PlayerScript : MonoBehaviour {
 
     void Start() {
         isGroundedLock = false; // doesn't work; should not play when game starts
-        isMobile = true;
+        isMobile = Application.isMobilePlatform;
         // Show/hide button based on platform
         if (jumpButton != null) {
-            jumpButton.gameObject.SetActive(true); // debug
+            jumpButton.gameObject.SetActive(isMobile);
 
             // Add EventTrigger for pointer events
             EventTrigger trigger = jumpButton.gameObject.AddComponent<EventTrigger>();
@@ -108,20 +109,34 @@ public class PlayerScript : MonoBehaviour {
             pointerUpEntry.callback.AddListener((data) => { OnJumpButtonUp((PointerEventData)data); });
             trigger.triggers.Add(pointerUpEntry);
         }
+        if (flashButton != null) {
+            flashButton.gameObject.SetActive(isMobile);
+
+            // Add EventTrigger for pointer events
+            EventTrigger trigger = flashButton.gameObject.AddComponent<EventTrigger>();
+
+            // PointerDowb
+            EventTrigger.Entry pointerDownEntry = new EventTrigger.Entry();
+            pointerDownEntry.eventID = EventTriggerType.PointerDown;
+            pointerDownEntry.callback.AddListener((data) => { OnFlashButtonDown((PointerEventData)data); });
+            trigger.triggers.Add(pointerDownEntry);
+        }
     }
 
     public void OnJumpButtonDown(PointerEventData data) {
-        Debug.Log("Button Down");
         keyDOWN = true;
         keyHOLD = true;
         keyUP = false;
     }
 
     public void OnJumpButtonUp(PointerEventData data) {
-        Debug.Log("Button Up");
         keyDOWN = false;
         keyHOLD = false;
         keyUP = true;
+    }
+
+    public void OnFlashButtonDown(PointerEventData data) {
+        keyFLASH = true;
     }
     
     void Update() {
@@ -130,6 +145,7 @@ public class PlayerScript : MonoBehaviour {
             keyDOWN = Input.GetButtonDown("Jump");
             keyHOLD = Input.GetButton("Jump");
             keyUP = Input.GetButtonUp("Jump");
+            keyFLASH = Input.GetKeyDown(KeyCode.F);
         }
 
         // Start a new jump if conditions are met
@@ -168,13 +184,17 @@ public class PlayerScript : MonoBehaviour {
         }
 
         // MODE 2
-        if (gameScript.mode2 && Input.GetKeyDown(KeyCode.F) && gameScript.batteryCharges > 0) {
+        if (gameScript.mode2 && keyFLASH && gameScript.batteryCharges > 0) {
+            keyFLASH = false;
             flashAnimator.SetTrigger("flash");
             flashParticles.Play();
             gameScript.Flashed();
             SoundEffects.Instance.PlaySound(SoundEffects.Instance.flash);
         }
-        else if (gameScript.mode2 && Input.GetKeyDown(KeyCode.F)) SoundEffects.Instance.PlaySound(SoundEffects.Instance.error);
+        else if (gameScript.mode2 && keyFLASH) {
+            keyFLASH = false;
+            SoundEffects.Instance.PlaySound(SoundEffects.Instance.error);
+        }
 
         // if X position is changed somehow, slowly move back to spawn
         if (transform.position.x != spawnX) {
