@@ -2312,6 +2312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa5f0fb3bc559d9428335bdec8d34a31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  txtMesh: {fileID: 1961970224}
   cam: {fileID: 519420031}
   targetAspect: 1.7777778
 --- !u!1 &544151772

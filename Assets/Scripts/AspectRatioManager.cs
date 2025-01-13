@@ -1,17 +1,20 @@
 using UnityEngine;
 
-public class AspectRatioManager : MonoBehaviour 
-{
+public class AspectRatioManager : MonoBehaviour {
     public Camera cam;
     public float targetAspect = 16.0f / 9.0f;
     private int lastWidth;
     private int lastHeight;
+    private bool isMobile;
+    
     
     void Start() {
+        isMobile = Application.isMobilePlatform;
         cam = GetComponent<Camera>();
         lastWidth = Screen.width;
         lastHeight = Screen.height;
-        ApplyLetterbox();
+        if (isMobile) Screen.SetResolution(1920, 1080, true); // mobile cannot be windowed
+        if (isMobile || !Screen.fullScreen) ApplyLetterbox(); // mobile should apply black bars, PC only if windowed
     }
 
     void Update() {
