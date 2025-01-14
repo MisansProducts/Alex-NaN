@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerScript : MonoBehaviour {
     private GameScript gameScript;
@@ -17,7 +18,10 @@ public class PlayerScript : MonoBehaviour {
     [SerializeField] private float jumpHoldMultiplier; 
     [SerializeField] public float maxJumpTime; 
     [SerializeField] public int maxJumps; 
-    private int jumpCount;  
+    [SerializeField] public TextMeshProUGUI savedJumpUI;
+    [SerializeField] public Image fuelBar;
+    private int jumpCount; 
+    private int availableJump; 
     private float jumpTimeCounter;
     private bool isGrounded;
     private bool isGroundedLock; // prevents spamming audio
@@ -115,7 +119,7 @@ public class PlayerScript : MonoBehaviour {
             // Add EventTrigger for pointer events
             EventTrigger trigger = flashButton.gameObject.AddComponent<EventTrigger>();
 
-            // PointerDowb
+            // PointerDown
             EventTrigger.Entry pointerDownEntry = new EventTrigger.Entry();
             pointerDownEntry.eventID = EventTriggerType.PointerDown;
             pointerDownEntry.callback.AddListener((data) => { OnFlashButtonDown((PointerEventData)data); });
@@ -161,6 +165,7 @@ public class PlayerScript : MonoBehaviour {
             if (jumpTimeCounter > 0) {
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce * jumpHoldMultiplier);
                 jumpTimeCounter -= Time.deltaTime;
+                fuelBar.fillAmount = jumpTimeCounter / maxJumpTime;
                 animator.SetBool("isJumping", true);
             } else {
                 isJumping = false;
@@ -169,6 +174,10 @@ public class PlayerScript : MonoBehaviour {
             // THIS DOESN'T WORK AS INTENDED
             // Try to have jumpHold play until done then loop for as long as jump is held
             // SoundEffects.Instance.PlaySound(SoundEffects.Instance.jumpHold);
+        }
+
+        if (keyUP || !isJumping) {
+            fuelBar.fillAmount = 0f; // resets on release
         }
 
         // Stop the jump if the button is released
@@ -205,6 +214,10 @@ public class PlayerScript : MonoBehaviour {
         if (transform.position.y > maxHeight) {
             transform.position = new Vector2(transform.position.x, maxHeight);
         }
+
+        // update the saved jump count
+        availableJump = maxJumps - jumpCount;
+        savedJumpUI.text = availableJump.ToString();
     }
 
     void FixedUpdate() {
@@ -228,6 +241,8 @@ public class PlayerScript : MonoBehaviour {
         jumpTimeCounter = maxJumpTime;
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         animator.SetBool("isJumping", true);
+
+        fuelBar.fillAmount = 1f;
 
         // Increment jump count on every new jump initiation
         jumpCount++;
