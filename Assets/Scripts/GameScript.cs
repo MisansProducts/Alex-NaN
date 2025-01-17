@@ -49,16 +49,10 @@ public class GameScript : MonoBehaviour {
     private const float playerY = 1.5f;
     [SerializeField] public Animator playerAnimator;
 
-    private void StartGame() {
-        backgroundMusic.StartGame();
-        Mode2(1);
-        player.transform.position = new Vector3(playerX, playerY, 0);
-        Instantiate(floorSpawner, new Vector3(0, 0, 0), Quaternion.identity, transform);
-
-        // Creates the out-of-bounds death walls
-        Instantiate(outOfBounds, new Vector3(7.5f, -3.5f, 0), Quaternion.identity, transform).transform.localScale = new Vector3(17, 1, 1);
-        Instantiate(outOfBounds, new Vector3(-1.5f, 4.5f, 0), Quaternion.Euler(0, 0, -90), transform).transform.localScale = new Vector3(15, 1, 1);
-    }
+    // have player fall out of the sky and touch the ground -> solves player touching ground contact sound glitch
+    // make camera not track player until player is spawned
+    // nanoid attached to alexoid ??? <=> have parent object Player which has Nanoid and Alexoid
+    // all permanent instantiations should happen when the game first starts
 
     public void Mode2(int activate) {
         switch (activate) {
@@ -75,6 +69,8 @@ public class GameScript : MonoBehaviour {
                 fogScaleChanger.enabled = true; // fog spawns
                 break;
             case 1: // Deactivated
+                backgroundMusic.StartGame();
+                player.transform.position = new Vector3(playerX, playerY, 0);
                 mode2 = false;
                 batteryBar.SetActive(false);
                 flashPromptText.gameObject.SetActive(false);
@@ -116,40 +112,30 @@ public class GameScript : MonoBehaviour {
         backgroundMusic.StopSound();
         SoundEffects.Instance.PlaySound(SoundEffects.Instance.death);
 
-        // Play the death animation
+        // Plays the death animation and waits for it to finish (1.5 seconds)
         playerAnimator.Play("player_death");
-
-        // Start a coroutine to wait for the animation to finish
-        float deathAnimationDuration = 1.5f;
-        StartCoroutine(WaitAndResume(deathAnimationDuration, tempGameSpeed));
+        StartCoroutine(GameOver(1.5f, tempGameSpeed));
     }
 
-
-    private IEnumerator WaitAndResume(float animationTime, float tempGameSpeed) {
-        // Wait for the death animation to complete
+    private IEnumerator GameOver(float animationTime, float tempGameSpeed) {
         yield return new WaitForSecondsRealtime(animationTime);
 
-        // Reset Time.timeScale and proceed with game reset
-        Time.timeScale = 1;
-
-        // Destroy existing objects and reset the game state
-        foreach (Transform child in transform)
-            Destroy(child.gameObject);
         PlayerPrefs.SetInt("HighScore", highScore);
         currentScore = 0;
         gameSpeed = tempGameSpeed;
 
-        ResetPowerUps();
-        StartGame();
-    }
-
-    private void ResetPowerUps() {
         playerAnimator.Play("player_run");
         playerScript.maxJumpTime = 0.3f;
         playerScript.maxJumps = 1;
         playerScript.fuelCount = 0;
         playerScript.extraJumpCount = 0;
         fogScaleChanger.onDeath();
+
+        // StartGame()
+        // Instantiate(outOfBounds, new Vector3(7.5f, -3.5f, 0), Quaternion.identity, transform).transform.localScale = new Vector3(17, 1, 1);
+        // Instantiate(outOfBounds, new Vector3(-1.5f, 4.5f, 0), Quaternion.Euler(0, 0, -90), transform).transform.localScale = new Vector3(15, 1, 1);
+        // Instantiate(floorSpawner, new Vector3(0, 0, 0), Quaternion.identity, transform);
+        Mode2(1);
     }
     
     private void HandleBatteryBar() {
@@ -179,7 +165,15 @@ public class GameScript : MonoBehaviour {
     void Start() {
         spikeChance = GameSetting.Instance.spikeChance;
         spikeCoolDown = GameSetting.Instance.spikeCoolDown;
-        StartGame();
+        // Creates the out-of-bounds death walls
+        Instantiate(outOfBounds, new Vector3(7.5f, -3.5f, 0), Quaternion.identity, transform).transform.localScale = new Vector3(17, 1, 1);
+        Instantiate(outOfBounds, new Vector3(-1.5f, 4.5f, 0), Quaternion.Euler(0, 0, -90), transform).transform.localScale = new Vector3(15, 1, 1);
+
+        // Creates the floor spawner responsible for generating the map
+        Instantiate(floorSpawner, new Vector3(0, 0, 0), Quaternion.identity, transform);
+
+        Mode2(1);
+
         if (PlayerPrefs.HasKey("HighScore")) highScore = PlayerPrefs.GetInt("HighScore");
     }
 

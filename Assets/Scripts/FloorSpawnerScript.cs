@@ -2,11 +2,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FloorSpawnerScript : MonoBehaviour {
-
     // Objects
     private GameScript gameScript;
     private PlayerScript playerScript;
     private Transform last; // Last floor spawned
+    private enum Inst {floor = 1, cell = 2, singleSpike = 3, doubleSpike = 4, tripleSpike = 5, battery = 6, fuelPrefab = 7, shieldPrefab = 8, extraJumpPrefab = 9};
     [SerializeField] private GameObject floor; // Floor prefab
     [SerializeField] private GameObject cell; // 1x1 cell prefab
     [SerializeField] private GameObject singleSpike, doubleSpike, tripleSpike; // Hazards
@@ -27,6 +27,24 @@ public class FloorSpawnerScript : MonoBehaviour {
         
     }
     private Queue<FloorMeta> floorLengths = new Queue<FloorMeta>();
+    private List<GameObject> active_floor = new List<GameObject>();
+    private List<GameObject> active_cell = new List<GameObject>();
+    private List<GameObject> active_singleSpike = new List<GameObject>();
+    private List<GameObject> active_doubleSpike = new List<GameObject>();
+    private List<GameObject> active_tripleSpike = new List<GameObject>();
+    private List<GameObject> active_battery = new List<GameObject>();
+    private List<GameObject> active_fuelPrefab = new List<GameObject>();
+    private List<GameObject> active_shieldPrefab = new List<GameObject>();
+    private List<GameObject> active_extraJumpPrefab = new List<GameObject>();
+    private List<GameObject> reserve_floor = new List<GameObject>();
+    private List<GameObject> reserve_cell = new List<GameObject>();
+    private List<GameObject> reserve_singleSpike = new List<GameObject>();
+    private List<GameObject> reserve_doubleSpike = new List<GameObject>();
+    private List<GameObject> reserve_tripleSpike = new List<GameObject>();
+    private List<GameObject> reserve_battery = new List<GameObject>();
+    private List<GameObject> reserve_fuelPrefab = new List<GameObject>();
+    private List<GameObject> reserve_shieldPrefab = new List<GameObject>();
+    private List<GameObject> reserve_extraJumpPrefab = new List<GameObject>();
     private FloorMeta firstFloor;
     private int lastLength = 25;
     private int lastValidY = 5; // Where a floor can spawn without intersecting a platform
@@ -41,9 +59,60 @@ public class FloorSpawnerScript : MonoBehaviour {
     private int maxExtraJumpCount = 1;
 
     // Function to abstract the child instaniation process
-    private void CreateInstanceHelper(Transform parent, GameObject prefab, Vector3 position) {
+    private void CreateInstanceHelper(Transform parent, Inst type, Vector3 position) {
         // Creates prefab instance
-        prefab = Instantiate(prefab, position, Quaternion.identity);
+        Transform prefab = null;
+        switch (type) {
+            case Inst.cell: {
+                active_cell.Add(reserve_cell[0]);
+                prefab = reserve_cell[0].transform;
+                reserve_cell.RemoveAt(0);
+                break;
+            }
+            case Inst.singleSpike: {
+                active_singleSpike.Add(reserve_singleSpike[0]);
+                prefab = reserve_singleSpike[0].transform;
+                reserve_singleSpike.RemoveAt(0);
+                break;
+            }
+            case Inst.doubleSpike: {
+                active_doubleSpike.Add(reserve_doubleSpike[0]);
+                prefab = reserve_doubleSpike[0].transform;
+                reserve_doubleSpike.RemoveAt(0);
+                break;
+            }
+            case Inst.tripleSpike: {
+                active_tripleSpike.Add(reserve_tripleSpike[0]);
+                prefab = reserve_tripleSpike[0].transform;
+                reserve_tripleSpike.RemoveAt(0);
+                break;
+            }
+            case Inst.battery: {
+                active_battery.Add(reserve_battery[0]);
+                prefab = reserve_battery[0].transform;
+                reserve_battery.RemoveAt(0);
+                break;
+            }
+            case Inst.shieldPrefab: {
+                active_shieldPrefab.Add(reserve_shieldPrefab[0]);
+                prefab = reserve_shieldPrefab[0].transform;
+                reserve_shieldPrefab.RemoveAt(0);
+                break;
+            }
+            case Inst.fuelPrefab: {
+                active_fuelPrefab.Add(reserve_fuelPrefab[0]);
+                prefab = reserve_fuelPrefab[0].transform;
+                reserve_fuelPrefab.RemoveAt(0);
+                break;
+            }
+            case Inst.extraJumpPrefab: {
+                active_extraJumpPrefab.Add(reserve_extraJumpPrefab[0]);
+                prefab = reserve_extraJumpPrefab[0].transform;
+                reserve_extraJumpPrefab.RemoveAt(0);
+                break;
+            }
+        }
+        prefab.transform.position = position;
 
         // Saves the previous scale
         Vector3 prefabScale = prefab.transform.localScale;
@@ -69,7 +138,7 @@ public class FloorSpawnerScript : MonoBehaviour {
         // =-=-=Main Structure Generation Loop=-=-=
         for (int i = 0; i < newLength; i++) {
             // =-=-=Cell Generation=-=-=
-            CreateInstanceHelper(currFloor, cell, new Vector3(X + i, Y, 0));
+            CreateInstanceHelper(currFloor, Inst.cell, new Vector3(X + i, Y, 0));
             if (first) continue; // only generate cells for the first floor
 
             // =-=-=Spike Generation=-=-=
@@ -81,7 +150,7 @@ public class FloorSpawnerScript : MonoBehaviour {
                     float randomSpike = Random.value;
                     retrySpike:
                     if (randomSpike <= gameScript.singleSpikeChance) { // Single
-                        CreateInstanceHelper(currFloor, singleSpike, spikePosition);
+                        CreateInstanceHelper(currFloor, Inst.singleSpike, spikePosition);
                         if (!isPlatform) spikeCoolDownIt = 0;
                         else spikeCoolDownItPlat = 0;
                     }
@@ -90,7 +159,7 @@ public class FloorSpawnerScript : MonoBehaviour {
                             randomSpike -= gameScript.doubleSpikeChance;
                             goto retrySpike;
                         }
-                        CreateInstanceHelper(currFloor, doubleSpike, spikePosition);
+                        CreateInstanceHelper(currFloor, Inst.doubleSpike, spikePosition);
                         if (!isPlatform) spikeCoolDownIt = -1;
                         else spikeCoolDownItPlat = -1;
                     }
@@ -99,7 +168,7 @@ public class FloorSpawnerScript : MonoBehaviour {
                             randomSpike -= gameScript.tripleSpikeChance;
                             goto retrySpike;
                         }
-                        CreateInstanceHelper(currFloor, tripleSpike, spikePosition);
+                        CreateInstanceHelper(currFloor, Inst.tripleSpike, spikePosition);
                         if (!isPlatform) spikeCoolDownIt = -2;
                         else spikeCoolDownItPlat = -2;
                     }
@@ -118,22 +187,22 @@ public class FloorSpawnerScript : MonoBehaviour {
                 switch (Random.Range(0, 4)) {
                     case 0: // Fuel
                         if (playerScript.fuelCount < maxFuelCount) {
-                            CreateInstanceHelper(currFloor, fuelPrefab, powerupPosition);
+                            CreateInstanceHelper(currFloor, Inst.fuelPrefab, powerupPosition);
                             break;
                         }
                         goto case 3; // skips to battery spawn
                     case 1: // ExtraJump
                         if (playerScript.extraJumpCount < maxExtraJumpCount) {
-                            CreateInstanceHelper(currFloor, extraJumpPrefab, powerupPosition);
+                            CreateInstanceHelper(currFloor, Inst.extraJumpPrefab, powerupPosition);
                             break;
                         }
                         goto case 3; // skips to battery spawn
                     case 2: // Shield
-                        CreateInstanceHelper(currFloor, shieldPrefab, powerupPosition);
+                        CreateInstanceHelper(currFloor, Inst.shieldPrefab, powerupPosition);
                         break;
                     case 3: // Battery
                         if (gameScript.mode2) {
-                            CreateInstanceHelper(currFloor, battery, powerupPosition);
+                            CreateInstanceHelper(currFloor, Inst.battery, powerupPosition);
                             break;
                         }
                         goto case 2; // must be shield spawn if not mode 2
@@ -157,7 +226,10 @@ public class FloorSpawnerScript : MonoBehaviour {
     // Function to spawn floors
     private void SpawnFloor(float X = 0f, int Y = 0, bool first = true) {
         lastLength = first ? 25 : Random.Range(5, 26);
-        last = Instantiate(floor, new Vector3(X, Y, 0), Quaternion.identity, transform).transform;
+        active_floor.Add(reserve_floor[0]);
+        last = reserve_floor[0].transform;
+        reserve_floor.RemoveAt(0);
+        last.position = new Vector3(X, Y, 0);
         last.localScale = new Vector3(lastLength, 1, 1); // edits floor's scale
         GenerateStructure(last, lastLength, X, Y, first); // generates structure
         floorLengths.Enqueue(new FloorMeta(last, lastLength));
@@ -198,6 +270,17 @@ public class FloorSpawnerScript : MonoBehaviour {
         // Initialize Variables
         spikeCoolDownIt = gameScript.spikeCoolDown;
 
+        // Instantiates reserve
+        for (int i = 0; i < 10; i++) reserve_floor.Add(Instantiate(floor, new Vector3(100, 100, 0), Quaternion.identity));
+        for (int i = 0; i < 50; i++) reserve_cell.Add(Instantiate(cell, new Vector3(100, 100, 0), Quaternion.identity));
+        for (int i = 0; i < 20; i++) reserve_singleSpike.Add(Instantiate(singleSpike, new Vector3(100, 100, 0), Quaternion.identity));
+        for (int i = 0; i < 20; i++) reserve_doubleSpike.Add(Instantiate(doubleSpike, new Vector3(100, 100, 0), Quaternion.identity));
+        for (int i = 0; i < 20; i++) reserve_tripleSpike.Add(Instantiate(tripleSpike, new Vector3(100, 100, 0), Quaternion.identity));
+        reserve_battery.Add(Instantiate(battery, new Vector3(100, 100, 0), Quaternion.identity));
+        reserve_shieldPrefab.Add(Instantiate(shieldPrefab, new Vector3(100, 100, 0), Quaternion.identity));
+        reserve_fuelPrefab.Add(Instantiate(fuelPrefab, new Vector3(100, 100, 0), Quaternion.identity));
+        reserve_extraJumpPrefab.Add(Instantiate(extraJumpPrefab, new Vector3(100, 100, 0), Quaternion.identity));
+
         // Spawns the first floor
         SpawnFloor();
         firstFloor = floorLengths.Dequeue();
@@ -214,8 +297,8 @@ public class FloorSpawnerScript : MonoBehaviour {
     // Same as Update() but more consistent
     void FixedUpdate() {
         // Moves floors to the left
-        foreach (Transform child in transform)
-            child.Translate(Vector3.left * gameScript.gameSpeed * Time.deltaTime);
+        foreach (GameObject child in active_floor) // FIX THIS
+            child.transform.Translate(Vector3.left * gameScript.gameSpeed * Time.deltaTime);
 
         // Creates floors outside of the playable area
         if (last.position.x + lastLength < rightEdge)
