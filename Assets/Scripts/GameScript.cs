@@ -20,9 +20,7 @@ public class GameScript : MonoBehaviour {
     [SerializeField] private GameObject player;
     [HideInInspector] private PlayerScript playerScript;
     [SerializeField] private GameObject fog;
-    [SerializeField] public GameObject WebFog;
     [HideInInspector] private FogScaleChanger fogScaleChanger;
-    [HideInInspector] private WebFogScaler webFogScaler;
     [SerializeField] private GameObject floorSpawner;
     [SerializeField] private GameObject outOfBounds;
     [SerializeField] public Light2D spotLight;
@@ -75,7 +73,6 @@ public class GameScript : MonoBehaviour {
                 flashPromptText.gameObject.SetActive(true);
                 backgroundMusic.switchBGM(); // lags the game when switching to mode 2; need to make it seamless
                 fogScaleChanger.enabled = true; // fog spawns
-                webFogScaler.enabled = true; // web fog spawns
                 break;
             case 1: // Deactivated
                 mode2 = false;
@@ -91,7 +88,6 @@ public class GameScript : MonoBehaviour {
         batteryCharges -= 1;
         batteryBarCharges.sprite = batteryBarChargesFrames[batteryCharges]; // will at most be 2
         fogScaleChanger.ResetFog();
-        webFogScaler.ResetWebFog();
         flashPromptText.gameObject.SetActive(false); // need better code
     }
 
@@ -154,7 +150,6 @@ public class GameScript : MonoBehaviour {
         playerScript.fuelCount = 0;
         playerScript.extraJumpCount = 0;
         fogScaleChanger.onDeath();
-        webFogScaler.onDeath();
     }
     
     private void HandleBatteryBar() {
@@ -178,11 +173,12 @@ public class GameScript : MonoBehaviour {
     void Awake() {
         backgroundMusic = FindObjectOfType<BackgroundMusic>();
         fogScaleChanger = fog.GetComponent<FogScaleChanger>();
-        webFogScaler = WebFog.GetComponent<WebFogScaler>();
         playerScript = player.GetComponent<PlayerScript>();
     }
 
     void Start() {
+        spikeChance = GameSetting.Instance.spikeChance;
+        spikeCoolDown = GameSetting.Instance.spikeCoolDown;
         StartGame();
         if (PlayerPrefs.HasKey("HighScore")) highScore = PlayerPrefs.GetInt("HighScore");
     }

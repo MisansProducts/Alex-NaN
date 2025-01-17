@@ -61,6 +61,7 @@
         "Behaviour",
         "Lerp",
         "powerup",
+        "powerups",
         "Prefs",
         "UGUI"
     ]
