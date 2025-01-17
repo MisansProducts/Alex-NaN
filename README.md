@@ -2,7 +2,8 @@
 Alex NaN is a 2D endless runner game created with Unity.
 Web version https://64yomi.itch.io/alex-nan-demo
 
-<img src="https://github.com/user-attachments/assets/6309457b-2e45-4662-8dca-698d4b1ea5d0" width="720">
+![AlexNanGif5-ezgif com-optimize](https://github.com/user-attachments/assets/b39ea8d8-ee43-451e-a5c8-b632704fd987)
+
 
 ## Premise
 Two robots, Alexoid and their trusty support unit, NaNoid, are navigating through the mysterious twilight forest, where malevolent glowing triangular structures pierce the darkness like ancient monuments. The pixel-perfect night sky looms above them, painted in deep blues and purples, while an ominous moon casts an ethereal glow across the landscape.
