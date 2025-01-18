@@ -29,8 +29,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -118,10 +118,10 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.25743628, y: 0.55106604}
+  m_Offset: {x: 1, y: 1}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.36475736, y: 0.23747014}
+    pivot: {x: 0, y: 0}
     oldSize: {x: 2, y: 2}
     newSize: {x: 8, y: 16}
     adaptiveTilingThreshold: 0.5
@@ -151,13 +151,13 @@ MonoBehaviour:
   m_SelfShadows: 0
   m_ApplyToSortingLayers: 00000000afc1be82
   m_ShapePath:
-  - {x: -0.030862808, y: -0.06383252, z: 0}
-  - {x: -0.018096447, y: 1.178731, z: 0}
-  - {x: 0.5585017, y: 1.1914978, z: 0}
-  - {x: 0.5585027, y: -0.05106616, z: 0}
-  m_ShapePathHash: -1531902155
+  - {x: 0.712, y: 0.372, z: 0}
+  - {x: 0.712, y: 1.628, z: 0}
+  - {x: 1.288, y: 1.628, z: 0}
+  - {x: 1.288, y: 0.372, z: 0}
+  m_ShapePathHash: -966211577
   m_Mesh: {fileID: 0}
-  m_InstanceId: -44736
+  m_InstanceId: 53426
   m_LocalBounds:
-    m_Center: {x: 0.26381993, y: 0.56383264, z: 0}
-    m_Extent: {x: 0.29468274, y: 0.62766516, z: 0}
+    m_Center: {x: 1, y: 1, z: 0}
+    m_Extent: {x: 0.288, y: 0.628, z: 0}

@@ -12,6 +12,7 @@ As they progress through this cybernetic wilderness you (the player) must guide 
 
 ## Features
 Here are the features that the game currently utilizes:
+- Object pooling
 - Randomly generated platforms and hazards
 - Fog that obscures vision
   - Along with a device to hinder it 
@@ -25,22 +26,21 @@ Here are the features that the game currently utilizes:
 
 ## Upcoming features
 Some of the features we wish to implement in the future include:
-- Object pooling
 - Custom shaders
 - Diagetic UI design
 
 ## Snapshots
 
-### Version 1
+### Version 0.1
 <img src="imgs/img1.png" width="720">
 
-### Version 2
+### Version 0.2
 <img src="imgs/img2.png" width="720">
 
-### Version 3
+### Version 0.5
 <img src="imgs/img3.png" width="720">
 
-### Version 4
+### Version 1.0
 <img src="imgs/img4.png" width="720">
 
 ## Credits

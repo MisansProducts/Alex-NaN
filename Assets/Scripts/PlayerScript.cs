@@ -63,32 +63,32 @@ public class PlayerScript : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.CompareTag("Battery")) {
-            Destroy(other.gameObject);
+            other.gameObject.transform.position = new Vector3(-10, 5, 0);
             gameScript.batteryCharging += 1f;
             SoundEffects.Instance.PlaySound(SoundEffects.Instance.pickup);
         }
-
+        if (other.gameObject.CompareTag("Shield")) {
+            other.gameObject.transform.position = new Vector3(-10, 6, 0);
+            // Enable shield object and activate shield
+            shieldObject.SetActive(true);
+            isShieldActive = true;
+            SoundEffects.Instance.PlaySound(SoundEffects.Instance.pickup);
+        }
         if (other.gameObject.CompareTag("Fuel")) {
-            Destroy(other.gameObject);
+            other.gameObject.transform.position = new Vector3(-10, 7, 0);
             maxJumpTime += 0.2f;
             fuelCount++;
             SoundEffects.Instance.PlaySound(SoundEffects.Instance.pickup);
         }
 
         if (other.gameObject.CompareTag("ExtraJump")) {
-            Destroy(other.gameObject);
+            other.gameObject.transform.position = new Vector3(-10, 8, 0);
             maxJumps++;
             extraJumpCount++;
             SoundEffects.Instance.PlaySound(SoundEffects.Instance.pickup);
         }
 
-        if (other.gameObject.CompareTag("Shield")) {
-            Destroy(other.gameObject);
-            // Enable shield object and activate shield
-            shieldObject.SetActive(true);
-            isShieldActive = true;
-            SoundEffects.Instance.PlaySound(SoundEffects.Instance.pickup);
-        }
+        
     }
 
     void Start() {

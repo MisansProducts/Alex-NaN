@@ -2362,7 +2362,7 @@ MonoBehaviour:
   highScore: 0
   spotLightScore: 35
   gameSpeed: 5
-  spikeChance: 0.3
+  spikeChance: 0.333
   spikeCoolDown: 2
   singleSpikeChance: 3
   doubleSpikeChance: 2

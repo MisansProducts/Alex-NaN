@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class FloorSpawnerScript : MonoBehaviour {
@@ -6,7 +9,7 @@ public class FloorSpawnerScript : MonoBehaviour {
     private GameScript gameScript;
     private PlayerScript playerScript;
     private Transform last; // Last floor spawned
-    private enum Inst {floor = 1, cell = 2, singleSpike = 3, doubleSpike = 4, tripleSpike = 5, battery = 6, fuelPrefab = 7, shieldPrefab = 8, extraJumpPrefab = 9};
+    private enum Inst {floor = 0, cell = 1, singleSpike = 2, doubleSpike = 3, tripleSpike = 4, battery = 5, fuelPrefab = 6, shieldPrefab = 7, extraJumpPrefab = 8};
     [SerializeField] private GameObject floor; // Floor prefab
     [SerializeField] private GameObject cell; // 1x1 cell prefab
     [SerializeField] private GameObject singleSpike, doubleSpike, tripleSpike; // Hazards
@@ -26,25 +29,20 @@ public class FloorSpawnerScript : MonoBehaviour {
         }
         
     }
+    private struct ChildMeta {
+        public Transform Parent;
+        public GameObject Object;
+        public bool IsCell;
+        
+        public ChildMeta(Transform parent, GameObject obj, bool isCell = false) {
+            Parent = parent;
+            Object = obj;
+            IsCell = isCell;
+        }
+    }
     private Queue<FloorMeta> floorLengths = new Queue<FloorMeta>();
-    private List<GameObject> active_floor = new List<GameObject>();
-    private List<GameObject> active_cell = new List<GameObject>();
-    private List<GameObject> active_singleSpike = new List<GameObject>();
-    private List<GameObject> active_doubleSpike = new List<GameObject>();
-    private List<GameObject> active_tripleSpike = new List<GameObject>();
-    private List<GameObject> active_battery = new List<GameObject>();
-    private List<GameObject> active_fuelPrefab = new List<GameObject>();
-    private List<GameObject> active_shieldPrefab = new List<GameObject>();
-    private List<GameObject> active_extraJumpPrefab = new List<GameObject>();
-    private List<GameObject> reserve_floor = new List<GameObject>();
-    private List<GameObject> reserve_cell = new List<GameObject>();
-    private List<GameObject> reserve_singleSpike = new List<GameObject>();
-    private List<GameObject> reserve_doubleSpike = new List<GameObject>();
-    private List<GameObject> reserve_tripleSpike = new List<GameObject>();
-    private List<GameObject> reserve_battery = new List<GameObject>();
-    private List<GameObject> reserve_fuelPrefab = new List<GameObject>();
-    private List<GameObject> reserve_shieldPrefab = new List<GameObject>();
-    private List<GameObject> reserve_extraJumpPrefab = new List<GameObject>();
+    private List<List<ChildMeta>> active = new List<List<ChildMeta>>();
+    private List<Stack<GameObject>> reserve = new List<Stack<GameObject>>();
     private FloorMeta firstFloor;
     private int lastLength = 25;
     private int lastValidY = 5; // Where a floor can spawn without intersecting a platform
@@ -59,59 +57,18 @@ public class FloorSpawnerScript : MonoBehaviour {
     private int maxExtraJumpCount = 1;
 
     // Function to abstract the child instaniation process
-    private void CreateInstanceHelper(Transform parent, Inst type, Vector3 position) {
+    private void CreateInstanceHelper(Transform parent, Inst type, Vector3 position, bool isCell = false) {
         // Creates prefab instance
-        Transform prefab = null;
-        switch (type) {
-            case Inst.cell: {
-                active_cell.Add(reserve_cell[0]);
-                prefab = reserve_cell[0].transform;
-                reserve_cell.RemoveAt(0);
-                break;
-            }
-            case Inst.singleSpike: {
-                active_singleSpike.Add(reserve_singleSpike[0]);
-                prefab = reserve_singleSpike[0].transform;
-                reserve_singleSpike.RemoveAt(0);
-                break;
-            }
-            case Inst.doubleSpike: {
-                active_doubleSpike.Add(reserve_doubleSpike[0]);
-                prefab = reserve_doubleSpike[0].transform;
-                reserve_doubleSpike.RemoveAt(0);
-                break;
-            }
-            case Inst.tripleSpike: {
-                active_tripleSpike.Add(reserve_tripleSpike[0]);
-                prefab = reserve_tripleSpike[0].transform;
-                reserve_tripleSpike.RemoveAt(0);
-                break;
-            }
-            case Inst.battery: {
-                active_battery.Add(reserve_battery[0]);
-                prefab = reserve_battery[0].transform;
-                reserve_battery.RemoveAt(0);
-                break;
-            }
-            case Inst.shieldPrefab: {
-                active_shieldPrefab.Add(reserve_shieldPrefab[0]);
-                prefab = reserve_shieldPrefab[0].transform;
-                reserve_shieldPrefab.RemoveAt(0);
-                break;
-            }
-            case Inst.fuelPrefab: {
-                active_fuelPrefab.Add(reserve_fuelPrefab[0]);
-                prefab = reserve_fuelPrefab[0].transform;
-                reserve_fuelPrefab.RemoveAt(0);
-                break;
-            }
-            case Inst.extraJumpPrefab: {
-                active_extraJumpPrefab.Add(reserve_extraJumpPrefab[0]);
-                prefab = reserve_extraJumpPrefab[0].transform;
-                reserve_extraJumpPrefab.RemoveAt(0);
-                break;
-            }
+        try {
+            active[(int)type].Add(new ChildMeta(parent, reserve[(int)type].Pop(), isCell));
+            active[(int)type].Last().Object.SetActive(true);
         }
+        catch (Exception e) {
+            Debug.LogError(e.Message);
+            Debug.Log("Need more " + type);
+        }
+        // active[(int)type].Add(new ChildMeta(parent, reserve[(int)type].Pop(), isCell));
+        Transform prefab = active[(int)type].Last().Object.transform;
         prefab.transform.position = position;
 
         // Saves the previous scale
@@ -130,7 +87,7 @@ public class FloorSpawnerScript : MonoBehaviour {
         int newLength = currFloorLength; // Local to hazard generation
 
         // =-=-=Hole Generation=-=-=
-        if (!first && !isPlatform && Random.value <= gameScript.holeChance) {
+        if (!first && !isPlatform && UnityEngine.Random.value <= gameScript.holeChance) {
             newLength = currFloorLength - 3; // 3 wide holes
             currFloor.localScale = new Vector3(newLength, 1, 1);
         }
@@ -138,16 +95,16 @@ public class FloorSpawnerScript : MonoBehaviour {
         // =-=-=Main Structure Generation Loop=-=-=
         for (int i = 0; i < newLength; i++) {
             // =-=-=Cell Generation=-=-=
-            CreateInstanceHelper(currFloor, Inst.cell, new Vector3(X + i, Y, 0));
+            CreateInstanceHelper(currFloor, Inst.cell, new Vector3(X + i, Y, 0), true);
             if (first) continue; // only generate cells for the first floor
 
             // =-=-=Spike Generation=-=-=
             if ((!isPlatform && spikeCoolDownIt == gameScript.spikeCoolDown) || (isPlatform && spikeCoolDownItPlat == gameScript.spikeCoolDown)) {
                 // Randomly spawns spikes
-                if (Random.value <= gameScript.spikeChance && !spawnRandomPowerup) { // !spawnRandomPowerup do not spawn hazards when powerup should spawn
+                if (UnityEngine.Random.value <= gameScript.spikeChance && !spawnRandomPowerup) { // !spawnRandomPowerup do not spawn hazards when powerup should spawn
                     Vector3 spikePosition = new Vector3(X + i, Y + 1, 0);
                     // Randomly chooses which type of spike to spawn
-                    float randomSpike = Random.value;
+                    float randomSpike = UnityEngine.Random.value;
                     retrySpike:
                     if (randomSpike <= gameScript.singleSpikeChance) { // Single
                         CreateInstanceHelper(currFloor, Inst.singleSpike, spikePosition);
@@ -184,7 +141,7 @@ public class FloorSpawnerScript : MonoBehaviour {
                 if ((!isPlatform && spikeCoolDownIt < 1) || (isPlatform && spikeCoolDownItPlat < 1)) continue; // cannot spawn powerups on hazards
                 Vector3 powerupPosition = new Vector3(X + i, Y + 1, 0);
                 // Randomly choose a powerup to spawn
-                switch (Random.Range(0, 4)) {
+                switch (UnityEngine.Random.Range(0, 4)) {
                     case 0: // Fuel
                         if (playerScript.fuelCount < maxFuelCount) {
                             CreateInstanceHelper(currFloor, Inst.fuelPrefab, powerupPosition);
@@ -225,24 +182,26 @@ public class FloorSpawnerScript : MonoBehaviour {
 
     // Function to spawn floors
     private void SpawnFloor(float X = 0f, int Y = 0, bool first = true) {
-        lastLength = first ? 25 : Random.Range(5, 26);
-        active_floor.Add(reserve_floor[0]);
-        last = reserve_floor[0].transform;
-        reserve_floor.RemoveAt(0);
+        lastLength = first ? 25 : UnityEngine.Random.Range(5, 26);
+        active[(int)Inst.floor].Add(new ChildMeta(null, reserve[(int)Inst.floor].Pop()));
+        active[(int)Inst.floor].Last().Object.SetActive(true);
+        last = active[(int)Inst.floor].Last().Object.transform;
         last.position = new Vector3(X, Y, 0);
         last.localScale = new Vector3(lastLength, 1, 1); // edits floor's scale
         GenerateStructure(last, lastLength, X, Y, first); // generates structure
         floorLengths.Enqueue(new FloorMeta(last, lastLength));
         // Spawns platform
-        if (!first && Random.value <= 0.5f) {
-            int randOffset = Random.Range(lastValidX, lastLength);
+        if (!first && UnityEngine.Random.value <= 0.5f) {
+            int randOffset = UnityEngine.Random.Range(lastValidX, lastLength);
             float platformX = X + randOffset;
-            int platformY = Y + Random.Range(3, 5);
+            int platformY = Y + UnityEngine.Random.Range(3, 5);
             lastValidY = platformY - (platformY - Y) + 1;
             int platformLength = 5;
             lastValidX = (lastLength - 5 - randOffset < 0) ? 5 : 0;
-            Transform platform = Instantiate(floor, new Vector3(platformX, platformY, 0), Quaternion.identity, transform).transform;
-            platform.name = "Platform(Clone)";
+            active[(int)Inst.floor].Add(new ChildMeta(null, reserve[(int)Inst.floor].Pop()));
+            active[(int)Inst.floor].Last().Object.SetActive(true);
+            Transform platform = active[(int)Inst.floor].Last().Object.transform;
+            platform.position = new Vector3(platformX, platformY, 0);
             platform.localScale = new Vector3(platformLength, 1, 1);
             GenerateStructure(platform, platformLength, platformX, platformY, first, true);
             floorLengths.Enqueue(new FloorMeta(platform, platformLength));
@@ -251,6 +210,40 @@ public class FloorSpawnerScript : MonoBehaviour {
             lastValidY = 5; // Resets floor Y diversity
             lastValidX = 0; // Resets platform X restriction
         }
+    }
+    private GameObject InstantiateInactive(GameObject prefab, Vector3 position, string name) {
+        GameObject obj = Instantiate(prefab, position, Quaternion.identity, transform);
+        obj.name = name;
+        obj.SetActive(false);
+        return obj;
+    }
+
+    public void Restart() {
+        // Clears active and resets reserve
+        foreach (Inst type in Enum.GetValues(typeof(Inst))) {
+            HashSet<int> indicesToRemove = new HashSet<int>();
+            for (int i = 0; i < active[(int)type].Count(); i++) {
+                ChildMeta child = active[(int)type][i];
+                reserve[(int)type].Push(child.Object);
+                child.Object.transform.SetParent(transform, true);
+                child.Object.SetActive(false);
+                if (child.IsCell) child.Object.GetComponent<SpriteRenderer>().material = CellScript.normalMaterial;
+                indicesToRemove.Add(i);
+            }
+            int index = 0;
+            active[(int)type].RemoveAll(item => indicesToRemove.Contains(index++));
+        }
+
+        // Clears queue
+        while (floorLengths.Count() > 0)
+            floorLengths.Dequeue();
+
+        // Spawns the first floor
+        SpawnFloor();
+        firstFloor = floorLengths.Dequeue();
+
+        // Starts the powerup timer
+        powerupTimer = gameScript.powerupSpawnCooldown;
     }
 
     // Awake is called before the game starts; used to initialize object references
@@ -270,17 +263,24 @@ public class FloorSpawnerScript : MonoBehaviour {
         // Initialize Variables
         spikeCoolDownIt = gameScript.spikeCoolDown;
 
-        // Instantiates reserve
-        for (int i = 0; i < 10; i++) reserve_floor.Add(Instantiate(floor, new Vector3(100, 100, 0), Quaternion.identity));
-        for (int i = 0; i < 50; i++) reserve_cell.Add(Instantiate(cell, new Vector3(100, 100, 0), Quaternion.identity));
-        for (int i = 0; i < 20; i++) reserve_singleSpike.Add(Instantiate(singleSpike, new Vector3(100, 100, 0), Quaternion.identity));
-        for (int i = 0; i < 20; i++) reserve_doubleSpike.Add(Instantiate(doubleSpike, new Vector3(100, 100, 0), Quaternion.identity));
-        for (int i = 0; i < 20; i++) reserve_tripleSpike.Add(Instantiate(tripleSpike, new Vector3(100, 100, 0), Quaternion.identity));
-        reserve_battery.Add(Instantiate(battery, new Vector3(100, 100, 0), Quaternion.identity));
-        reserve_shieldPrefab.Add(Instantiate(shieldPrefab, new Vector3(100, 100, 0), Quaternion.identity));
-        reserve_fuelPrefab.Add(Instantiate(fuelPrefab, new Vector3(100, 100, 0), Quaternion.identity));
-        reserve_extraJumpPrefab.Add(Instantiate(extraJumpPrefab, new Vector3(100, 100, 0), Quaternion.identity));
+        // Initializes active and reserve
+        for (int i = 0; i < Enum.GetValues(typeof(Inst)).Length; i++) {
+            active.Add(new List<ChildMeta>());
+            reserve.Add(new Stack<GameObject>());
+        }
 
+        // Instantiates reserve
+        for (int i = 1; i <= 10; i++) reserve[(int)Inst.floor].Push(InstantiateInactive(floor, new Vector3(-10, (int)Inst.floor, 0), $"{Inst.floor} {i}"));
+        for (int i = 1; i <= 80; i++) reserve[(int)Inst.cell].Push(InstantiateInactive(cell, new Vector3(-10, (int)Inst.cell, 0), $"{Inst.cell} {i}"));
+        for (int i = 1; i <= 21; i++) reserve[(int)Inst.singleSpike].Push(InstantiateInactive(singleSpike, new Vector3(-10, (int)Inst.singleSpike, 0), $"{Inst.singleSpike} {i}"));
+        for (int i = 1; i <= 14; i++) reserve[(int)Inst.doubleSpike].Push(InstantiateInactive(doubleSpike, new Vector3(-10, (int)Inst.doubleSpike, 0), $"{Inst.doubleSpike} {i}"));
+        for (int i = 1; i <= 12; i++) reserve[(int)Inst.tripleSpike].Push(InstantiateInactive(tripleSpike, new Vector3(-10, (int)Inst.tripleSpike, 0), $"{Inst.tripleSpike} {i}"));
+        for (int i = 1; i <= 2; i++) reserve[(int)Inst.battery].Push(InstantiateInactive(battery, new Vector3(-10, (int)Inst.battery, 0), $"{Inst.battery} {i}"));
+        for (int i = 1; i <= 2; i++) reserve[(int)Inst.shieldPrefab].Push(InstantiateInactive(shieldPrefab, new Vector3(-10, (int)Inst.shieldPrefab, 0), $"{Inst.shieldPrefab} {i}"));
+        for (int i = 1; i <= 2; i++) reserve[(int)Inst.fuelPrefab].Push(InstantiateInactive(fuelPrefab, new Vector3(-10, (int)Inst.fuelPrefab, 0), $"{Inst.fuelPrefab} {i}"));
+        for (int i = 1; i <= 2; i++) reserve[(int)Inst.extraJumpPrefab].Push(InstantiateInactive(extraJumpPrefab, new Vector3(-10, (int)Inst.extraJumpPrefab, 0), $"{Inst.extraJumpPrefab} {i}"));
+
+        
         // Spawns the first floor
         SpawnFloor();
         firstFloor = floorLengths.Dequeue();
@@ -297,16 +297,31 @@ public class FloorSpawnerScript : MonoBehaviour {
     // Same as Update() but more consistent
     void FixedUpdate() {
         // Moves floors to the left
-        foreach (GameObject child in active_floor) // FIX THIS
-            child.transform.Translate(Vector3.left * gameScript.gameSpeed * Time.deltaTime);
+        foreach (ChildMeta child in active[(int)Inst.floor])
+            child.Object.transform.Translate(Vector3.left * gameScript.gameSpeed * Time.deltaTime);
 
         // Creates floors outside of the playable area
         if (last.position.x + lastLength < rightEdge)
-            SpawnFloor(last.position.x + lastLength, Random.Range(0, lastValidY), false);
+            SpawnFloor(last.position.x + lastLength, UnityEngine.Random.Range(0, lastValidY), false);
         
         // Deletes floors outside of the playable area
         if (firstFloor.Floor.position.x + firstFloor.Length < leftEdge) {
-            Destroy(firstFloor.Floor.gameObject);
+            // Destroy(firstFloor.Floor.gameObject);
+            foreach (Inst type in Enum.GetValues(typeof(Inst))) {
+                HashSet<int> indicesToRemove = new HashSet<int>();
+                for (int i = 0; i < active[(int)type].Count(); i++) {
+                    ChildMeta child = active[(int)type][i];
+                    if (child.Parent == firstFloor.Floor || child.Object.transform == firstFloor.Floor) { // Object for floor, parent for everything else
+                        reserve[(int)type].Push(child.Object);
+                        child.Object.transform.SetParent(transform, true);
+                        child.Object.SetActive(false);
+                        if (child.IsCell) child.Object.GetComponent<SpriteRenderer>().material = CellScript.normalMaterial;
+                        indicesToRemove.Add(i);
+                    }
+                }
+                int index = 0;
+                active[(int)type].RemoveAll(item => indicesToRemove.Contains(index++));
+            }
             firstFloor = floorLengths.Dequeue();
         }
     }

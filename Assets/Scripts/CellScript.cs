@@ -6,6 +6,7 @@ public class CellScript : MonoBehaviour {
     private SpriteRenderer cellSprite;
     public Sprite active;
     public Material glowMaterial;
+    public static Material normalMaterial;
     
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.CompareTag("Player")) {

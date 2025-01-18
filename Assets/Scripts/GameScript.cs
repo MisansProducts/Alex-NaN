@@ -22,6 +22,7 @@ public class GameScript : MonoBehaviour {
     [SerializeField] private GameObject fog;
     [HideInInspector] private FogScaleChanger fogScaleChanger;
     [SerializeField] private GameObject floorSpawner;
+    private FloorSpawnerScript floorSpawnerScript;
     [SerializeField] private GameObject outOfBounds;
     [SerializeField] public Light2D spotLight;
     [SerializeField] private BackgroundMusic backgroundMusic;
@@ -130,11 +131,7 @@ public class GameScript : MonoBehaviour {
         playerScript.fuelCount = 0;
         playerScript.extraJumpCount = 0;
         fogScaleChanger.onDeath();
-
-        // StartGame()
-        // Instantiate(outOfBounds, new Vector3(7.5f, -3.5f, 0), Quaternion.identity, transform).transform.localScale = new Vector3(17, 1, 1);
-        // Instantiate(outOfBounds, new Vector3(-1.5f, 4.5f, 0), Quaternion.Euler(0, 0, -90), transform).transform.localScale = new Vector3(15, 1, 1);
-        // Instantiate(floorSpawner, new Vector3(0, 0, 0), Quaternion.identity, transform);
+        floorSpawnerScript.Restart();
         Mode2(1);
     }
     
@@ -160,17 +157,19 @@ public class GameScript : MonoBehaviour {
         backgroundMusic = FindObjectOfType<BackgroundMusic>();
         fogScaleChanger = fog.GetComponent<FogScaleChanger>();
         playerScript = player.GetComponent<PlayerScript>();
+        CellScript.normalMaterial = Resources.Load<Material>("CellNormalMaterial");
     }
 
     void Start() {
         spikeChance = GameSetting.Instance.spikeChance;
         spikeCoolDown = GameSetting.Instance.spikeCoolDown;
+        
         // Creates the out-of-bounds death walls
         Instantiate(outOfBounds, new Vector3(7.5f, -3.5f, 0), Quaternion.identity, transform).transform.localScale = new Vector3(17, 1, 1);
         Instantiate(outOfBounds, new Vector3(-1.5f, 4.5f, 0), Quaternion.Euler(0, 0, -90), transform).transform.localScale = new Vector3(15, 1, 1);
 
         // Creates the floor spawner responsible for generating the map
-        Instantiate(floorSpawner, new Vector3(0, 0, 0), Quaternion.identity, transform);
+        floorSpawnerScript = Instantiate(floorSpawner, new Vector3(0, 0, 0), Quaternion.identity, transform).GetComponent<FloorSpawnerScript>();
 
         Mode2(1);
 
