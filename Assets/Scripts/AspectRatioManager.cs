@@ -9,7 +9,7 @@ public class AspectRatioManager : MonoBehaviour {
     
     
     void Start() {
-        isMobile = Application.isMobilePlatform;
+        isMobile = true;
         cam = GetComponent<Camera>();
         lastWidth = Screen.width;
         lastHeight = Screen.height;

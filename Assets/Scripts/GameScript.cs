@@ -58,6 +58,8 @@ public class GameScript : MonoBehaviour {
     public void Mode2(int activate) {
         switch (activate) {
             case 0: // First activated
+                backgroundMusic.StartGame();
+                player.transform.position = new Vector3(playerX, playerY, 0);
                 mode2 = true;
                 batteryCharges = batteryMaxCharges;
                 battery = 1f;
@@ -65,7 +67,7 @@ public class GameScript : MonoBehaviour {
                 batteryBarCharges.sprite = batteryBarChargesFrames[2];
                 batteryCharging = 0f;
                 batteryBar.SetActive(true);
-                flashPromptText.gameObject.SetActive(true);
+                // flashPromptText.gameObject.SetActive(true);
                 backgroundMusic.switchBGM(); // lags the game when switching to mode 2; need to make it seamless
                 fogScaleChanger.enabled = true; // fog spawns
                 break;
@@ -95,10 +97,6 @@ public class GameScript : MonoBehaviour {
         // Updates current and high score UI
         currentScoreText.text = currentScore.ToString();
         highScoreText.text = highScore.ToString();
-
-        // Starts mode 2
-        if (!mode2 && currentScore >= spotLightScore)
-            Mode2(0);
     }
 
     public void GameOver() {
@@ -132,7 +130,7 @@ public class GameScript : MonoBehaviour {
         playerScript.extraJumpCount = 0;
         fogScaleChanger.onDeath();
         floorSpawnerScript.Restart();
-        Mode2(1);
+        Mode2(0);
     }
     
     private void HandleBatteryBar() {
@@ -171,7 +169,7 @@ public class GameScript : MonoBehaviour {
         // Creates the floor spawner responsible for generating the map
         floorSpawnerScript = Instantiate(floorSpawner, new Vector3(0, 0, 0), Quaternion.identity, transform).GetComponent<FloorSpawnerScript>();
 
-        Mode2(1);
+        Mode2(0);
 
         if (PlayerPrefs.HasKey("HighScore")) highScore = PlayerPrefs.GetInt("HighScore");
     }

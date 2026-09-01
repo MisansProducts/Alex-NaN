@@ -93,7 +93,7 @@ public class PlayerScript : MonoBehaviour {
 
     void Start() {
         isGroundedLock = false; // doesn't work; should not play when game starts
-        isMobile = Application.isMobilePlatform;
+        isMobile = true;
         // Show/hide button based on platform
         if (jumpButton != null) {
             jumpButton.gameObject.SetActive(isMobile);
